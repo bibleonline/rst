@@ -1,1 +1,1 @@
-# rst
+# Russian Synodal Bible Translation
