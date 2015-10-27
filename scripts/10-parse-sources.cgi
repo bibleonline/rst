@@ -6,13 +6,16 @@ use v5.10;
 
 use FindBin qw!$Bin!;
 use JSON;
+use Config::General;
 use Data::Dumper;
 
-open F, 'syn.json' or die $!;
+my $parsed = "$Bin/../parsed/";
+
+open F, "$Bin/syn.json" or die $!;
 my $data = decode_json(join '', <F>);
 close F;
 
-my $parsed = "$Bin/../parsed/";
+my $deut = { Config::General->new("$Bin/deuterocanonical.conf")->getall };
 
 open D, ">$parsed/description.conf" or die "description.conf: $!";
 my $id = 0;
@@ -76,9 +79,12 @@ id		%s
 File		%s
 Eng		%s
 Rus		%s
+Testament	%s
 Chapters	%s
 %s</book-%d>
-', $id, $outfile, $id, $eng, $rus, scalar @{ $book->{chapters} },$additional,$id;
+', $id, $id, $outfile, $eng, $rus, 
+	exists $deut->{Books}->{$id} ? 'DE' : $id > 51 ? 'NT' : 'OT',
+	scalar @{ $book->{chapters} },$additional,$id;
 	open P, ">$parsed/$outfile";
 	print P join "\n#p#\n", map { join "\n", @$_ } @list;
 	close P;
