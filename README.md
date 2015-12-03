@@ -18,4 +18,4 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 * scripts -- Скрипты для обновления файлов
  * [syn.json](https://github.com/sopov/rst/blob/master/scripts/syn.json) -- Список книг и глав
  * [00-update-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/00-update-sources.cgi) -- Инициализационный скрипт для исправления оригинальных файлов
- * [10-parse-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.cgi) -- конвертор оригинальных файлов в удобный для дальнейшей работы файлов
+ * [10-parse-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.cgi) -- конвертор оригинальных файлов в удобный формат для дальнейшей работы с файлами
