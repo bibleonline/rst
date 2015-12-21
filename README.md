@@ -19,3 +19,4 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
  * [syn.json](https://github.com/sopov/rst/blob/master/scripts/syn.json) -- Список книг и глав
  * [00-update-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/00-update-sources.cgi) -- Инициализационный скрипт для исправления оригинальных файлов
  * [10-parse-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.cgi) -- конвертор оригинальных файлов в удобный формат для дальнейшей работы с файлами
+* [20-fix-parsed](https://github.com/sopov/rst/tree/master/scripts/20-fix-parsed) -- обновление распарсенных файлов для устранения ошибок в исходных файлах
