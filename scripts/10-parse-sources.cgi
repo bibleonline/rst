@@ -22,7 +22,6 @@ my $id = 0;
 foreach my $book (@{ $data->{books}}  ) {
 	(my $fn = $book->{passage}) =~ s! !-!g;
 	$fn = sprintf('%s/../source/%s.html', $Bin, $fn);
-#	next if $fn !~ /Est|Jude/;
 	open F, $fn or die "$fn: $!";
 	my $text = join '', <F>; 
 	close F;
@@ -84,7 +83,8 @@ Chapters	%s
 %s</book-%d>
 ', $id, $id, $outfile, $eng, $rus, 
 	exists $deut->{Books}->{$id} ? 'DE' : $id > 51 ? 'NT' : 'OT',
-	scalar @{ $book->{chapters} },$additional,$id;
+	scalar @{ $book->{chapters} } - (exists $chaps{0} ? 1 : 0),
+	$additional,$id;
 	open P, ">$parsed/$outfile";
 	print P join "\n#p#\n", map { join "\n", @$_ } @list;
 	close P;
