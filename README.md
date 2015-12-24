@@ -12,6 +12,7 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 ## Файлы и каталоги
 
 * source -- Оригинальные файлы (как есть)
+* issues -- вопросы по тексту
 * parsed -- Подготовленные файлы для дальнейшей работы
  * NN-bookname.dat -- подготовленный файл по каждой из книг библии
  * [description.conf](https://github.com/sopov/rst/blob/master/parsed/description.conf) -- Описание, построенное на данных из оригинальных файлов
