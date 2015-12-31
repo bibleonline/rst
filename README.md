@@ -14,6 +14,7 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 * source -- Оригинальные файлы (как есть)
 * issues -- вопросы по тексту
 * parsed -- Подготовленные файлы для дальнейшей работы
+* redletter -- красные буквы (слова Христа)
  * NN-bookname.dat -- подготовленный файл по каждой из книг библии
  * [description.conf](https://github.com/sopov/rst/blob/master/parsed/description.conf) -- Описание, построенное на данных из оригинальных файлов
 * scripts -- Скрипты для обновления файлов
