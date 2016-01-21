@@ -1,4 +1,6 @@
 ### Список изменений
+* 2015-01-21
+ *  ошибка i-тега [003-fix-i-tag.md](https://github.com/sopov/rst/blob/master/issues/003-fix-i-tag.md)
 * 2015-12-31 
  * Добавлены красные буквы // [redletter](https://github.com/sopov/rst/tree/master/redletter)
 * 2015-12-24
