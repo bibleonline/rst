@@ -4,7 +4,7 @@ use strict;
 use Encode;
 use FindBin qw/$Bin/;
 my $c;
-my $dir = "$Bin/../parsed";
+my $dir = "$Bin/../../parsed";
 
 opendir D, $dir or die "$dir $!";
 my @files = grep {/dat$/} readdir D;
