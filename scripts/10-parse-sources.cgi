@@ -87,6 +87,7 @@ Chapters	%s
 	$additional,$id;
 	open P, ">$parsed/$outfile";
 	print P join "\n#p#\n", map { join "\n", @$_ } @list;
+	print P "\n";
 	close P;
 }
 close D;
