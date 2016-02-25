@@ -33,6 +33,7 @@ foreach my $pfx (sort keys %replace) {
 	close F;
 	open F, ">$f" or print STDERR "$f: $!";
 	print F join "\n", @data;
+	print F "\n";
 	close F;
 	printf "%s [%s]\n", $pfx, $fxd? 'OK' : 'SKIP';
 }

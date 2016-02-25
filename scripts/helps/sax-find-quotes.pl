@@ -27,8 +27,10 @@ foreach my $file (@files) {
 				$vers = $val;
 				my ($ch) = $vers =~ /(\d+)/;
 				if ($ch ne $chap) { 
-						print "Start new chap [$file: $ch], but not equal: $l <=> $r\n" if $l != $r;
-						$chap = $ch; $l = $r = 0 ; }
+						print "WARN Start new chap [$file: $ch], but not equal: $l <=> $r\n" if $l != $r;
+						$chap = $ch; 
+#						$l = $r = 0 ;
+				 }
 			} else {
 
 				if ($val eq '«') { $l++ } else { $r++ }
