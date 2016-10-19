@@ -6,3 +6,5 @@ perl ../scripts/20-fix-parsed/004-fix-wrong-quot.pl
 patch  < ../scripts/20-fix-parsed/005-fix-text-for-quot.patch
 patch  < ../scripts/20-fix-parsed/006-wrong-chars.patch
 patch  < ../scripts/20-fix-parsed/007-short-vers.patch
+# 008-pipe.sh
+perl -p -i -e 's/\s+\|+\s+/ /g;s/\s+\|+/ /g;s/\|+\s+/ /g' *dat
