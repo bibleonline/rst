@@ -8,3 +8,5 @@ patch  < ../scripts/20-fix-parsed/006-wrong-chars.patch
 patch  < ../scripts/20-fix-parsed/007-short-vers.patch
 # 008-pipe.sh
 perl -p -i -e 's/\s+\|+\s+/ /g;s/\s+\|+/ /g;s/\|+\s+/ /g' *dat
+# /008
+patch  < ../scripts/20-fix-parsed/009-wrong-text-ps73-2.patch
