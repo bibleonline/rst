@@ -11,3 +11,4 @@ perl -p -i -e 's/\s+\|+\s+/ /g;s/\s+\|+/ /g;s/\|+\s+/ /g' *dat
 # /008
 patch  < ../scripts/20-fix-parsed/009-wrong-text-ps73-2.patch
 patch  < ../scripts/20-fix-parsed/010-wrong-spase.patch
+patch  < ../scripts/20-fix-parsed/011-wrong-text-ge-jacob.patch
