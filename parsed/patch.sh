@@ -13,3 +13,4 @@ patch  < ../scripts/20-fix-parsed/009-wrong-text-ps73-2.patch
 patch  < ../scripts/20-fix-parsed/010-wrong-space.patch
 patch  < ../scripts/20-fix-parsed/011-wrong-text-ge-jacob.patch
 patch  < ../scripts/20-fix-parsed/011.2-wrong-text-ge-jacob.patch
+patch  < ../scripts/20-fix-parsed/012-wrong-punctuation.patch
