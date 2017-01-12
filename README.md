@@ -5,7 +5,7 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 
 * Author:	Bible Society of Russia
 * Published by:	Российское Библейское общество (1995)
-* ISBN:	9785855243284
+* ISBN:	9785855243284 / 978-5-85524-328-4
 * Copyright: Public Domain
 * Extended Copyright: Public Domain
 
