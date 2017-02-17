@@ -15,3 +15,4 @@ patch  < ../scripts/20-fix-parsed/011-wrong-text-ge-jacob.patch
 patch  < ../scripts/20-fix-parsed/011.2-wrong-text-ge-jacob.patch
 patch  < ../scripts/20-fix-parsed/012-wrong-punctuation.patch
 patch  < ../scripts/20-fix-parsed/013-wrong-text-numbers7-2.patch
+patch  < ../scripts/20-fix-parsed/014-kathisma.patch
