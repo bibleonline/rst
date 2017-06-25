@@ -19,3 +19,4 @@ patch  < ../scripts/20-fix-parsed/014-kathisma.patch
 patch  < ../scripts/20-fix-parsed/015-wrong-sq-sirach.patch
 patch  < ../scripts/20-fix-parsed/016-fix-prayerofmanasseh.patch
 patch  < ../scripts/20-fix-parsed/017-psalm-wrong-1st-verse.patch
+patch  < ../scripts/20-fix-parsed/018-wrong-text-prov25-5.patch
