@@ -23,3 +23,4 @@ patch  < ../scripts/20-fix-parsed/018-wrong-text-prov25-5.patch
 # 019-typograph.sh
 perl -p -i -e 's/\&ndash;/\&mdash;/g;s/-/‐/g;' *dat
 patch  < ../scripts/20-fix-parsed/020-wront-text.patch
+patch  < ../scripts/20-fix-parsed/021-start-with-lowcase.patch

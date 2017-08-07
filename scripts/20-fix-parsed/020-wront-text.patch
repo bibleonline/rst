@@ -1,4 +1,4 @@
-diff --git ../../parsed/02-exodus.dat b/parsed/02-exodus.dat
+diff --git ../../parsed/02-exodus.dat ../../parsed/02-exodus.dat
 index 0c2ce1c..a4c60f5 100644
 --- ../../parsed/02-exodus.dat
 +++ ../../parsed/02-exodus.dat
@@ -11,7 +11,7 @@ index 0c2ce1c..a4c60f5 100644
  #18:7#Моисей вышел навстречу тестю своему, и поклонился [ему], и целовал его, и после взаимного приветствия они вошли в шатер.
  #18:8#И рассказал Моисей тестю своему обо всем, что сделал Господь с фараоном и со [всеми] Египтянами за Израиля, и о всех трудностях, какие встретили их на пути, и как избавил их Господь [из руки фараона и из руки Египтян].
  #18:9#Иофор радовался о всех благодеяниях, которые Господь явил Израилю, когда избавил его из руки Египтян [и из руки фараона],
-diff --git ../../parsed/13-1chronicles.dat b/parsed/13-1chronicles.dat
+diff --git ../../parsed/13-1chronicles.dat ../../parsed/13-1chronicles.dat
 index b5af883..083630d 100644
 --- ../../parsed/13-1chronicles.dat
 +++ ../../parsed/13-1chronicles.dat
@@ -24,7 +24,7 @@ index b5af883..083630d 100644
  #p#
  #19:14#И вступил Иоав и люди, которые были у него, в сражение с Сириянами, и они побежали от него.
  #19:15#Аммонитяне же, увидев, что Сирияне бегут, и сами побежали от Авессы, брата его, и ушли в город. И пришел Иоав в Иерусалим.
-diff --git ../../parsed/52-matthew.dat b/parsed/52-matthew.dat
+diff --git ../../parsed/52-matthew.dat ../../parsed/52-matthew.dat
 index 1af84af..a629ff0 100644
 --- ../../parsed/52-matthew.dat
 +++ ../../parsed/52-matthew.dat
@@ -46,7 +46,7 @@ index 1af84af..a629ff0 100644
  #p#
  #15:12#Тогда ученики Его, приступив, сказали Ему: знаешь ли, что фарисеи, услышав слово сие, соблазнились?
  #p#
-diff --git ../../parsed/54-luke.dat b/parsed/54-luke.dat
+diff --git ../../parsed/54-luke.dat ../../parsed/54-luke.dat
 index 56be5e7..d59080f 100644
 --- ../../parsed/54-luke.dat
 +++ ../../parsed/54-luke.dat
@@ -59,7 +59,7 @@ index 56be5e7..d59080f 100644
  #p#
  #12:6#Не пять ли малых птиц продаются за два ассария? и ни одна из них не забыта у Бога.
  #12:7#А у вас и волосы на голове все сочтены. Итак, не бойтесь: вы дороже многих малых птиц.
-diff --git ../../parsed/78-revelation.dat b/parsed/78-revelation.dat
+diff --git ../../parsed/78-revelation.dat ../../parsed/78-revelation.dat
 index 43a44a6..cf8bc83 100644
 --- ../../parsed/78-revelation.dat
 +++ ../../parsed/78-revelation.dat
