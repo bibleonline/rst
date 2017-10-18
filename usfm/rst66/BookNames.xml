@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BookNames>
+<book code="GEN" abbr="Быт" short="Бытие" long="Первая книга Моисеева. Бытие" />
+<book code="EXO" abbr="Исх" short="Исход" long="Вторая книга Моисеева. Исход" />
+<book code="LEV" abbr="Лев" short="Левит" long="Третья книга Моисеева. Левит" />
+<book code="NUM" abbr="Чис" short="Числа" long="Четвертая книга Моисеева. Числа" />
+<book code="DEU" abbr="Втор" short="Второзаконие" long="Пятая книга Моисеева. Второзаконие" />
+<book code="JOS" abbr="Нав" short="Иисус Навин" long="Книга Иисуса Навина" />
+<book code="JDG" abbr="Суд" short="Судьи" long="Книга Судей Израилевых" />
+<book code="RUT" abbr="Руф" short="Руфь" long="Книга Руфи" />
+<book code="1SA" abbr="1Цар" short="1 Царств" long="Первая книга Царств" />
+<book code="2SA" abbr="2Цар" short="2 Царств" long="Вторая книга Царств" />
+<book code="1KI" abbr="3Цар" short="3 Царств" long="Третья книга Царств" />
+<book code="2KI" abbr="4Цар" short="4 Царств" long="Четвертая книга Царств" />
+<book code="1CH" abbr="1Пар" short="1 Паралипоменон" long="Первая книга Паралипоменон" />
+<book code="2CH" abbr="2Пар" short="2 Паралипоменон" long="Вторая книга Паралипоменон" />
+<book code="EZR" abbr="Езд" short="Ездра" long="Первая книга Ездры" />
+<book code="NEH" abbr="Неем" short="Неемия" long="Книга Неемии" />
+<book code="EST" abbr="Есф" short="Есфирь" long="Книга Есфири" />
+<book code="JOB" abbr="Иов" short="Иов" long="Книга Иова" />
+<book code="PSA" abbr="Пс" short="Псалтирь" long="Псалтирь" />
+<book code="PRO" abbr="Притч" short="Притчи" long="Книга притчей Соломоновых" />
+<book code="ECC" abbr="Еккл" short="Екклезиаст" long="Книга Екклезиаста, или Проповедника" />
+<book code="SNG" abbr="Песн" short="Песня песней" long="Книга песни песней Соломона" />
+<book code="ISA" abbr="Ис" short="Исаия" long="Книга пророка Исаии" />
+<book code="JER" abbr="Иер" short="Иеремия" long="Книга пророка Иеремии" />
+<book code="LAM" abbr="Плач" short="Плач Иеремии" long="Книга плач Иеремии" />
+<book code="EZK" abbr="Иез" short="Иезекииль" long="Книга пророка Иезекииля" />
+<book code="DAN" abbr="Дан" short="Даниил" long="Книга пророка Даниила" />
+<book code="HOS" abbr="Ос" short="Осия" long="Книга пророка Осии" />
+<book code="JOL" abbr="Иоил" short="Иоиль" long="Книга пророка Иоиля" />
+<book code="AMO" abbr="Ам" short="Амос" long="Книга пророка Амоса" />
+<book code="OBA" abbr="Авд" short="Авдий" long="Книга пророка Авдия" />
+<book code="JON" abbr="Ион" short="Иона" long="Книга пророка Ионы" />
+<book code="MIC" abbr="Мих" short="Михей" long="Книга пророка Михея" />
+<book code="NAM" abbr="Наум" short="Наум" long="Книга пророка Наума" />
+<book code="HAB" abbr="Авв" short="Аввакум" long="Книга пророка Аввакума" />
+<book code="ZEP" abbr="Соф" short="Софония" long="Книга пророка Софонии" />
+<book code="HAG" abbr="Агг" short="Аггей" long="Книга пророка Аггея" />
+<book code="ZEC" abbr="Зах" short="Захария" long="Книга пророка Захарии" />
+<book code="MAL" abbr="Мал" short="Малахия" long="Книга пророка Малахии" />
+<book code="MAT" abbr="Мф" short="Матфея" long="От Матфея святое благовествование" />
+<book code="MRK" abbr="Мк" short="Марка" long="От Марка святое благовествование" />
+<book code="LUK" abbr="Лк" short="Луки" long="От Луки святое благовествование" />
+<book code="JHN" abbr="Ин" short="Иоанна" long="От Иоанна святое благовествование" />
+<book code="ACT" abbr="Деян" short="Деяния" long="Деяния святых апостолов" />
+<book code="JAS" abbr="Иак" short="Иакова" long="Послание Иакова" />
+<book code="1PE" abbr="1Петр" short="1 Петра" long="Первое послание Петра" />
+<book code="2PE" abbr="2Петр" short="2 Петра" long="Второе послание Петра" />
+<book code="1JN" abbr="1Ин" short="1 Иоанна" long="Первое послание Иоанна" />
+<book code="2JN" abbr="2Ин" short="2 Иоанна" long="Второе послание Иоанна" />
+<book code="3JN" abbr="3Ин" short="3 Иоанна" long="Третье послание Иоанна" />
+<book code="JUD" abbr="Иуд" short="Иуда" long="Послание Иуды" />
+<book code="ROM" abbr="Рим" short="Римлянам" long="Послание к Римлянам" />
+<book code="1CO" abbr="1Кор" short="1 Коринфянам" long="Первое послание к Коринфянам" />
+<book code="2CO" abbr="2Кор" short="2 Коринфянам" long="Второе послание к Коринфянам" />
+<book code="GAL" abbr="Гал" short="Галатам" long="Послание к Галатам" />
+<book code="EPH" abbr="Еф" short="Ефесянам" long="Послание к Ефесянам" />
+<book code="PHP" abbr="Фил" short="Филиппийцам" long="Послание к Филиппийцам" />
+<book code="COL" abbr="Кол" short="Колоссянам" long="Послание к Колоссянам" />
+<book code="1TH" abbr="1Фес" short="1 Фессалоникийцам" long="Первое послание к Фессалоникийцам" />
+<book code="2TH" abbr="2Фес" short="2 Фессалоникийцам" long="Второе послание к Фессалоникийцам" />
+<book code="1TI" abbr="1Тим" short="1 Тимофею" long="Первое послание к Тимофею" />
+<book code="2TI" abbr="2Тим" short="2 Тимофею" long="Второе послание к Тимофею" />
+<book code="TIT" abbr="Тит" short="Титу" long="Послание к Титу" />
+<book code="PHM" abbr="Флм" short="Филимону" long="Послание к Филимону" />
+<book code="HEB" abbr="Евр" short="Евреям" long="Послание к Евреям" />
+<book code="REV" abbr="Откр" short="Откровение" long="Откровение ап. Иоанна (Апокалипсис)" />
+</BookNames>
