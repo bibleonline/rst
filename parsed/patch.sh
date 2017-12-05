@@ -27,3 +27,4 @@ patch  < ../scripts/20-fix-parsed/021-start-with-lowcase.patch
 patch  < ../scripts/20-fix-parsed/022-wrong-text-job36-24.patch
 patch  < ../scripts/20-fix-parsed/023-wrong-punctuation-1mac5-34.patch
 patch  < ../scripts/20-fix-parsed/24-wrong-paragraph-james1-16.patch
+patch  < ../scripts/20-fix-parsed/025-numbers.patch
