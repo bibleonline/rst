@@ -30,3 +30,4 @@ patch  < ../scripts/20-fix-parsed/024-wrong-paragraph-james1-16.patch
 patch  < ../scripts/20-fix-parsed/025-numbers.patch
 patch  < ../scripts/20-fix-parsed/026-wrong-text-1pe1-12.patch
 patch  < ../scripts/20-fix-parsed/027-wrong-text-luke-8-10.patch
+patch  < ../scripts/20-fix-parsed/028-hellip.patch
