@@ -32,3 +32,4 @@ patch  < ../scripts/20-fix-parsed/026-wrong-text-1pe1-12.patch
 patch  < ../scripts/20-fix-parsed/027-wrong-text-luke-8-10.patch
 patch  < ../scripts/20-fix-parsed/028-hellip.patch
 patch  < ../scripts/20-fix-parsed/029-paragraphs.patch
+patch  < ../scripts/20-fix-parsed/030-lord.patch
