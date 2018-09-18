@@ -1,4 +1,9 @@
 #!/bin/bash
+# update from sources
+perl ../scripts/00-update-sources.cgi
+perl ../scripts/10-parse-sources.cgi
+
+# add fixes
 patch  < ../scripts/20-fix-parsed/001-fix-jude.patch
 perl ../scripts/20-fix-parsed/002-fix-first-word.pl
 perl ../scripts/20-fix-parsed/003-fix-i-tag.pl
@@ -33,3 +38,4 @@ patch  < ../scripts/20-fix-parsed/027-wrong-text-luke-8-10.patch
 patch  < ../scripts/20-fix-parsed/028-hellip.patch
 patch  < ../scripts/20-fix-parsed/029-paragraphs.patch
 patch  < ../scripts/20-fix-parsed/030-lord.patch
+patch  < ../scripts/20-fix-parsed/031-wrong-text.patch

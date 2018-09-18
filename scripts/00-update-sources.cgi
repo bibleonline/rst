@@ -8,7 +8,7 @@ use FindBin qw!$Bin!;
 use JSON;
 use Data::Dumper;
 
-open F, 'syn.json' or die $!;
+open F, $Bin.'/syn.json' or die $!;
 my $data = decode_json(join '', <F>);
 close F;
 
