@@ -39,3 +39,4 @@ patch  < ../scripts/20-fix-parsed/028-hellip.patch
 patch  < ../scripts/20-fix-parsed/029-paragraphs.patch
 patch  < ../scripts/20-fix-parsed/030-lord.patch
 patch  < ../scripts/20-fix-parsed/031-wrong-text.patch
+patch  < ../scripts/20-fix-parsed/032-wrong-text.patch
