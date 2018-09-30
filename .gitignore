@@ -1,6 +1,5 @@
 .DS_Store
 *.tmp
 tmp/*
-parsed66
 *.swp
 *.new

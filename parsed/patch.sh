@@ -40,3 +40,5 @@ patch  < ../scripts/20-fix-parsed/029-paragraphs.patch
 patch  < ../scripts/20-fix-parsed/030-lord.patch
 patch  < ../scripts/20-fix-parsed/031-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/032-wrong-text.patch
+perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-accentuation.conf
+perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-yo.conf
