@@ -40,51 +40,57 @@ my $deut = { Config::General->new("$Bin/deuterocanonical.conf")->getall };
 my $id = 0;
 my @description;
 foreach my $book ( @{ $data->{books} } ) {
-    ( my $fn = $book->{passage} ) =~ s/ /-/g;
+    ( my $fn = $book->{passage} ) =~ s/ /-/gsm;
     $fn = sprintf '%s/../source/%s.html', $Bin, $fn;
     my $text = read_file $fn;
     my ( $eng, $rus, $chap, $vers ) = ( $EMPTY, $EMPTY, 0, 0 );
     my @list;
     my %chaps;
 
-    while ( $text =~ m{<([a-z]+)([^>]*)>(.*?)</\1>}gcsm ) {
+    while (
+        $text =~ m{
+            <([[:lower:]]+)([^>]*)>
+                (.*?)
+            </\1>}gxcsm
+        )
+    {
         my ( $tag, $args, $subtext ) = ( $1, $2, $3 );
 
         # In This text always start tag is <p...>
         if ( $tag ne 'p' ) {
             croak "wrong open tag `$tag' in $fn";
         }
-        unless ($eng) {    # 1st p. with title  in en
-            ($eng) = $subtext =~ m{<span[^>]*>(.+)</span>};
+        if ( !$eng ) {    # 1st p. with title  in en
+            ($eng) = $subtext =~ m{<span[^>]*>(.+)</span>}xsm;
         }
         elsif ( !$rus ) {
             $rus = $subtext;
             foreach ($rus) {    # 2nd p. with title in ru
-                s/^\s+//s;
-                s/\s+$//s;
+                s/^\s+//sxm;
+                s/\s+$//sxm;
             }
         }
         else {                  # bible text
             foreach ($subtext) {
-                s/^\s//gsm;
-                s/\s$//gsm;
-                s{$RE_VERSE}{<split><verse>$1</verse>}gsm;
-                s{$RE_ITALIC}{<i>$1</i>}gsm;
-                s{$RE_CHAP}{<chap>$1</chap>}gsm;
+                s/^\s//gsmx;
+                s/\s$//gsmx;
+                s{$RE_VERSE}{<split><verse>$1</verse>}gsmx;
+                s{$RE_ITALIC}{<i>$1</i>}gsmx;
+                s{$RE_CHAP}{<chap>$1</chap>}gsmx;
             }
-            my @sp = split /<split>/, $subtext;
+            my @sp = split /<split>/xsm, $subtext;
             my @tmp;
             foreach (@sp) {
-                s/^\s//gsm;
-                s/\s$//gsm;
-                if (m{<chap>(\d+)</chap>}) {
+                s/^\s//gsmx;
+                s/\s$//gsmx;
+                if (m{<chap>(\d+)</chap>}xsm) {
                     $chap = $1;
                     $vers = 0;
-                    s{<chap>\d+</chap>}{};
+                    s{<chap>\d+</chap>}{}xsm;
                 }
-                if (m{^<verse>(\d+)</verse>}) {
+                if (m{^<verse>(\d+)</verse>}xsm) {
                     $vers = $1;
-                    s{^<verse>(\d+)</verse>}{};
+                    s{^<verse>(\d+)</verse>}{}xsm;
                 }
                 $chaps{$chap} = $vers;
                 if ($_) {
@@ -97,7 +103,7 @@ foreach my $book ( @{ $data->{books} } ) {
 
     # store description
     my $outfile = sprintf '%02d-%s.dat', ++$id, lc $eng;
-    $outfile =~ s/\s//g;
+    $outfile =~ s/\s//gxsm;
     my $additional = $EMPTY;
     if ( exists $chaps{0} ) {
         $additional = sprintf "% 10s    %s\n", qw/Prolouge Yes/;
