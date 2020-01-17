@@ -2,42 +2,60 @@
 
 use strict;
 use warnings FATAL => 'all';
-use v5.10;
 
-use FindBin qw!$Bin!;
+our $VERSION = '1.1';
+
+use Carp;
+use FindBin qw/$Bin/;
 use JSON;
 use Config::General;
-use Data::Dumper;
+use Readonly;
+use autodie qw/:io/;
+use File::Slurp;
 
-my $parsed = "$Bin/../parsed/";
-
-open F, "$Bin/syn.json" or die $!;
-my $data = decode_json( join '', <F> );
-close F;
+Readonly my $PRSD_DIR   => "$Bin/../parsed/";
+Readonly my $EMPTY      => q{};
+Readonly my $LAST_OT_ID => 51;
+Readonly my $SPAN       => {
+    bold   => quotemeta '<span style="font-weight:bold;">',
+    italic => quotemeta '<span style="font-style:italic;">',
+    color  => quotemeta '<span style="font-weight:bold; color:rgb(128, 0, 0); font-size:18pt;">'
+};
+Readonly my $RE_VERSE => qr{
+        $SPAN->{bold}
+            <sup>(\d+)\s</sup>
+        </span>}smx;
+Readonly my $RE_ITALIC => qr{
+        $SPAN->{italic}
+            (.+?)
+        </span>}smx;
+Readonly my $RE_CHAP => qr{
+        $SPAN->{color}
+            (\d+)\s
+        </span>}smx;
+my $data = decode_json( read_file "$Bin/syn.json" );
 
 my $deut = { Config::General->new("$Bin/deuterocanonical.conf")->getall };
 
-open D, ">$parsed/description.conf" or die "description.conf: $!";
 my $id = 0;
+my @description;
 foreach my $book ( @{ $data->{books} } ) {
-    ( my $fn = $book->{passage} ) =~ s! !-!g;
-    $fn = sprintf( '%s/../source/%s.html', $Bin, $fn );
-    open F, $fn or die "$fn: $!";
-    my $text = join '', <F>;
-    close F;
-    my ( $eng, $rus, $chap, $vers ) = ( '', '', 0, 0 );
+    ( my $fn = $book->{passage} ) =~ s/ /-/g;
+    $fn = sprintf '%s/../source/%s.html', $Bin, $fn;
+    my $text = read_file $fn;
+    my ( $eng, $rus, $chap, $vers ) = ( $EMPTY, $EMPTY, 0, 0 );
     my @list;
     my %chaps;
 
-    while ( $text =~ m!<([a-z]+)([^>]*)>(.*?)</\1>!gcsm ) {
+    while ( $text =~ m{<([a-z]+)([^>]*)>(.*?)</\1>}gcsm ) {
         my ( $tag, $args, $subtext ) = ( $1, $2, $3 );
 
         # In This text always start tag is <p...>
         if ( $tag ne 'p' ) {
-            die "wrong open tag `$tag' in $fn";
+            croak "wrong open tag `$tag' in $fn";
         }
         unless ($eng) {    # 1st p. with title  in en
-            ($eng) = $subtext =~ m!<span[^>]*>(.+)</span>!;
+            ($eng) = $subtext =~ m{<span[^>]*>(.+)</span>};
         }
         elsif ( !$rus ) {
             $rus = $subtext;
@@ -48,55 +66,54 @@ foreach my $book ( @{ $data->{books} } ) {
         }
         else {                  # bible text
             foreach ($subtext) {
-                s!^\s!!gsm;
-                s!\s$!!gsm;
-                s!<span style="font-weight:bold;"><sup>(\d+) </sup></span>!<split><verse>$1</verse>!g;
-                s!<span style="font-style:italic;">(.+?)</span>!<i>$1</i>!g;
-                s!<span style="font-weight:bold; color:rgb\(128, 0, 0\); font-size:18pt;">(\d+) </span>!<chap>$1</chap>!g;
+                s/^\s//gsm;
+                s/\s$//gsm;
+                s{$RE_VERSE}{<split><verse>$1</verse>}gsm;
+                s{$RE_ITALIC}{<i>$1</i>}gsm;
+                s{$RE_CHAP}{<chap>$1</chap>}gsm;
             }
-            my @sp = split '<split>', $subtext;
+            my @sp = split /<split>/, $subtext;
             my @tmp;
             foreach (@sp) {
-                s!^\s!!gsm;
-                s!\s$!!gsm;
-                if (m!<chap>(\d+)</chap>!) {
+                s/^\s//gsm;
+                s/\s$//gsm;
+                if (m{<chap>(\d+)</chap>}) {
                     $chap = $1;
                     $vers = 0;
-                    s!<chap>\d+</chap>!!;
+                    s{<chap>\d+</chap>}{};
                 }
-                if (m!^<verse>(\d+)</verse>!) {
+                if (m{^<verse>(\d+)</verse>}) {
                     $vers = $1;
-                    s!^<verse>(\d+)</verse>!!;
+                    s{^<verse>(\d+)</verse>}{};
                 }
                 $chaps{$chap} = $vers;
-                push @tmp, sprintf "#%d:%d#%s", $chap, $vers, $_ if $_;
+                if ($_) {
+                    push @tmp, sprintf '#%d:%d#%s', $chap, $vers, $_;
+                }
             }
             push @list, [@tmp];
         }
     }
 
     # store description
-    my $outfile = sprintf( "%02d-%s.dat", ++$id, lc $eng );
+    my $outfile = sprintf '%02d-%s.dat', ++$id, lc $eng;
     $outfile =~ s/\s//g;
-    my $additional = '';
-    $additional .= "Prolouge\tYes\n" if exists $chaps{0};
-    printf D '<book-%s>
-id		%s
-File		%s
-Eng		%s
-Rus		%s
-Testament	%s
-Chapters	%s
-%s</book-%d>
-', $id, $id, $outfile, $eng, $rus,
-        exists $deut->{Books}->{$id} ? 'DE' : $id > 51 ? 'NT' : 'OT',
+    my $additional = $EMPTY;
+    if ( exists $chaps{0} ) {
+        $additional = sprintf "% 10s    %s\n", qw/Prolouge Yes/;
+    }
+    my @elems     = qw/id File Eng Rus Testament Chapters/;
+    my $desc_mask = sprintf "<book-%%d>\n%s\n%%s</book-%%d>\n", join "\n", map { sprintf '% 10s    %%s', $_ } @elems;
+    push @description, sprintf $desc_mask, $id, $id, $outfile, $eng, $rus,
+        exists $deut->{Books}->{$id} ? 'DE' : $id > $LAST_OT_ID ? 'NT' : 'OT',
         scalar @{ $book->{chapters} } - ( exists $chaps{0} ? 1 : 0 ),
         $additional, $id;
-    open P, ">$parsed/$outfile";
-    print P join "\n#p#\n", map { join "\n", @$_ } @list;
-    print P "\n";
-    close P;
+    open my $fh, q{>}, "$PRSD_DIR/$outfile";
+    printf {$fh} "%s\n", join "\n#p#\n", map { join "\n", @{$_} } @list;
+    close $fh;
 }
-close D;
+open my $desc_fh, q{>}, "$PRSD_DIR/description.conf";
+print {$desc_fh} join $EMPTY, @description;
+close $desc_fh;
 
 1;
