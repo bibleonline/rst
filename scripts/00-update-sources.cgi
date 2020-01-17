@@ -2,25 +2,28 @@
 
 use strict;
 use warnings FATAL => 'all';
-use v5.10;
+
+our $VERSION = '1.1';
 
 use FindBin qw!$Bin!;
 use JSON;
-use Data::Dumper;
+use File::Slurp;
+use autodie qw/:io/;
+use Readonly;
 
-open F, $Bin . '/syn.json' or die $!;
-my $data = decode_json( join '', <F> );
-close F;
+Readonly my $EMPTY => q{};
+
+my $data = decode_json( read_file $Bin . '/syn.json' );
 
 foreach my $book ( @{ $data->{books} } ) {
-    ( my $fn = $book->{passage} ) =~ s! !-!g;
-    $fn = sprintf( '%s/../source/%s.html', $Bin, $fn );
-    open F, $fn or die "$fn: $!";
-    my $source = join "", grep {/\S/} <F>;    # remove empty lines
-    close F;
-    open F, ">$fn";
-    print F $source;
-    close F;
+    ( my $fn = $book->{passage} ) =~ s/ /-/gsm;
+    $fn = sprintf '%s/../source/%s.html', $Bin, $fn;
+    open my $fh, q{<}, $fn;
+    my $source = join $EMPTY, grep {/\S/xsm} <$fh>;    # remove empty lines
+    close $fh;
+    open my $wh, q{>}, $fn;
+    print {$wh} $source;
+    close $wh;
 }
 
 1;
