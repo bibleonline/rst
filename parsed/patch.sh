@@ -27,6 +27,7 @@ patch  < ../scripts/20-fix-parsed/017-psalm-wrong-1st-verse.patch
 patch  < ../scripts/20-fix-parsed/018-wrong-text-prov25-5.patch
 # 019-typograph.sh
 perl -p -i -e 's/\&ndash;/\&mdash;/g;s/-/‐/g;' *dat
+# /019
 patch  < ../scripts/20-fix-parsed/020-wront-text.patch
 patch  < ../scripts/20-fix-parsed/021-start-with-lowcase.patch
 patch  < ../scripts/20-fix-parsed/022-wrong-text-job36-24.patch
@@ -42,3 +43,6 @@ patch  < ../scripts/20-fix-parsed/031-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/032-wrong-text.patch
 perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-accentuation.conf
 perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-yo.conf
+# 034-wrong-text-act9-19.sh
+perl -p -i -e 's/# /#/' *dat
+# /034
