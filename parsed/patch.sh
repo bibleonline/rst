@@ -46,3 +46,4 @@ perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-yo.conf
 # 034-wrong-text-act9-19.sh
 perl -p -i -e 's/# /#/' *dat
 # /034
+patch  < ../scripts/20-fix-parsed/035-name-of-book-ecc.patch
