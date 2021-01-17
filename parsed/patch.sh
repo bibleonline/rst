@@ -48,3 +48,4 @@ perl -p -i -e 's/# /#/' *dat
 # /034
 patch  < ../scripts/20-fix-parsed/035-name-of-book-ecc.patch
 patch  < ../scripts/20-fix-parsed/036-wrong-text.patch
+patch  < ../scripts/20-fix-parsed/037-upper-case.patch
