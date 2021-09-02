@@ -49,3 +49,5 @@ perl -p -i -e 's/# /#/' *dat
 patch  < ../scripts/20-fix-parsed/035-name-of-book-ecc.patch
 patch  < ../scripts/20-fix-parsed/036-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/037-upper-case.patch
+# skup 038
+patch  < ../scripts/20-fix-parsed/039-wrong-text.patch
