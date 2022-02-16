@@ -51,3 +51,4 @@ patch  < ../scripts/20-fix-parsed/036-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/037-upper-case.patch
 # skup 038
 patch  < ../scripts/20-fix-parsed/039-wrong-text.patch
+patch  < ../scripts/20-fix-parsed/040-wrong-text-luk-12-5.patch
