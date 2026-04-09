@@ -1,0 +1,5 @@
+services:
+  perl:
+    build: .
+    volumes:
+      - .:/app

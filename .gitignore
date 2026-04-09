@@ -1,5 +1,13 @@
+# OS
 .DS_Store
-*.tmp
-tmp/*
+
+# Editors
 *.swp
+.idea/
+.vscode/
+
+# Temp
+*.tmp
 *.new
+*.rej
+tmp/
