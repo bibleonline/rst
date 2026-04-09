@@ -1,33 +1,34 @@
 #!/usr/bin/perl
 # description: 003-fix-i-tag.md
 
-$/=undef;
 use strict;
-use FindBin qw/$Bin/;
+use warnings;
+use v5.10;
+use autodie     qw(:io);
+use English     qw(-no_match_vars);
+use FindBin     qw($Bin);
+use File::Slurp qw(read_file write_file);
 
 my $dir = "$Bin/../../parsed";
 
-opendir D, $dir;
-my @files = sort grep {/dat/} readdir D;
-closedir D;
+my $dh;
+opendir $dh, $dir;
+my @files = sort grep {/dat/} readdir $dh;
+closedir $dh;
 
 foreach my $file (@files) {
-	my $f = join '/', $dir, $file;
-	open F, $f or die "$file: $!";
-	my $data = join '', <F>;
-	my $orig = $data;
-	close F;
+    my $path = join q{/}, $dir, $file;
+    my $data = read_file( $path, binmode => ':raw' );
+    my $orig = $data;
 
+    # fix 1. remove </i> <i>
+    $data =~ s{</i>(\s*)<i>}{$1}g;
 
-	# fix 1. remove </i> <i>	
-	$data =~ s!</i>(\s*)<i>!$1!g;
-	# fix 2.1. fix first word.
-	$data =~ s!(#<i>)\s+!$1!g;
-	$data =~ s!(\S+)(<i>)(\s+)(\S+)!$1$3$2$4!g;
-	
-	if ($orig ne $data) {
-		open F, ">$f" or die "$file: $!";
-		print F $data;
-		close F;
-	}
+    # fix 2.1. fix first word.
+    $data =~ s{([#]<i>)\s+}{$1}g;
+    $data =~ s{(\S+)(<i>)(\s+)(\S+)}{$1$3$2$4}g;
+
+    if ( $orig ne $data ) {
+        write_file( $path, { binmode => ':raw' }, $data );
+    }
 }

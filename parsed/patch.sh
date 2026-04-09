@@ -1,7 +1,7 @@
 #!/bin/bash
 # update from sources
-perl ../scripts/00-update-sources.cgi
-perl ../scripts/10-parse-sources.cgi
+perl ../scripts/00-update-sources.pl
+perl ../scripts/10-parse-sources.pl
 
 # add fixes
 patch  < ../scripts/20-fix-parsed/001-fix-jude.patch

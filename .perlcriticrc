@@ -1,0 +1,11 @@
+severity = 1
+
+[-RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireLineBoundaryMatching]
+[-Modules::RequireVersionVar]
+[-ErrorHandling::RequireCarping]
+[-ValuesAndExpressions::ProhibitVersionStrings]
+
+[InputOutput::RequireCheckedSyscalls]
+exclude_functions = say print

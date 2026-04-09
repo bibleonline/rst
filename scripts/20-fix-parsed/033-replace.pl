@@ -1,101 +1,159 @@
 #!/usr/bin/perl
+# description: 033-replace.md
 
 use strict;
-use FindBin qw/$Bin/;
-use Encode;
+use warnings;
+use v5.10;
+use utf8;
+use autodie     qw(:io);
+use English     qw(-no_match_vars);
+use FindBin     qw($Bin);
+use File::Slurp qw(read_file write_file);
+use Readonly;
 
-my $fn = join "/", $Bin, $ARGV[0];
-die "File not found $fn" if !-f $fn || !-r $fn;
-open F, "$fn" or die "$! $fn";
+Readonly my $MAX_ITERATIONS => 10;
+Readonly my $ACCENT_RE      => q{(?![&][#]769[;])};
 
-my $data = {};
-while (<F>) {
-    next if /^\s*#/;
-    if (/(\S+\.dat)\s+(\S+)\s+(.+)/) {
-        my ($file, $place, $text) = ($1, $2, $3);
-        my $placeN = 0;
-        if ($place =~ m!(.*)/(\d+)!) {
-            ( $place, $placeN ) = ($1, $2);
-        }
-        for ($text) {
-            s!\s+\#.*!!;
-            s!^\s*!!;
-            s!\s*$!!;
-            
-        }
-        
-        my ($from, $to) = split /\s+\=\>\s+/, $text;
-        $data->{$file}->{$place} ||= [];
-        my $dat = { from => $from, to => $to };
-        if ($from =~ /(.+)\[(\S+)\]/) {
-            $dat->{from} = $1;
-            $dat->{num} = $2;
-        }
-        $dat->{place} = $placeN if $placeN;
-        foreach (qw/from to/) {
-            Encode::_utf8_on( $dat->{$_} );
-        }
-
-		push @{ $data->{$file}->{$place} }, $dat;
-    }
-
+my $fn = join q{/}, $Bin, $ARGV[0];
+if ( !-f $fn || !-r $fn ) {
+    die "File not found $fn\n";
 }
-close F;
 
-foreach my $file (sort keys %$data) {
-    my $out ='';
-    my @map = keys %{ $data->{$file} };
-    my $re = sprintf("(?:%s)", join "|", @map);
-    $re = qr/$re/;
-    my $f = "$Bin/../../parsed/$file";
-    open F, $f or die "$! $file";
-    my $lastn = 0;
-	my $last = '';
-	while (<F>) {
-        if (/^#($re)#(.+)/) {
-            my ($place, $text) = ($1, $2);
-            $lastn = $last eq $place ? $lastn + 1 : 1;
-            $last = $place;
-            foreach my $repl (@{ $data->{$file}->{$place} }) {
-                next if exists $repl->{place} && $lastn != $repl->{place};
-                Encode::_utf8_on($text);
-                if (exists $repl->{num} && $repl->{num} =~ /^\d+$/) {
-                    my $i = 0;
-					if ($repl->{num} eq '1') {
-						$text =~ s/\b$repl->{from}\b(?!\&\#769;)/$repl->{to}/;
-					} else {
-						my @words = split / /, $text;
-						my $i = 0;
-						foreach (@words) {
-							if (m/\b$repl->{from}\b(?!\&\#769;)/gc) {
-								$i++;
-							}
-							if ($i == $repl->{num}) {
-								s/\b$repl->{from}\b(?!\&\#769;)/$repl->{to}/;
-							}
+my $data = _parse_rules($fn);
 
-						}
-						$text = join " ", @words;
-					}
-                } else {
-                    my $i = 0;
-					my $max = $repl->{num} =~ /^\*(\d+)$/ ? $1 : 1;
+foreach my $file ( sort keys %{$data} ) {
+    _process_file( $file, $data->{$file} );
+}
 
-					while ($text =~ m/\b$repl->{from}\b(?!\&\#769;)/gc && $i<10) {
-						$i++;
-						$text =~ s/\b$repl->{from}\b(?!\&\#769;)/$repl->{to}/;
-					}
-					die "\nMUST BE ONLY $max but $i " . $repl->{from} . " for $file $place/$lastn\n$text\n\n" if $i != $max;
-                }
-                Encode::_utf8_off($text);
-            }
-            $out .= sprintf("#%s#%s\n", $place, $text);
-        } else {
-            $out .= $_;
+sub _parse_rules {
+    my ($path) = @_;
+    my %rules;
+
+    foreach my $line ( read_file( $path, binmode => ':encoding(UTF-8)' ) ) {
+        next if $line =~ /^\s*[#]/;
+        if ( $line =~ /(\S+[.]dat)\s+(\S+)\s+(.+)/ ) {
+            _add_rule( \%rules, $1, $2, $3 );
         }
     }
-    close F;
-	open F, ">$f" or die "$! $f";
-	print F $out;
-	close F;
+
+    return \%rules;
+}
+
+sub _add_rule {
+    my ( $rules, $file, $place, $text ) = @_;
+
+    my $place_n = 0;
+    if ( $place =~ m{(.*)/(\d+)} ) {
+        ( $place, $place_n ) = ( $1, $2 );
+    }
+    $text =~ s/\s+[#].*//;
+    $text =~ s/^\s+//;
+    $text =~ s/\s+$//;
+
+    my ( $from, $to ) = split /\s+=>\s+/, $text;
+    my $dat = { from => $from, to => $to };
+    if ( $from =~ /(.+)\[(\S+)\]/ ) {
+        $dat->{from} = $1;
+        $dat->{num}  = $2;
+    }
+    if ($place_n) {
+        $dat->{place} = $place_n;
+    }
+    $rules->{$file}{$place} ||= [];
+    push @{ $rules->{$file}{$place} }, $dat;
+    return;
+}
+
+sub _process_file {
+    my ( $file, $places ) = @_;
+
+    my @keys = keys %{$places};
+    my $re   = sprintf q{(?:%s)}, join q{|}, @keys;
+    $re = qr/$re/;
+    my $path = "$Bin/../../parsed/$file";
+
+    my $out      = q{};
+    my $last_n   = 0;
+    my $last_key = q{};
+
+    foreach my $line ( read_file( $path, binmode => ':encoding(UTF-8)' ) ) {
+        chomp $line;
+        if ( $line =~ /^[#]($re)[#](.+)/ ) {
+            my ( $place, $text ) = ( $1, $2 );
+            $last_n   = $last_key eq $place ? $last_n + 1 : 1;
+            $last_key = $place;
+            my $ctx = "$file $place/$last_n";
+            foreach my $repl ( @{ $places->{$place} } ) {
+                if ( exists $repl->{place} && $last_n != $repl->{place} ) {
+                    next;
+                }
+                $text = _apply_replacement( $text, $repl, $ctx );
+            }
+            $out .= sprintf "#%s#%s\n", $place, $text;
+        }
+        else {
+            $out .= "$line\n";
+        }
+    }
+
+    write_file( $path, { binmode => ':encoding(UTF-8)' }, $out );
+    return;
+}
+
+sub _apply_replacement {
+    my ( $text, $repl, $ctx ) = @_;
+
+    my $from = $repl->{from};
+    my $to   = $repl->{to};
+
+    if ( exists $repl->{num} && $repl->{num} =~ /^\d+$/ ) {
+        $text = _replace_nth( $text, $from, $to, $repl->{num} );
+    }
+    else {
+        my $max = 1;
+        if ( exists $repl->{num} && $repl->{num} =~ /^[*](\d+)$/ ) {
+            $max = $1;
+        }
+        $text = _replace_all( $text, $from, $to, $max, $ctx );
+    }
+
+    return $text;
+}
+
+sub _replace_nth {
+    my ( $text, $from, $to, $num ) = @_;
+
+    if ( $num eq '1' ) {
+        $text =~ s/\b$from\b$ACCENT_RE/$to/;
+    }
+    else {
+        my @words = split / /, $text;
+        my $i     = 0;
+        foreach my $word (@words) {
+            if ( $word =~ m/\b$from\b$ACCENT_RE/ ) {
+                $i++;
+            }
+            if ( $i == $num ) {
+                $word =~ s/\b$from\b$ACCENT_RE/$to/;
+                last;
+            }
+        }
+        $text = join q{ }, @words;
+    }
+
+    return $text;
+}
+
+sub _replace_all {
+    my ( $text, $from, $to, $max, $ctx ) = @_;
+
+    my $i = 0;
+    while ( $text =~ s/\b$from\b$ACCENT_RE/$to/ && $i < $MAX_ITERATIONS ) {
+        $i++;
+    }
+    if ( $i != $max ) {
+        die "\nMUST BE ONLY $max but $i $from for $ctx\n$text\n\n";
+    }
+
+    return $text;
 }

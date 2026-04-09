@@ -1,41 +1,38 @@
 #!/usr/bin/perl
-# generate char list of bible
+# generate word list of bible
 
 use strict;
+use warnings;
 use v5.10;
-use FindBin '$Bin';
-use Encode;
-use Data::Dumper;
+use utf8;
+use autodie     qw(:io);
+use FindBin     qw($Bin);
+use File::Slurp qw(read_file);
+
+binmode STDOUT, ':encoding(UTF-8)';
+
 my $dir = "$Bin/../../parsed";
 
-opendir D, $dir;
+my $dh;
+opendir $dh, $dir;
+my @files = grep {/dat$/} readdir $dh;
+closedir $dh;
+
 my %list;
-my @files = grep {/dat$/} readdir D;
-closedir D;
 foreach my $file (@files) {
-	my $f = join "/", $dir, $file;
-	open F, $f or die "$file: $!";
-	while (<F>) {
-		my $orig  = $_;
-		Encode::_utf8_on($_);
-		my $cv;
-		s/[\r\n]//g;
-		if (/^#([^#]+)#(.*\S)/) {
-			$cv = $1;
-			$_=$2;
-			Encode::_utf8_off($_);
-			s/[^а-яА-Я]/ /g;
-			my @words = split/ /;
-			$list{$_}++ for @words;
-			Encode::_utf8_off($_);
-		}
-	}
-	close F;
+    my $path = join q{/}, $dir, $file;
+    foreach my $line ( read_file( $path, binmode => ':encoding(UTF-8)' ) ) {
+        chomp $line;
+        if ( $line =~ /^#[^#]+#(.*\S)/ ) {
+            my $text = $1;
+            $text =~ s/[^а-яА-ЯёЁ]/ /g;
+            foreach my $word ( grep {length} split / +/, $text ) {
+                $list{$word}++;
+            }
+        }
+    }
 }
 
-# foreach my $char (sort keys %list) {
- foreach my $char (sort { $list{$b} <=> $list{$a} } keys %list) {
-	my $c = $char;
-	Encode::_utf8_off($char);
-	say "$char\t$list{$c}";
+foreach my $word ( reverse sort { $list{$a} <=> $list{$b} } keys %list ) {
+    say "$word\t$list{$word}";
 }

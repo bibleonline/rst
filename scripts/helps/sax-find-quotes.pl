@@ -1,67 +1,81 @@
 #!/usr/bin/perl
+# Check matching of paired characters (quotes, brackets) in parsed Bible files
 
 use strict;
-use Encode;
+use warnings;
 use v5.10;
-use FindBin qw/$Bin/;
-my $c;
-my $dir = "$Bin/../../parsed";
+use utf8;
+use autodie qw(:io);
+use English qw(-no_match_vars);
+use Readonly;
+use FindBin     qw($Bin);
+use File::Slurp qw(read_file);
 
+binmode STDOUT, ':encoding(UTF-8)';
+
+Readonly my $MAX_MODE => 3;
 
 my $modes = {
-	1 => { o => '«', c => '»', qr => qr/[«»]/ },
-	2 => { o => '(', c => ')', qr => qr/[\(\)]/ },
-	3 => { o => '[', c => ']', qr => qr/[\[\]]/ },	
+    1         => { o => q{«}, c => q{»}, qr => qr/[«»]/ },
+    2         => { o => q{(}, c => q{)}, qr => qr/[()]/ },
+    $MAX_MODE => { o => q{[}, c => q{]}, qr => qr/[[\]]/ },
 };
 
 my $mode = $ARGV[0] || 1;
-if ($mode !~ /^[1-3]$/) {
-	say 'run as:';
-	say "perl $0 [1-3]";
-	exit;
+if ( $mode !~ /^[1-$MAX_MODE]$/ ) {
+    say 'run as:';
+    say "perl $PROGRAM_NAME [1-$MAX_MODE]";
+    exit;
 }
 
-my $o = $modes->{$mode}->{o};
-my $c = $modes->{$mode}->{c};
-my $qr = $modes->{$mode}->{qr};
+my $opener = $modes->{$mode}->{o};
+my $closer = $modes->{$mode}->{c};
+my $qr     = $modes->{$mode}->{qr};
 
-#say $qr;exit;
-opendir D, $dir or die "$dir $!";
-my @files = grep {/dat$/} readdir D;
-closedir D;
+my $dir = "$Bin/../../parsed";
+
+my $dh;
+opendir $dh, $dir;
+my @files = grep {/dat$/} readdir $dh;
+closedir $dh;
 
 foreach my $file (@files) {
-	my ($l, $r, $vers) = (0,0, '');
+    my $state = { cnt_open => 0, cnt_close => 0, vers => q{}, chap => q{} };
+    my $path  = join q{/}, $dir, $file;
 
-	my $chap = '';
-	my $f = join "/", $dir, $file;
-	open F, $f or die "$file: $!";
-	while ( <F>) {
-		my $st = $_;
-		Encode::_utf8_on($_);
+    foreach my $line ( read_file( $path, binmode => ':encoding(UTF-8)' ) ) {
+        while ( $line =~ /($qr|[#](\d+:\d+)[#])/gc ) {
+            _process_match( $1, $file, $state );
+        }
+    }
+    if ( $state->{cnt_open} != $state->{cnt_close} ) {
+        print "Book $file ended, but not equal: $state->{cnt_open} <=> $state->{cnt_close}\n";
+    }
+}
 
-		while (m/($qr|#(\d+:\d+)#)/gc) {
-			my $val = $1;
-			Encode::_utf8_off($val);
-			if ($val =~ /\d/) {
-				$vers = $val;
-				my ($ch) = $vers =~ /(\d+)/;
-				if ($ch ne $chap) { 
-						print "WARN Start new chap [$file: $ch], but not equal: $l <=> $r\n" if $l != $r;
-						$chap = $ch; 
-#						$l = $r = 0 ;
-				 }
-			} else {
-				if ($val eq $o) { $l++ } else { $r++ }
-				if ($l != $r && $l < $r ) {
-					printf "Wrong %s since %s [%d:%d]\n", $file, $vers, $l, $r;
-					if ($r > $l) { print "Rights more than left\n"; $r = $l;} else {
-						printf "Left more than right on %d\n", $l-$r; $r=$l;
-					}
-				} 
-			}
-		}
-	}
-	print "Book $file ended, but not equal: $l <=> $r\n" if $l != $r;
-	close F;
+sub _process_match {
+    my ( $val, $file, $state ) = @_;
+
+    if ( $val =~ /\d/ ) {
+        $state->{vers} = $val;
+        my ($ch) = $state->{vers} =~ /(\d+)/;
+        if ( $ch eq $state->{chap} ) {
+            return;
+        }
+        if ( $state->{cnt_open} != $state->{cnt_close} ) {
+            print "WARN Start new chap [$file: $ch], but not equal: $state->{cnt_open} <=> $state->{cnt_close}\n";
+        }
+        $state->{chap} = $ch;
+        return;
+    }
+
+    if   ( $val eq $opener ) { $state->{cnt_open}++ }
+    else                     { $state->{cnt_close}++ }
+
+    if ( $state->{cnt_open} < $state->{cnt_close} ) {
+        printf "Wrong %s since %s [%d:%d]\n", $file, $state->{vers}, $state->{cnt_open}, $state->{cnt_close};
+        print "Rights more than left\n";
+        $state->{cnt_close} = $state->{cnt_open};
+    }
+    return;
 }

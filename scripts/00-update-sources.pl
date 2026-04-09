@@ -3,17 +3,15 @@
 use strict;
 use warnings FATAL => 'all';
 
-our $VERSION = '1.1';
-
-use FindBin qw!$Bin!;
+use FindBin qw($Bin);
 use JSON;
 use File::Slurp;
-use autodie qw/:io/;
+use autodie qw(:io);
 use Readonly;
 
 Readonly my $EMPTY => q{};
 
-my $data = decode_json( read_file $Bin . '/syn.json' );
+my $data = decode_json( read_file $Bin . '/../source/syn.json' );
 
 foreach my $book ( @{ $data->{books} } ) {
     ( my $fn = $book->{passage} ) =~ s/ /-/gsm;

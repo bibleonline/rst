@@ -3,20 +3,18 @@
 use strict;
 use warnings FATAL => 'all';
 
-our $VERSION = '1.1';
-
 use Carp;
-use FindBin qw/$Bin/;
+use FindBin qw($Bin);
 use JSON;
 use Config::General;
 use Readonly;
-use autodie qw/:io/;
+use autodie qw(:io);
 use File::Slurp;
 
 Readonly my $PRSD_DIR   => "$Bin/../parsed/";
 Readonly my $EMPTY      => q{};
 Readonly my $LAST_OT_ID => 51;
-Readonly my $SPAN       => {
+Readonly my $SPAN => {
     bold   => quotemeta '<span style="font-weight:bold;">',
     italic => quotemeta '<span style="font-style:italic;">',
     color  => quotemeta '<span style="font-weight:bold; color:rgb(128, 0, 0); font-size:18pt;">'
@@ -33,7 +31,7 @@ Readonly my $RE_CHAP => qr{
         $SPAN->{color}
             (\d+)\s
         </span>}smx;
-my $data = decode_json( read_file "$Bin/syn.json" );
+my $data = decode_json( read_file "$Bin/../source/syn.json" );
 
 my $deut = { Config::General->new("$Bin/deuterocanonical.conf")->getall };
 
@@ -106,7 +104,7 @@ foreach my $book ( @{ $data->{books} } ) {
     $outfile =~ s/\s//gxsm;
     my $additional = $EMPTY;
     if ( exists $chaps{0} ) {
-        $additional = sprintf "% 10s    %s\n", qw/Prolouge Yes/;
+        $additional = sprintf "% 10s    %s\n", qw/Prologue Yes/;
     }
     my @elems     = qw/id File Eng Rus Testament Chapters/;
     my $desc_mask = sprintf "<book-%%d>\n%s\n%%s</book-%%d>\n", join "\n", map { sprintf '% 10s    %%s', $_ } @elems;

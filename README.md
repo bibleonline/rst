@@ -30,7 +30,7 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
  * NN-bookname.dat -- подготовленный файл по каждой из книг библии
  * [description.conf](https://github.com/sopov/rst/blob/master/parsed/description.conf) -- Описание, построенное на данных из оригинальных файлов
 * scripts -- Скрипты для обновления файлов
- * [syn.json](https://github.com/sopov/rst/blob/master/scripts/syn.json) -- Список книг и глав
- * [00-update-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/00-update-sources.cgi) -- Инициализационный скрипт для исправления оригинальных файлов
- * [10-parse-sources.cgi](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.cgi) -- конвертор оригинальных файлов в удобный формат для дальнейшей работы с файлами
+ * [syn.json](https://github.com/sopov/rst/blob/master/source/syn.json) -- Список книг и глав
+ * [00-update-sources.pl](https://github.com/sopov/rst/blob/master/scripts/00-update-sources.pl) -- Инициализационный скрипт для исправления оригинальных файлов
+ * [10-parse-sources.pl](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.pl) -- конвертор оригинальных файлов в удобный формат для дальнейшей работы с файлами
  * [20-fix-parsed](https://github.com/sopov/rst/tree/master/scripts/20-fix-parsed) -- обновление распарсенных файлов для устранения ошибок в исходных файлах
