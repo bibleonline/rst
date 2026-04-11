@@ -14,6 +14,7 @@ RUN cpanm --notest \
     Readonly \
     Perl::Tidy \
     Perl::Critic \
+    YAML::PP \
     && rm -rf ~/.cpanm
 
 WORKDIR /app

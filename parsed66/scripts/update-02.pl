@@ -8,52 +8,84 @@ use v5.10;
 use English qw(-no_match_vars);
 use FindBin qw/$Bin/;
 use open ':std', ':encoding(UTF-8)';
+use YAML::PP;
 local $OUTPUT_AUTOFLUSH = 1;
 
-my $punct     = qr/\s*[,\.:;!?]?\s*/;                                                                                  ## no critic (ProhibitEscapedMetacharacters)
-my $REMOVE_RE = qr/^REMOVE-(BEGIN|LEFT|LAST|RIGHT|END)-(ONEWORD|WORD|PUNCTUATION)(?:[:](\d+))?$/;                      ## no critic (ProhibitComplexRegexes)
-my $ADD_RE    = qr/^ADD-(BEGIN|LEFT|LAST|RIGHT|END)-(TEXT|COLON|EXCLAMATION|SEMICOLON|DASH|DOT|COMMA)(?:[:](\d+))?$/;  ## no critic (ProhibitComplexRegexes)
-my %tdata     = (
-    COLON       => q{:},
-    EXCLAMATION => q{!},
-    SEMICOLON   => q{;},
-    DASH        => q{&mdash;},
-    DOT         => q{.},
-    COMMA       => q{,},
-);
+my $punct = qr/\s*[,.:;!?]?\s*/;
 
-my %SIMPLE_ACTIONS = (
-    SKIP => sub {
-        my ( $act, $i, $tt ) = @_;
+my %SIMPLE_HANDLERS = (
+    delete => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[$i] = q{};
+    },
+    italic => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[$i] =~ s/[\[\]]//g;
+        $tt->[$i] = sprintf '<i>%s</i>', $tt->[$i];
+    },
+    unwrap => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[$i] =~ s/[\[\]]//g;
+    },
+    round => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[$i] =~ s/[\[\]]//g;
+        $tt->[$i] = sprintf '(%s)', $tt->[$i];
+    },
+    keep => sub {
+        my ( $i, $tt ) = @_;
         $tt->[$i] =~ s/\[/{/;
         $tt->[$i] =~ s/\]/}/;
     },
-    GONEXT => sub { },
-    DEL    => sub {
-        my ( $act, $i, $tt ) = @_;
-        $tt->[$i] = q{};
+    capitalize => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[ $i + 1 ] =~ s/(\s*)(\S)/$1\u$2/;
     },
-    REPLACE => sub {
-        my ( $act, $i, $tt ) = @_;
-        $tt->[0] =~ s{$act->{data}->[0]}{$act->{data}->[1]};
+    lowercase => sub {
+        my ( $i, $tt ) = @_;
+        $tt->[ $i + 1 ] =~ s/(\s*)(\S)/$1\l$2/;
     },
-    'REP-STR' => sub {
-        my ( $act, $i, $tt, $location ) = @_;
-        if ( scalar @{ $act->{data} } != 2 ) {
-            die "NOT TWO DAT $location";
-        }
-        foreach ( @{$tt} ) {
-            if ( index( $_, $act->{data}->[0] ) >= 0 ) {
-                s/ $act->{data}->[0] / $act->{data}->[1] /x;
-                last;
-            }
-        }
-    },
-    'MOVE-RIGHTWORD-LEFT' => sub {
-        my ( $act, $i, $tt ) = @_;
+    'shift-left' => sub {
+        my ( $i, $tt ) = @_;
         $tt->[ $i + 1 ] =~ /(\S+)/;
         $tt->[ $i - 1 ] .= " $1";
         $tt->[ $i + 1 ] =~ s/^\s*\S+//;
+    },
+);
+
+my %COMPLEX_HANDLERS = (
+    strip      => \&apply_strip,
+    insert     => \&apply_insert,
+    replace    => \&apply_replace,
+    regex      => \&apply_regex,
+    substitute => \&apply_substitute,
+    'pull-in'  => \&apply_pull_in,
+);
+
+my %STRIP_RE = (
+    left  => { punct => qr/${punct}$/,    word => qr/\S+\s*$/ },
+    right => { punct => qr/^${punct}/,    word => qr/^\s*\S+/ },
+    begin => { punct => qr/^${punct}/,    word => qr/^\s*\S+/ },
+    inner => { punct => qr/${punct}\s*]/, word => qr/\s*\S+\s*]/ },
+);
+
+my %STRIP_REPL = ( inner => q{]} );
+
+my %INSERT_HANDLERS = (
+    left  => sub { my ( $tt, $i, $text ) = @_; $tt->[ $i - 1 ] .= " $text" },
+    right => sub { my ( $tt, $i, $text ) = @_; $tt->[ $i + 1 ] = join q{ }, $text, $tt->[ $i + 1 ] },
+    end   => sub { my ( $tt, $i, $text ) = @_; $tt->[-1] .= " $text" },
+    inner => sub { my ( $tt, $i, $text ) = @_; $tt->[$i] =~ s/]/ $text]/ },
+    begin => sub {
+        my ( $tt, $i, $text, $at ) = @_;
+        if ($at) {
+            my @words = split / /, $tt->[0];
+            $words[ $at - 1 ] =~ s/(\S+\b)/$1 $text/;
+            $tt->[0] = join q{ }, @words;
+        }
+        else {
+            $tt->[0] =~ s/^/$text /;
+        }
     },
 );
 
@@ -62,9 +94,11 @@ run();
 # --- Entry point ---
 
 sub run {
-    my $data = load_rules("$Bin/../conf/02-square77to66.conf");
+    my $data = load_rules("$Bin/../conf/02-square.yaml");
 
-    open my $log_fh, '>', "$Bin/../conf/02-square77to66.txt";
+    open my $log_fh, '>', "$Bin/../conf/02-square.txt";
+
+    validate_rule_files($data);
 
     for my $file ( sort keys %{$data} ) {
         process_file( $file, $data->{$file}, $log_fh );
@@ -75,80 +109,98 @@ sub run {
     return;
 }
 
+sub validate_rule_files {
+    my ($data) = @_;
+
+    my @missing;
+    for my $file ( sort keys %{$data} ) {
+        my $path = "$Bin/../$file";
+        if ( !-f $path ) {
+            push @missing, $file;
+        }
+    }
+
+    if (@missing) {
+        die "Unknown files in rules:\n" . join( "\n", map {"  $_"} @missing ) . "\n";
+    }
+
+    return;
+}
+
 # --- Config loading ---
 
 sub load_rules {
     my ($path) = @_;
 
+    my $ypp  = YAML::PP->new;
+    my $yaml = $ypp->load_file($path);
     my $data = {};
-    my $prev = {};
 
-    my @lines = read_lines($path);
-    for (@lines) {
-        next if !/\S/;
-        if (/^(\S+[.]dat)\t(\S+)\t+(\S+)(.*)/) {
-            my ( $file, $place, $action, $subdata ) = ( $1, $2, $3, $4 );
+    for my $file ( keys %{$yaml} ) {
+        for my $entry ( @{ $yaml->{$file} } ) {
+            my $place   = $entry->{place};
+            my $par     = $entry->{occurrence} // 1;
+            my $bracket = $entry->{bracket}    // 0;
 
-            my %tmp = ( action => [ split m{/}, $action ], str => $_ );
+            my $do      = $entry->{do};
+            my @actions = ref $do eq 'ARRAY' ? @{$do} : ($do);
 
-            if ( $subdata =~ /#\s*(\S+.*\S)/ ) {
-                $tmp{warn} = $1;
-            }
-            foreach ($subdata) {
-                s/\s*\#.*//;
-                s/^\s+//;
-                s/\s+$//;
-            }
-            if ($subdata) {
-                $tmp{data} = [ split /\t/, $subdata ];
-                foreach ( @{ $tmp{data} } ) {
-                    s/^"//g;
-                    s/"$//g;
-
+            if ($bracket) {
+                my $cur = $data->{$file}->{$place}->{$par}->{totsq} // 0;
+                if ( $bracket > $cur ) {
+                    $data->{$file}->{$place}->{$par}->{totsq} = $bracket;
                 }
             }
 
-            my ( $par, $num );
-            ( $place, $par, $num ) = parse_place($place);
-            if ($num) {
-                $data->{$file}->{$place}->{$par}->{totsq} = $num;
-            }
             $data->{$file}->{$place}->{$par}->{act} ||= [];
-            push @{ $data->{$file}->{$place}->{$par}->{act} }, { num => $num, par => $par, %tmp };
-            $prev = { file => $file, place => $place, par => $par };
-        }
-        elsif (/^\#(.+)/) {
-            my $text = $1;
-            if ( $text !~ /WARN/ ) {
-                $data->{ $prev->{file} }->{ $prev->{place} }->{ $prev->{par} }->{text} = $text;
-            }
-
-        }
-        else {
-            warn "UNKNOWN $_\n";
+            push @{ $data->{$file}->{$place}->{$par}->{act} },
+                {
+                num     => $bracket,
+                actions => \@actions,
+                str     => fmt_log( $file, $place, $par, $bracket, \@actions ),
+                };
         }
     }
 
     return $data;
 }
 
-# Разбирает place вида "1:2/3.4", "1:2.4", "1:2/3" или "1:2"
-# Возвращает (place, параграф, номер скобки)
-sub parse_place {
-    my ($place) = @_;
+sub fmt_log {
+    my ( $file, $place, $par, $bracket, $actions ) = @_;
 
-    my ( $par, $num ) = ( 1, 0 );
-    if ( $place =~ m{^(\S+)/(\d+)[.](\d+)$} ) {    # place/par.num
-        ( $place, $par, $num ) = ( $1, $2, $3 );
+    my $loc = $place;
+    if ( $par > 1 ) {
+        $loc .= "/$par";
     }
-    elsif ( $place =~ m{^(\S+)[.](\d+)$} ) {       # place.num
-        ( $place, $num ) = ( $1, $2 );
-    }
-    elsif ( $place =~ m{^(\S+)/(\d+)$} ) {         # place/par
-        ( $place, $par ) = ( $1, $2 );
+    if ($bracket) {
+        $loc .= ".$bracket";
     }
 
-    return ( $place, $par, $num );
+    my @parts;
+    for my $a ( @{$actions} ) {
+        if ( !ref $a ) {
+            push @parts, $a;
+        }
+        else {
+            my ($key) = keys %{$a};
+            my $val   = $a->{$key};
+            push @parts, $key . q{: } . fmt_val($val);
+        }
+    }
+
+    return "$file\t$loc\t" . join q{ / }, @parts;
+}
+
+sub fmt_val {
+    my ($v) = @_;
+    if ( ref $v eq 'HASH' ) {
+        my @kv;
+        for my $k ( sort keys %{$v} ) {
+            push @kv, "$k=" . fmt_val( $v->{$k} );
+        }
+        return '{' . join( ', ', @kv ) . '}';
+    }
+    return $v;
 }
 
 # --- File processing ---
@@ -190,12 +242,8 @@ sub process_file {
 sub apply_file_rule {
     my ( $file, $place, $line, $dat, $log_fh ) = @_;
 
-    my ($tx) = $line =~ m{#\S+#(.+)};
-
-    if ( $tx ne $dat->{text} ) {
-        warn "NOT SAME TEXT at $place\nORG $tx\nBUT  $dat->{text}\n$line";
-        return $line;
-    }
+    my ($tx)     = $line =~ m{#\S+#(.+)};
+    my $old_tx = $tx;
 
     if ( $dat->{totsq} ) {
         my $sq = () = $tx =~ /(\[)/g;
@@ -206,7 +254,7 @@ sub apply_file_rule {
     }
 
     for my $act ( @{ $dat->{act} } ) {
-        for my $action ( @{ $act->{action} } ) {
+        for my $action_def ( @{ $act->{actions} } ) {
             my @tt = split /(\[.*?\])/, $tx;
             if ( $tt[0] =~ /\[/ ) {
                 unshift @tt, q{};
@@ -215,188 +263,184 @@ sub apply_file_rule {
                 push @tt, q{};
             }
 
-            for ( my $i = 1; !$act->{num} && $i < @tt || $i == 1; $i += 2 ) {    ## no critic (ProhibitCStyleForLoops)
-                apply_action( $action, $act, $i, \@tt, "$file $place" );
+            apply_action( $action_def, 1, \@tt, "$file $place" );
+
+            if ( !$act->{num} ) {
+                my $i = 3;
+                while ( $i < @tt ) {
+                    apply_action( $action_def, $i, \@tt, "$file $place" );
+                    $i += 2;
+                }
             }
             $tx = join q{ }, @tt;
         }
 
         printf {$log_fh} "%s\n", $act->{str};
-
     }
 
     $tx = fixstr($tx);
-    printf {$log_fh} "#OLD: %s\n#NEW: %s\n\n", $dat->{text}, $tx;
+    printf {$log_fh} "#OLD: %s\n#NEW: %s\n\n", $old_tx, $tx;
 
     return sprintf '#%s#%s', $place, $tx;
 }
 
 # --- Action dispatch ---
 
-sub apply_action {    ## no critic (ProhibitExcessComplexity, ProhibitCascadingIfElse)
-    my ( $action, $act, $i, $tt, $location ) = @_;
+sub apply_action {
+    my ( $action_def, $i, $tt, $location ) = @_;
 
-    if ( my $handler = $SIMPLE_ACTIONS{$action} ) {
-        $handler->( $act, $i, $tt, $location );
-        return;
-    }
-
-    if ( $action =~ /^REP(-IT|-NOIT|-ROUND)$/ ) {    ## no critic (ProhibitCascadingIfElse)
-                                                     # убрать скобки, обернуть форматом
-        my $variant = $1;
-        my $fmt     = '%s';
-        if ( $variant eq '-IT' ) {
-            $fmt = '<i>%s</i>';
-        }
-        elsif ( $variant eq '-ROUND' ) {
-            $fmt = '(%s)';
-        }
-        $tt->[$i] =~ s/[\[\]]//g;
-        $tt->[$i] = sprintf $fmt, $tt->[$i];
-    }
-    elsif ( $action =~ $REMOVE_RE ) {
-
-        # удалить слово/пунктуацию
-        apply_remove_action( $1, $2, $3 || 1, $i, $tt );
-    }
-    elsif ( $action =~ /^REP([+]IT)?$/ ) {
-
-        # заменить на текст из data
-        my $it = $1 && $1 eq '+IT' ? 1 : 0;
-        if ( scalar @{ $act->{data} } != 1 ) {
-            die "NOT ONE DAT $location";
-        }
-        $tt->[$i] = sprintf $it ? '<i>%s</i>' : '%s', $act->{data}->[0];
-    }
-    elsif ( $action =~ $ADD_RE ) {
-
-        # вставить текст/пунктуацию
-        apply_add_action( $1, $2, $3 || 0, $act, $i, $tt, $location );
-    }
-    elsif ( $action =~ /^NEXT-(UP|DOWN)$/ ) {
-
-        # регистр следующего слова
-        if ( $1 eq 'UP' ) {
-            $tt->[ $i + 1 ] =~ s/(\s*)(\S)/$1\u$2/;
-        }
-        else {
-            $tt->[ $i + 1 ] =~ s/(\s*)(\S)/$1\l$2/;
-        }
-    }
-    elsif ( $action =~ /MOVE-LEFTWORD-START:(\d+)/ ) {
-
-        # перенести слова внутрь скобки
-        my $count = $1;
-        for ( 1 .. $count ) {
-            my ($word) = $tt->[ $i - 1 ] =~ /(\S+)\s*$/;
-            $tt->[$i] =~ s/^\[/[$word /;
-            $tt->[ $i - 1 ] =~ s/(\S+)\s*$//;
-        }
+    if ( !ref $action_def ) {
+        apply_simple( $action_def, $i, $tt, $location );
     }
     else {
-        warn 'NOACTION[' . ( $act->{num} ? 'MULTY' : 'ONE' ) . ":$i]: [$action]";
+        my ($type) = keys %{$action_def};
+        my $params = $action_def->{$type};
+        apply_complex( $type, $params, $i, $tt, $location );
     }
 
     return;
 }
 
-sub apply_remove_action {
-    my ( $where, $what, $count, $i, $tt ) = @_;
+sub apply_simple {
+    my ( $action, $i, $tt, $location ) = @_;
 
-    # одно слово с конца строки
-    if ( $what eq 'ONEWORD' ) {
-        if ( $where eq 'END' ) {
+    my $handler = $SIMPLE_HANDLERS{$action} // die "Unknown simple action: $action at $location\n";
+    $handler->( $i, $tt );
 
+    return;
+}
+
+sub apply_complex {
+    my ( $type, $params, $i, $tt, $location ) = @_;
+
+    my $handler = $COMPLEX_HANDLERS{$type} // die "Unknown complex action: $type at $location\n";
+    $handler->( $params, $i, $tt, $location );
+
+    return;
+}
+
+# --- Strip (remove words/punctuation) ---
+
+sub apply_strip {
+    my ( $params, $i, $tt ) = @_;
+
+    my ( $side, $what ) = extract_side($params);
+    my $count = $params->{count} // 1;
+    my $at    = $params->{at};
+
+    # word-at: remove word at specific position (ONEWORD)
+    if ($at) {
+        if ( $side eq 'end' ) {
             my @words = reverse split / /, $tt->[-1];
-            splice @words, $count - 1, 1;
+            splice @words, $at - 1, 1;
             $tt->[-1] = join q{ }, reverse @words;
         }
         return;
     }
 
+    my %idx  = ( left => $i - 1, right => $i + 1, begin => 0, inner => $i );
+    my $re   = $STRIP_RE{$side}{$what};
+    my $repl = $STRIP_REPL{$side} // q{};
+
     for ( 1 .. $count ) {
-        if ( $where eq 'LEFT' ) {
+        $tt->[ $idx{$side} ] =~ s/$re/$repl/;
+    }
 
-            # слева от скобки
-            if ( $what eq 'PUNCTUATION' ) {
-                $tt->[ $i - 1 ] =~ s/${punct}$//;
-            }
-            else {
-                $tt->[ $i - 1 ] =~ s/\S+\s*$//;
-            }
-        }
-        elsif ( $where eq 'RIGHT' ) {
+    return;
+}
 
-            # справа от скобки
-            if ( $what eq 'PUNCTUATION' ) {
-                $tt->[ $i + 1 ] =~ s/^${punct}//;
-            }
-            else {
-                $tt->[ $i + 1 ] =~ s/^\s*\S+//;
-            }
-        }
-        elsif ( $where eq 'BEGIN' ) {
+# --- Insert (add text/punctuation) ---
 
-            # с начала строки
-            if ( $what eq 'PUNCTUATION' ) {
-                $tt->[0] =~ s/^${punct}//;
-            }
-            else {
-                $tt->[0] =~ s/^\s*\S+//;
-            }
-        }
-        else {
-            # внутри скобки (LAST)
-            if ( $what eq 'PUNCTUATION' ) {
-                $tt->[$i] =~ s/${punct}\s*\]/]/;
-            }
-            else {
-                $tt->[$i] =~ s/\s*\S+\s*\]/]/;
-            }
+sub apply_insert {
+    my ( $params, $i, $tt ) = @_;
+
+    my ( $side, $text ) = extract_side($params);
+    my $at = $params->{at};
+
+    # Convert unicode em-dash to HTML entity for .dat format
+    $text =~ s/\x{2014}/&mdash;/g;
+
+    $INSERT_HANDLERS{$side}->( $tt, $i, $text, $at );
+
+    return;
+}
+
+# --- Replace (bracket content) ---
+
+sub apply_replace {
+    my ( $params, $i, $tt ) = @_;
+
+    my ( $text, $italic );
+    if ( ref $params eq 'HASH' ) {
+        $text   = $params->{text};
+        $italic = $params->{italic};
+    }
+    else {
+        $text   = $params;
+        $italic = 0;
+    }
+
+    $tt->[$i] = $italic ? "<i>$text</i>" : $text;
+
+    return;
+}
+
+# --- Regex (substitution in verse text) ---
+
+sub apply_regex {
+    my ( $params, $i, $tt ) = @_;
+
+    my $from = $params->{from};
+    my $to   = $params->{to};
+    $tt->[0] =~ s{$from}{$to};
+
+    return;
+}
+
+# --- Substitute (literal string replacement) ---
+
+sub apply_substitute {
+    my ( $params, $i, $tt, $location ) = @_;
+
+    my $from = $params->{from};
+    my $to   = $params->{to};
+
+    foreach ( @{$tt} ) {
+        if ( index( $_, $from ) >= 0 ) {
+            s/ $from / $to /x;
+            last;
         }
     }
 
     return;
 }
 
-sub apply_add_action {    ## no critic (ProhibitManyArgs)
-    my ( $where, $what, $count, $act, $i, $tt, $location ) = @_;
+# --- Pull-in (move words into bracket) ---
 
-    my $text = q{};
-    if ( $what eq 'TEXT' ) {
-        if ( scalar @{ $act->{data} } != 1 ) {
-            die "NOT ONE DAT $location";
-        }
-        $text = $act->{data}->[0];
-    }
-    else {
-        $text = $tdata{$what};
-    }
+sub apply_pull_in {
+    my ( $count, $i, $tt ) = @_;
 
-    if ( $where eq 'LEFT' ) {    ## no critic (ProhibitCascadingIfElse)
-        $tt->[ $i - 1 ] .= " $text";
-    }
-    elsif ( $where eq 'RIGHT' ) {
-        $tt->[ $i + 1 ] = join q{ }, $text, $tt->[ $i + 1 ];
-    }
-    elsif ( $where eq 'END' ) {
-        $tt->[-1] .= " $text";
-    }
-    elsif ( $where eq 'BEGIN' ) {
-        if ($count) {
-            my @words = split / /, $tt->[0];
-            $words[ $count - 1 ] =~ s/(\S+\b)/$1 $text/;
-            $tt->[0] = join q{ }, @words;
-        }
-        else {
-            $tt->[0] =~ s/^/$text /;
-        }
-    }
-    else {    # LAST
-        $tt->[$i] =~ s/\]/ $text]/;
+    for ( 1 .. $count ) {
+        my ($word) = $tt->[ $i - 1 ] =~ /(\S+)\s*$/;
+        $tt->[$i] =~ s/^\[/[$word /;
+        $tt->[ $i - 1 ] =~ s/(\S+)\s*$//;
     }
 
     return;
+}
+
+# --- Helpers ---
+
+sub extract_side {
+    my ($params) = @_;
+
+    for my $key (qw(left right begin inner end)) {
+        if ( exists $params->{$key} ) {
+            return ( $key, $params->{$key} );
+        }
+    }
+
+    die "No side found in params\n";
 }
 
 # --- I/O ---

@@ -1,0 +1,8 @@
+# Full verse text replacements for the 66-book edition.
+# Each entry replaces the entire verse text at the given position.
+01-genesis.dat:
+- place: 49:21
+  text: Неффалим &mdash; серна стройная; он говорит прекрасные изречения.
+24-proverbs.dat:
+- place: 5:3
+  text: Ибо мед источают уста чужой жены, и мягче елея речь ее;

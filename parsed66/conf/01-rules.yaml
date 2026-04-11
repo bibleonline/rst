@@ -1,0 +1,63 @@
+# Rules for building the 66-book Protestant edition (parsed66)
+# from the 77-book Orthodox edition (parsed).
+#
+# chaps:   entire chapters to remove (deuterocanonical additions)
+# verse:   individual verses/ranges to remove or transform
+#          actions: remove (default), round, strip_square
+# replace: text substitutions in kept verses (from is a regex)
+chaps:
+  21-esther.dat:
+  - 0
+  23-psalms.dat:
+  - 151
+  35-daniel.dat:
+  - 13
+  - 14
+replace:
+  24-proverbs.dat:
+  - from: ',$'
+    place: 4:27
+    to: .
+verse:
+  04-numbers.dat:
+  - 33:56
+  06-joshua.dat:
+  - 24:34-36
+  07-judges.dat:
+  - action: round
+    spec: 20:27-28
+  11-1kings.dat:
+  - 2:35/2
+  21-esther.dat:
+  - 3:13/2-4
+  - 4:17/2-5
+  - 5:1/2
+  - 8:12/2-9
+  - 10:3/2-3
+  23-psalms.dat:
+  - 32:0
+  - 90:0
+  - 92:0
+  - 93:0
+  - 94:0
+  - 95:0
+  - 96:0
+  - 98:0
+  - 103:0
+  - 106:0
+  - 113:0
+  - 114:0
+  - 115:0
+  - 116:0
+  - 117:0
+  - 118:0
+  - 135:0
+  - 136:0
+  - 146:0
+  - 147:0
+  24-proverbs.dat:
+  - 4:28-29
+  - 13:14
+  - 18:8
+  35-daniel.dat:
+  - 3:24-90

@@ -1,0 +1,3200 @@
+# Square bracket rules for building the 66-book Protestant edition
+# from the 77-book Orthodox edition.
+#
+# Actions (do:)
+#   delete          remove [bracket] and its content entirely
+#   italic          replace [text] with <i>text</i>
+#   unwrap          remove brackets, keep text as-is
+#   round           replace [text] with (text)
+#   keep            preserve brackets unchanged (skip processing)
+#   capitalize      uppercase first letter of the word after bracket
+#   lowercase       lowercase first letter of the word after bracket
+#   shift-left      move the word right of bracket to the left side
+#   replace: "x"    replace [bracket] with given text
+#   replace: {text: "x", italic: true}   same, wrapped in <i>
+#   strip: {SIDE: punct|word, count: N}   remove words/punctuation
+#   insert: {SIDE: "char"}                add text/punctuation
+#   regex: {from: "re", to: "str"}        regex substitution in verse
+#   pull-in: N      move N words from left into the bracket
+#
+# SIDE: left, right, begin (start of verse), end, inner (inside bracket)
+#
+# Fields: place (chapter:verse), bracket (N-th bracket), occurrence (N-th paragraph)
+
+01-genesis.dat:
+- { place: "1:6", do: delete }
+- { place: "1:8", do: delete }
+- { place: "1:9", do: delete }
+- place: "1:11"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "1:12", do: delete }
+- { place: "1:14", do: delete }
+- { place: "1:20", do: delete }
+- { place: "1:26", bracket: 1, do: unwrap }
+- { place: "1:26", bracket: 2, do: delete }
+- { place: "1:28", do: delete }
+- { place: "1:30", do: delete }
+- { place: "2:13", do: delete }
+- { place: "2:14", do: delete }
+- { place: "2:15", do: delete }
+- { place: "2:19", do: italic }
+- { place: "2:23", do: delete }
+- place: "2:24"
+  do:
+    - replace: {text: "двое", italic: true}
+- { place: "3:9", do: delete }
+- place: "3:11"
+  do:
+    - replace: {text: "Господь Бог", italic: true}
+- { place: "4:6", do: delete }
+- { place: "4:8", do: keep }  # НОТТР — Hebrew Old Testament Text Project
+- { place: "4:9", do: delete }
+- { place: "4:10", do: italic }
+- { place: "4:13", do: delete }
+- { place: "4:15", do: delete }
+- { place: "4:18", do: delete }
+- { place: "4:19", do: delete }
+- { place: "4:22", do: delete }
+- { place: "4:25", bracket: 1, do: delete }
+- { place: "4:25", bracket: 2, do: italic }
+- { place: "4:26", do: delete }
+- { place: "5:3", bracket: 1, do: italic }
+- place: "5:3"
+  bracket: 2
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "5:29", do: delete }
+- place: "5:32"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "6:3", do: delete }
+- { place: "6:5", do: delete }
+- { place: "6:8", do: delete }
+- { place: "6:12", do: delete }
+- { place: "6:13", do: delete }
+- { place: "6:16", do: italic }
+- { place: "6:19", do: delete }
+- { place: "6:20", do: delete }
+- { place: "6:22", do: delete }
+- { place: "7:1", do: delete }
+- { place: "7:3", do: delete }
+- { place: "7:5", do: delete }
+- { place: "7:8", bracket: 1, do: delete }
+- place: "7:8"
+  bracket: 2
+  do:  # FROM HEBREW
+    - replace: {text: "и из птиц,", italic: true}
+- { place: "7:9", do: delete }
+- { place: "7:14", do: delete }
+- { place: "7:15", do: delete }
+- { place: "7:16", bracket: 1, do: delete }
+- { place: "7:16", bracket: 2, do: delete }
+- { place: "7:16", bracket: 3, do: delete }
+- { place: "7:16", bracket: 4, do: italic }
+- { place: "7:17", do: delete }
+- { place: "7:20", do: delete }
+- { place: "7:23", do: delete }
+- { place: "8:1", do: delete }
+- { place: "8:7", do: delete }
+- { place: "8:12", do: delete }
+- { place: "8:13", do: italic }
+- { place: "8:15", do: delete }
+- { place: "8:19", do: delete }
+- { place: "8:21", do: delete }
+- { place: "9:1", do: delete }
+- { place: "9:2", do: delete }
+- { place: "9:12", do: delete }
+- { place: "9:13", do: delete }
+- { place: "9:14", do: delete }
+- { place: "9:16", do: delete }
+- { place: "10:2", do: delete }
+- { place: "10:9", do: delete }
+- { place: "10:22", do: delete }
+- { place: "10:24", do: delete }
+- { place: "11:8", do: delete }
+- { place: "11:11", do: delete }
+- { place: "11:12", do: delete }
+- { place: "11:13", do: delete }
+- { place: "11:15", do: delete }
+- { place: "11:17", do: delete }
+- { place: "11:19", do: delete }
+- { place: "11:21", do: delete }
+- { place: "11:23", do: delete }
+- { place: "11:25", do: delete }
+- { place: "11:32", do: delete }
+- { place: "12:1", do: delete }
+- { place: "12:6", bracket: 1, do: delete }
+- { place: "12:6", bracket: 2, do: italic }
+- { place: "12:7", bracket: 1, do: delete }
+- place: "12:7"
+  bracket: 2
+  do:
+    - strip: {left: word}
+    - replace: "<i>он</i> там"
+- place: "12:8"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "12:19", do: italic }
+- place: "12:20"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "13:17", do: delete }
+- { place: "14:14", do: delete }
+- { place: "14:20", do: italic }
+- { place: "15:1", do: delete }
+- { place: "15:5", do: delete }
+- { place: "15:14", do: delete }
+- { place: "15:21", do: delete }
+- place: "16:8"
+  do:
+    - replace: {text: "ей", italic: true}
+- { place: "16:13", do: italic }
+- { place: "16:15", do: italic }
+- { place: "17:10", do: delete }
+- { place: "17:14", do: delete }
+- { place: "17:19", bracket: 1, do: delete }
+- place: "17:19"
+  bracket: 2
+  do:
+    - replace: {text: "и", italic: true}
+- { place: "18:1", do: delete }
+- { place: "18:2", do: delete }
+- { place: "18:5", do: italic }
+- { place: "18:6", do: delete }
+- { place: "18:10", do: italic }
+- { place: "18:13", do: delete }
+- { place: "18:14", do: italic }
+- { place: "18:15", occurrence: 2, do: delete }
+- { place: "18:16", do: delete }
+- { place: "18:17", do: delete }
+- { place: "18:19", do: delete }
+- { place: "18:23", do: delete }
+- place: "18:24"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "18:26", do: delete }
+- { place: "19:7", do: delete }
+- { place: "19:9", do: italic }
+- { place: "19:10", do: delete }
+- { place: "19:16", do: delete }
+- { place: "19:20", do: delete }
+- { place: "19:25", do: italic }
+- { place: "19:27", do: italic }
+- { place: "19:29", do: delete }
+- { place: "19:33", do: delete }
+- { place: "19:37", do: delete }
+- { place: "19:38", do: delete }
+- { place: "20:2", do: delete }
+- { place: "20:4", do: delete }
+- { place: "20:8", do: delete }
+- { place: "20:14", do: delete }
+- { place: "20:15", do: delete }
+- { place: "21:8", do: delete }
+- { place: "21:9", do: delete }
+- { place: "21:11", do: delete }
+- { place: "21:13", do: delete }
+- { place: "21:16", bracket: 1, do: italic }  # FROM HEBREW
+- place: "21:16"
+  bracket: 2
+  do:  # FROM HEBREW
+    - strip: {left: word}
+    - insert: {left: ","}
+    - delete
+- { place: "21:17", do: delete }
+- { place: "21:19", do: delete }
+- { place: "21:22", do: delete }
+- { place: "21:26", do: delete }
+- { place: "21:29", do: delete }
+- place: "21:30"
+  do:
+    - replace: {text: "Он", italic: true}
+- { place: "21:32", occurrence: 2, do: delete }
+- { place: "21:33", do: italic }
+- { place: "22:13", do: delete }
+- place: "22:16"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "22:23", do: delete }
+- { place: "23:2", do: delete }
+- { place: "23:6", do: delete }
+- { place: "23:8", do: italic }
+- { place: "23:13", do: delete }
+- { place: "24:3", do: delete }
+- { place: "24:4", do: delete }
+- { place: "24:7", do: delete }
+- { place: "24:8", do: delete }
+- { place: "24:11", do: italic }
+- { place: "24:14", do: delete }
+- { place: "24:15", do: delete }
+- { place: "24:19", do: delete }
+- { place: "24:20", do: italic }
+- { place: "24:23", do: delete }
+- { place: "24:31", do: delete }
+- { place: "24:36", do: delete }
+- { place: "24:38", do: delete }
+- { place: "24:40", do: delete }
+- { place: "24:43", do: delete }
+- { place: "24:44", do: delete }
+- { place: "24:45", do: italic }
+- { place: "24:46", do: delete }
+- { place: "24:47", do: delete }
+- { place: "24:51", do: italic }
+- { place: "24:54", do: delete }
+- { place: "24:67", do: delete }
+- place: "25:3"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "25:5", do: delete }
+- { place: "25:8", do: italic }
+- { place: "25:10", do: delete }
+- { place: "25:21", do: delete }
+- { place: "25:26", do: delete }
+- { place: "25:31", do: delete }
+- { place: "25:33", do: delete }
+- { place: "25:33", occurrence: 2, do: delete }
+- { place: "26:3", do: delete }
+- { place: "26:5", do: delete }
+- { place: "26:7", do: delete }
+- { place: "26:10", do: delete }
+- { place: "26:18", do: delete }
+- { place: "26:19", do: delete }
+- place: "26:21"
+  do:
+    - capitalize
+    - delete
+- { place: "26:24", do: delete }
+- { place: "26:25", do: delete }
+- { place: "26:33", do: delete }
+- place: "27:2"
+  do:
+    - replace: {text: "Он", italic: true}
+- { place: "27:6", do: delete }
+- { place: "27:9", do: delete }
+- { place: "27:15", do: italic }
+- { place: "27:21", do: italic }
+- { place: "27:26", do: italic }
+- { place: "27:27", do: delete }
+- { place: "27:30", do: delete }
+- { place: "27:33", do: delete }
+- { place: "27:34", do: delete }
+- { place: "27:35", do: delete }
+- { place: "27:36", bracket: 1, do: italic }
+- place: "27:36"
+  bracket: 2
+  do:
+    - replace: {text: "он", italic: true}
+- { place: "27:36", bracket: 3, do: delete }
+- { place: "27:38", do: delete }
+- { place: "27:43", do: delete }
+- { place: "28:4", do: delete }
+- place: "28:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "28:19", do: delete }
+- { place: "28:20", do: delete }
+- { place: "28:22", do: delete }
+- { place: "29:1", do: delete }
+- { place: "29:4", do: delete }
+- { place: "29:7", do: delete }
+- { place: "29:9", do: delete }
+- { place: "29:12", do: delete }
+- { place: "29:19", do: delete }
+- { place: "29:23", bracket: 1, do: delete }
+- { place: "29:23", bracket: 2, do: italic }
+- { place: "29:25", do: italic }
+- { place: "29:28", do: italic }
+- { place: "29:30", do: italic }
+- { place: "29:31", do: delete }
+- { place: "29:32", do: delete }
+- { place: "29:33", do: delete }
+- { place: "30:2", do: delete }
+- { place: "30:5", do: delete }
+- place: "30:9"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "30:10", do: delete }
+- place: "30:12"
+  bracket: 1
+  do:
+    - replace: "родила"
+- place: "30:12"
+  bracket: 2
+  do:
+    - strip: {right: word}
+    - delete
+- { place: "30:14", do: delete }
+- { place: "30:15", do: italic }
+- { place: "30:16", do: delete }
+- { place: "30:18", do: delete }
+- { place: "30:23", do: delete }
+- { place: "30:26", do: delete }
+- { place: "30:28", do: delete }
+- { place: "30:29", do: italic }
+- place: "30:31"
+  do:
+    - replace: {text: "Лаван", italic: true}
+- { place: "30:31", occurrence: 2, do: delete }
+- { place: "30:32", do: delete }
+- { place: "30:34", do: delete }
+- { place: "30:37", do: delete }
+- { place: "30:43", do: delete }
+- { place: "31:1", do: italic }
+- { place: "31:9", do: delete }
+- { place: "31:10", do: delete }
+- { place: "31:12", do: delete }
+- { place: "31:13", bracket: 1, do: italic }
+- place: "31:13"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "31:16", do: delete }
+- { place: "31:18", do: delete }
+- { place: "31:22", do: delete }
+- { place: "31:23", do: delete }
+- { place: "31:31", do: delete }
+- place: "31:32"
+  bracket: 1
+  do:
+    - capitalize
+    - delete
+- { place: "31:32", bracket: 2, do: italic }
+- { place: "31:32", bracket: 3, do: delete }
+- { place: "31:32", bracket: 4, do: delete }
+- { place: "31:33", do: delete }
+- place: "31:35"
+  bracket: 1
+  do:
+    - replace: {text: "он", italic: true}
+- { place: "31:35", bracket: 2, do: delete }
+- { place: "31:37", do: delete }
+- { place: "31:44", do: delete }
+- { place: "31:46", do: delete }
+- { place: "31:48", do: delete }
+- { place: "31:50", do: delete }
+- { place: "31:54", do: delete }
+- { place: "32:1", do: delete }
+- { place: "32:5", do: delete }
+- { place: "32:8", do: delete }
+- { place: "32:9", do: delete }
+- { place: "32:11", do: italic }
+- { place: "32:13", do: delete }
+- { place: "32:17", do: delete }
+- { place: "32:18", do: delete }
+- { place: "32:19", do: delete }
+- { place: "32:20", do: delete }
+- { place: "32:26", do: italic }
+- { place: "32:28", do: delete }
+- { place: "32:29", do: delete }
+- { place: "32:29", occurrence: 2, do: delete }
+- place: "33:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "33:2", do: delete }
+- { place: "33:4", do: delete }
+- { place: "33:5", do: italic }
+- { place: "33:8", occurrence: 2, do: delete }
+- { place: "34:5", do: italic }
+- { place: "34:9", do: delete }
+- { place: "34:10", do: delete }
+- { place: "34:14", do: delete }
+- { place: "34:15", do: delete }
+- { place: "34:23", do: delete }
+- { place: "34:27", do: delete }
+- { place: "34:29", do: delete }
+- { place: "34:30", do: delete }
+- { place: "35:3", do: delete }
+- { place: "35:4", do: delete }
+- { place: "35:5", do: delete }
+- { place: "35:7", do: delete }
+- { place: "35:9", do: delete }
+- { place: "35:14", do: italic }
+- { place: "35:16", do: delete }
+- { place: "35:21", do: delete }
+- { place: "35:22", do: delete }
+- { place: "35:27", do: delete }
+- { place: "35:28", do: italic }
+- { place: "36:6", do: delete }
+- place: "36:27"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "36:39", do: delete }
+- place: "36:40"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "37:1", do: delete }
+- { place: "37:2", occurrence: 2, do: delete }
+- { place: "37:5", do: delete }
+- { place: "37:9", do: delete }
+- { place: "37:14", do: italic }
+- { place: "37:22", do: delete }
+- { place: "38:5", do: delete }
+- { place: "38:9", do: italic }
+- { place: "38:11", do: delete }
+- { place: "38:15", do: delete }
+- { place: "38:17", do: delete }
+- { place: "38:28", do: italic }
+- { place: "39:5", do: delete }
+- { place: "39:17", do: delete }
+- { place: "39:18", do: delete }
+- { place: "40:17", do: delete }
+- { place: "40:18", do: delete }
+- { place: "40:19", do: delete }
+- { place: "40:22", do: delete }
+- place: "41:34"
+  do:
+    - replace: "с"
+- { place: "41:48", do: italic }
+- { place: "41:51", do: italic }
+- { place: "41:52", do: italic }
+- { place: "42:21", do: delete }
+- { place: "42:24", do: delete }
+- { place: "43:16", do: delete }
+- { place: "43:28", do: delete }
+- { place: "43:29", do: delete }
+- { place: "44:1", do: italic }
+- { place: "44:4", do: delete }
+- place: "44:5"
+  do:
+    - insert: {begin: "<i>чаша</i>", at: 4}
+- { place: "44:9", do: italic }
+- { place: "44:10", do: italic }
+- { place: "44:17", do: italic }
+- { place: "44:20", do: delete }
+- { place: "44:32", do: delete }
+- { place: "45:6", do: italic }
+- { place: "45:17", do: delete }
+- { place: "45:18", do: delete }
+- { place: "45:26", do: delete }
+- { place: "45:28", do: delete }
+- { place: "46:21", do: delete }
+- { place: "46:27", do: delete }
+- { place: "47:16", do: delete }
+- { place: "47:22", do: delete }
+- { place: "48:1", do: delete }
+- { place: "48:7", do: delete }
+- { place: "48:9", do: italic }
+- { place: "48:13", do: delete }
+- { place: "49:4", do: delete }
+- { place: "49:12", do: italic }
+- { place: "49:30", do: delete }
+- { place: "50:5", do: delete }
+- { place: "50:11", do: italic }
+
+02-exodus.dat:
+- { place: "1:1", bracket: 1, do: delete }
+- place: "1:1"
+  bracket: 2
+  do:
+    - strip: {left: word}
+    - replace: "с"
+- { place: "1:5", do: delete }
+- { place: "1:10", do: italic }
+- place: "1:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "1:12", do: delete }
+- { place: "1:16", do: delete }
+- { place: "1:22", do: italic }
+- { place: "2:6", do: delete }
+- { place: "2:11", bracket: 1, do: italic }
+- place: "2:11"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "2:14", do: delete }
+- { place: "2:15", do: delete }
+- { place: "2:16", bracket: 1, do: italic }
+- place: "2:16"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "2:16", bracket: 3, do: delete }
+- { place: "2:17", do: delete }
+- { place: "2:18", do: delete }
+- { place: "2:19", do: delete }
+- { place: "2:22", bracket: 1, do: delete }
+- { place: "2:22", bracket: 2, do: italic }
+- { place: "2:22", bracket: 3, do: delete }
+- place: "3:4"
+  occurrence: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "3:6", do: delete }
+- { place: "3:7", do: delete }
+- { place: "3:8", do: delete }
+- { place: "3:10", do: delete }
+- { place: "3:11", do: delete }
+- { place: "3:12", bracket: 1, do: italic }
+- { place: "3:12", bracket: 2, do: delete }
+- { place: "3:14", do: delete }
+- { place: "3:16", do: delete }
+- { place: "3:17", do: delete }
+- { place: "3:18", do: delete }
+- { place: "3:19", do: delete }
+- { place: "4:1", do: delete }
+- { place: "4:4", do: delete }
+- { place: "4:5", do: delete }
+- { place: "4:6", do: delete }
+- { place: "4:7", bracket: 1, do: unwrap }
+- { place: "4:7", bracket: 2, do: delete }
+- { place: "4:11", do: delete }
+- { place: "4:13", do: italic }
+- { place: "4:14", do: delete }
+- { place: "4:15", do: delete }
+- { place: "4:17", do: delete }
+- { place: "4:18", do: delete }
+- { place: "4:19", do: italic }
+- { place: "4:22", do: delete }
+- { place: "4:30", do: delete }
+- { place: "5:1", do: delete }
+- { place: "5:2", do: delete }
+- { place: "5:3", do: delete }
+- { place: "5:4", do: delete }
+- { place: "5:13", bracket: 1, do: delete }
+- { place: "5:13", bracket: 2, do: unwrap }  # FROM HEBREW
+- { place: "5:17", do: delete }
+- { place: "5:19", do: italic }
+- { place: "5:22", do: delete }
+- { place: "6:7", do: delete }
+- { place: "6:20", do: delete }
+- { place: "7:2", do: delete }
+- { place: "7:5", do: delete }
+- { place: "7:7", do: delete }
+- { place: "7:9", do: delete }
+- { place: "7:10", do: delete }
+- { place: "7:11", do: delete }
+- { place: "7:13", do: delete }
+- { place: "7:19", do: delete }
+- { place: "7:20", bracket: 1, do: delete }
+- { place: "7:20", bracket: 2, do: italic }
+- { place: "7:20", bracket: 3, do: delete }
+- { place: "8:5", do: delete }
+- { place: "8:6", do: delete }
+- { place: "8:7", do: delete }
+- { place: "8:8", do: delete }
+- { place: "8:9", do: delete }
+- { place: "8:11", do: delete }
+- { place: "8:13", do: delete }
+- { place: "8:16", bracket: 1, do: delete }
+- place: "8:16"
+  bracket: 2
+  do:
+    - strip: {right: word}
+    - replace: "сделается <i>персть</i>"
+- { place: "8:20", do: delete }
+- { place: "8:22", do: delete }
+- { place: "8:23", do: delete }
+- { place: "8:25", do: delete }
+- place: "8:27"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "<i>Он</i> скажет нам"
+- { place: "8:28", do: delete }
+- { place: "8:29", do: delete }
+- { place: "9:2", do: delete }
+- { place: "9:4", bracket: 1, do: delete }
+- { place: "9:4", bracket: 2, do: italic }
+- { place: "9:7", bracket: 1, do: delete }
+- { place: "9:7", bracket: 2, do: italic }
+- { place: "9:8", do: delete }
+- { place: "9:23", do: delete }
+- { place: "9:24", do: italic }
+- { place: "9:25", do: delete }
+- { place: "9:28", do: delete }
+- { place: "9:29", do: delete }
+- { place: "9:35", do: delete }
+- { place: "10:4", do: delete }
+- { place: "10:5", do: delete }
+- { place: "10:6", bracket: 1, do: delete }
+- { place: "10:6", bracket: 2, do: italic }
+- { place: "10:8", do: italic }
+- { place: "10:9", do: delete }
+- { place: "10:10", do: italic }
+- place: "10:12"
+  do:
+    - strip: {right: punct}
+    - replace: {text: "и", italic: true}
+- { place: "10:18", do: italic }
+- { place: "10:24", do: delete }
+- { place: "10:25", do: delete }
+- { place: "10:26", do: delete }
+- { place: "11:1", do: delete }
+- { place: "11:2", do: delete }
+- { place: "11:3", bracket: 1, do: italic }
+- { place: "11:3", bracket: 2, do: delete }
+- { place: "11:3", bracket: 3, do: delete }
+- { place: "11:3", bracket: 4, do: delete }
+- { place: "11:8", bracket: 1, do: delete }
+- { place: "11:8", bracket: 2, do: italic }
+- { place: "11:9", do: delete }
+- { place: "11:10", do: delete }
+- { place: "12:3", do: italic }
+- { place: "12:10", do: delete }
+- { place: "12:14", do: italic }
+- { place: "12:19", do: italic }
+- { place: "12:21", do: italic }
+- { place: "12:27", do: delete }
+- place: "12:30"
+  do:
+    - replace: "в <i>земле</i>"
+- { place: "12:31", bracket: 1, do: italic }
+- { place: "12:31", bracket: 2, do: delete }
+- { place: "12:31", bracket: 3, do: delete }
+- { place: "12:36", do: italic }
+- { place: "12:40", do: delete }
+- { place: "12:46", do: delete }
+- { place: "12:47", do: italic }
+- place: "13:2"
+  do:
+    - strip: {left: punct}
+    - insert: {left: ":"}
+    - delete
+- { place: "13:5", do: delete }
+- { place: "13:8", do: delete }
+- { place: "13:9", do: delete }
+- { place: "13:11", do: delete }
+- { place: "13:12", do: delete }
+- { place: "13:13", do: italic }
+- { place: "13:19", do: italic }
+- { place: "13:20", do: italic }
+- { place: "13:22", do: delete }
+- { place: "14:3", do: delete }
+- { place: "14:4", do: delete }
+- { place: "14:6", do: italic }
+- { place: "14:8", do: delete }
+- { place: "14:17", do: delete }
+- { place: "14:18", do: delete }
+- { place: "14:19", do: italic }
+- { place: "14:20", do: italic }
+- { place: "14:27", do: italic }
+- { place: "14:29", bracket: 1, do: italic }
+- { place: "14:29", bracket: 2, do: delete }
+- { place: "14:30", do: italic }
+- { place: "15:23", do: italic }
+- { place: "15:25", do: italic }
+- { place: "15:26", do: delete }
+- { place: "16:6", do: italic }
+- place: "16:23"
+  do:
+    - replace: {text: "он", italic: true}
+- { place: "16:24", do: delete }
+- { place: "16:29", do: delete }
+- { place: "16:32", do: italic }
+- { place: "16:33", do: delete }
+- { place: "17:9", do: delete }
+- { place: "17:10", do: italic }
+- { place: "17:15", do: delete }
+- { place: "18:4", do: italic }
+- { place: "18:7", do: delete }
+- place: "18:8"
+  bracket: 1
+  do:
+    - strip: {left: word}
+    - replace: "с"
+- { place: "18:8", bracket: 2, do: delete }
+- { place: "18:9", do: delete }
+- { place: "18:14", do: delete }
+- { place: "18:16", do: delete }
+- { place: "18:19", do: italic }
+- { place: "18:20", bracket: 1, do: delete }
+- place: "18:20"
+  bracket: 2
+  do:
+    - replace: {text: "Божиим", italic: true}
+- { place: "18:20", bracket: 3, do: italic }
+- { place: "18:21", bracket: 1, do: delete }
+- { place: "18:21", bracket: 2, do: italic }
+- { place: "18:21", bracket: 3, do: delete }
+- { place: "18:24", do: delete }
+- { place: "18:25", do: delete }
+- { place: "18:26", do: delete }
+- { place: "19:3", do: delete }
+- { place: "19:4", do: italic }
+- { place: "19:8", do: delete }
+- { place: "19:10", do: delete }
+- place: "19:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "19:16", do: delete }
+- { place: "19:22", do: delete }
+- { place: "19:24", do: delete }
+- { place: "20:1", do: delete }
+- { place: "20:9", do: delete }
+- { place: "20:10", do: delete }
+- { place: "20:12", do: delete }
+- { place: "20:17", do: delete }
+- { place: "20:18", do: delete }
+- { place: "20:20", do: delete }
+- { place: "20:21", do: delete }
+- { place: "20:22", do: delete }
+- { place: "21:2", do: delete }
+- { place: "21:8", do: delete }
+- { place: "21:13", do: italic }
+- { place: "21:14", do: delete }
+- { place: "21:16", do: delete }
+- { place: "21:18", do: delete }
+- { place: "21:19", do: delete }
+- { place: "21:36", do: delete }
+- { place: "22:4", do: delete }
+- { place: "22:5", do: delete }
+- { place: "22:8", do: italic }
+- { place: "22:16", do: italic }
+- { place: "22:17", do: delete }
+- { place: "22:29", do: italic }
+- { place: "22:30", do: delete }
+- { place: "23:9", do: delete }
+- { place: "23:17", do: delete }
+- place: "23:18"
+  do:
+    - capitalize
+    - delete
+- { place: "23:20", do: delete }
+- { place: "23:22", do: delete }
+- { place: "23:23", do: delete }
+- { place: "23:25", do: delete }
+- { place: "23:28", do: delete }
+- { place: "23:31", do: delete }
+- { place: "23:32", do: delete }
+- { place: "24:1", do: delete }
+- { place: "24:3", do: delete }
+- { place: "24:5", do: delete }
+- { place: "24:10", do: delete }
+- { place: "24:11", do: delete }
+- place: "24:16"
+  do:
+    - shift-left
+    - italic
+- { place: "25:4", do: italic }
+- place: "25:5"
+  do:
+    - strip: {begin: word}
+    - insert: {begin: "И кожи"}
+- { place: "25:9", do: delete }
+- { place: "25:11", do: delete }
+- { place: "25:13", do: delete }
+- { place: "25:24", do: delete }
+- { place: "25:28", do: delete }
+- { place: "25:35", do: delete }
+- { place: "25:38", do: delete }
+- { place: "26:4", do: delete }
+- { place: "26:10", do: delete }
+- { place: "26:16", do: delete }
+- { place: "26:17", do: delete }
+- { place: "26:21", do: delete }
+- { place: "26:25", do: delete }
+- { place: "26:26", do: delete }
+- { place: "26:35", do: delete }
+- { place: "27:8", do: delete }
+- { place: "27:11", do: delete }
+- { place: "27:13", bracket: 1, do: italic }
+- { place: "27:13", bracket: 2, do: delete }
+- { place: "27:14", do: delete }
+- place: "27:15"
+  do:
+    - replace: {text: "локтей", italic: true}
+- { place: "27:16", do: delete }
+- { place: "28:3", do: delete }
+- { place: "28:8", do: delete }
+- { place: "28:13", do: delete }
+- { place: "28:14", do: delete }
+- place: "28:21"
+  bracket: 1
+  do:
+    - strip: {left: word, count: 3}
+    - replace: ", по <i>числу</i> имен"
+- place: "28:21"
+  bracket: 2
+  do:
+    - insert: {left: ","}
+    - replace: "двенадцать"
+- place: "28:21"
+  bracket: 3
+  do:
+    - strip: {left: word, count: 3}
+    - replace: "по <i>числу</i> имен их"
+- { place: "28:23", do: delete }
+- { place: "28:24", do: delete }
+- { place: "28:29", do: delete }
+- { place: "28:30", do: italic }
+- { place: "28:33", do: delete }
+- { place: "28:43", bracket: 1, do: italic }
+- { place: "28:43", bracket: 2, do: delete }
+- { place: "29:5", do: delete }
+- { place: "29:10", do: delete }
+- { place: "29:12", do: italic }
+- { place: "29:17", do: delete }
+- { place: "29:22", do: round }  # FROM HEBREW
+- { place: "29:28", do: delete }
+- { place: "29:30", do: delete }
+- { place: "29:38", do: delete }
+- { place: "30:4", do: delete }
+- { place: "30:23", do: italic }
+- { place: "30:26", do: delete }
+- { place: "30:32", do: delete }
+- { place: "30:38", do: delete }
+- place: "31:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "31:8", do: delete }
+- { place: "31:18", do: italic }
+- { place: "32:7", do: delete }
+- { place: "32:13", do: delete }
+- { place: "32:15", do: delete }
+- { place: "32:18", do: italic }
+- { place: "32:22", do: delete }
+- place: "32:24"
+  do:
+    - capitalize
+    - delete
+- { place: "32:26", do: italic }
+- { place: "32:29", do: delete }
+- { place: "32:31", do: delete }
+- { place: "32:34", do: delete }
+- { place: "33:2", do: delete }
+- { place: "33:3", do: italic }
+- { place: "33:9", do: italic }
+- { place: "33:14", bracket: 1, do: italic }
+- { place: "33:14", bracket: 2, do: delete }
+- { place: "33:14", bracket: 3, do: delete }
+- { place: "33:15", bracket: 1, do: italic }
+- { place: "33:15", bracket: 2, do: unwrap }
+- { place: "33:18", do: italic }
+- place: "33:19"
+  do:
+    - replace: {text: "Господь", italic: true}
+- { place: "33:23", do: delete }
+- { place: "34:1", do: delete }
+- { place: "34:7", do: delete }
+- { place: "34:8", do: italic }
+- place: "34:10"
+  do:
+    - replace: {text: "Господь", italic: true}
+- place: "34:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "34:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "34:14", do: delete }
+- { place: "34:16", do: delete }
+- { place: "34:28", bracket: 1, do: italic }
+- { place: "34:28", bracket: 2, do: delete }
+- { place: "34:32", do: delete }
+- { place: "34:34", do: delete }
+- { place: "35:3", do: delete }
+- place: "35:6"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "35:12", do: delete }
+- place: "35:14"
+  do:
+    - strip: {left: word}
+    - replace: "с"
+- { place: "35:21", do: delete }
+- { place: "35:35", do: delete }
+- { place: "36:3", do: delete }
+- { place: "38:15", do: round }  # FROM HEBREW
+- { place: "40:5", do: delete }
+- { place: "40:17", do: delete }
+- { place: "40:25", do: delete }
+- { place: "40:32", do: delete }
+
+03-leviticus.dat:
+- { place: "1:10", do: delete }
+- { place: "2:6", do: delete }
+- { place: "2:13", do: delete }
+- { place: "3:16", do: italic }
+- place: "4:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "4:7", do: italic }
+- { place: "4:17", bracket: 1, do: delete }
+- { place: "4:17", bracket: 2, do: italic }
+- { place: "4:18", do: delete }
+- { place: "4:29", do: italic }
+- { place: "5:8", do: italic }
+- { place: "5:13", do: italic }
+- { place: "6:9", do: delete }
+- place: "6:12"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "6:14", do: delete }
+- { place: "6:15", do: italic }
+- { place: "6:29", do: delete }
+- { place: "7:30", do: delete }
+- { place: "8:12", do: delete }
+- { place: "8:14", do: delete }
+- { place: "8:15", do: unwrap }  # FROM HEBREW
+- { place: "8:16", do: delete }
+- { place: "8:18", do: delete }
+- { place: "8:22", do: delete }
+- { place: "8:25", do: delete }
+- { place: "8:35", do: italic }
+- { place: "9:3", do: delete }
+- { place: "9:19", do: italic }
+- { place: "10:9", do: delete }
+- { place: "10:13", do: italic }
+- { place: "10:15", do: delete }
+- { place: "10:16", do: italic }
+- { place: "11:13", do: round }  # FROM HEBREW
+- { place: "11:26", do: delete }
+- { place: "11:33", do: italic }
+- { place: "11:34", do: delete }
+- { place: "11:44", do: delete }
+- { place: "14:10", do: delete }
+- { place: "14:47", do: delete }
+- { place: "15:3", do: italic }
+- { place: "15:4", do: delete }
+- { place: "15:9", do: italic }
+- { place: "15:12", do: delete }
+- { place: "16:1", do: italic }
+- { place: "16:2", do: delete }
+- { place: "16:5", do: delete }
+- { place: "16:10", do: delete }
+- { place: "16:20", do: delete }
+- { place: "16:24", do: delete }
+- { place: "16:29", do: italic }
+- { place: "17:3", do: delete }
+- { place: "17:4", do: delete }
+- { place: "17:16", do: italic }
+- place: "18:5"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- { place: "18:11", do: italic }
+- { place: "18:23", do: italic }
+- place: "19:12"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- { place: "19:14", do: delete }  # NOTICE WHY NOT REPLACED WITH MDASH?! "Я &mdash; Господь"
+- place: "19:16"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- place: "19:18"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- { place: "19:23", do: italic }
+- { place: "19:28", do: delete }  # NOTICE WHY NOT REPLACED WITH MDASH?! "Я &mdash; Господь"
+- { place: "19:32", do: delete }  # NOTICE WHY NOT REPLACED WITH MDASH?! "Я &mdash; Господь"
+- { place: "19:37", do: delete }  # NOTICE WHY NOT REPLACED WITH MDASH?! "Я &mdash; Господь"
+- place: "20:7"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "20:26", do: delete }
+- { place: "21:7", do: delete }
+- { place: "21:8", do: delete }
+- { place: "21:13", do: delete }
+- { place: "21:14", do: italic }
+- place: "21:15"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- { place: "22:3", do: delete }  # NOTICE WITHOUT MDASH
+- place: "22:9"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: "Я &mdash; Господь"
+- { place: "22:18", do: italic }
+- { place: "22:20", do: delete }
+- { place: "22:21", do: delete }
+- { place: "23:5", do: italic }
+- { place: "23:18", do: delete }
+- { place: "23:19", do: delete }
+- { place: "23:20", do: italic }
+- { place: "23:24", bracket: 1, do: italic }
+- { place: "23:24", bracket: 2, do: delete }
+- { place: "23:27", do: italic }
+- { place: "23:32", bracket: 1, do: italic }
+- { place: "23:32", bracket: 2, do: delete }
+- { place: "24:3", do: italic }
+- { place: "24:7", bracket: 1, do: italic }
+- { place: "24:7", bracket: 2, do: delete }
+- { place: "24:11", do: italic }  # FROM HEBREW
+- { place: "24:16", do: italic }
+- { place: "25:9", do: italic }
+- { place: "25:31", do: italic }
+- { place: "25:36", do: delete }
+- { place: "26:5", do: italic }
+- { place: "26:6", do: italic }
+- { place: "26:9", do: delete }
+- { place: "26:20", do: delete }
+- { place: "26:21", do: italic }
+- { place: "26:24", do: delete }
+- { place: "26:31", do: italic }
+- { place: "26:32", do: italic }
+- place: "26:33"
+  do:
+    - insert: {begin: "а"}
+- { place: "26:34", do: italic }
+- { place: "26:35", do: italic }
+- { place: "26:41", do: delete }
+
+04-numbers.dat:
+- { place: "1:1", do: italic }
+- { place: "1:18", do: italic }
+- { place: "1:24", do: delete }
+- { place: "1:26", do: delete }
+- { place: "1:28", do: delete }
+- { place: "1:30", do: delete }
+- { place: "1:32", do: delete }
+- { place: "1:34", do: delete }
+- { place: "1:36", do: delete }
+- { place: "1:38", do: delete }
+- { place: "1:40", do: delete }
+- { place: "1:42", do: delete }
+- { place: "2:7", do: italic }
+- { place: "2:29", do: delete }
+- { place: "3:9", do: delete }
+- { place: "3:10", do: delete }
+- { place: "3:12", do: delete }
+- { place: "3:16", do: delete }
+- { place: "3:50", do: italic }
+- { place: "3:51", do: delete }
+- { place: "4:4", do: delete }
+- { place: "4:14", do: delete }
+- { place: "4:44", do: delete }
+- { place: "5:22", do: italic }
+- { place: "6:4", do: delete }
+- { place: "6:27", do: delete }
+- place: "7:2"
+  do:
+    - strip: {right: word, count: 2}
+    - replace: "начальники Израилевы"
+- { place: "7:18", do: italic }
+- { place: "7:88", do: delete }
+- { place: "9:13", do: delete }
+- { place: "9:16", do: italic }
+- { place: "10:6", do: delete }
+- { place: "11:18", do: delete }
+- { place: "11:20", do: delete }
+- { place: "11:26", do: round }  # FROM HEBREW
+- { place: "13:18", do: delete }
+- { place: "13:23", do: italic }
+- { place: "13:24", do: delete }
+- { place: "13:30", do: delete }
+- { place: "14:1", do: italic }
+- { place: "14:10", do: delete }
+- { place: "14:12", do: delete }
+- { place: "14:18", do: delete }
+- { place: "14:20", do: italic }
+- { place: "14:21", do: delete }
+- { place: "14:23", do: delete }
+- place: "14:45"
+  do:
+    - strip: {left: punct}
+    - insert: {left: "."}
+    - delete
+- { place: "15:4", do: italic }
+- { place: "15:5", do: delete }
+- { place: "15:15", do: italic }
+- { place: "15:23", do: delete }
+- { place: "15:24", do: delete }
+- { place: "15:33", do: delete }
+- { place: "16:9", do: delete }
+- { place: "16:26", do: delete }
+- { place: "16:28", do: italic }
+- { place: "16:30", do: delete }
+- { place: "16:37", do: delete }
+- { place: "16:44", do: delete }
+- { place: "16:46", do: unwrap }
+- { place: "17:3", do: italic }
+- { place: "17:8", do: delete }
+- place: "18:10"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "18:31", do: delete }
+- { place: "19:2", do: italic }
+- { place: "19:3", do: delete }
+- { place: "19:12", do: italic }
+- { place: "19:18", do: italic }
+- { place: "19:19", do: italic }
+- { place: "20:14", do: italic }
+- { place: "20:17", do: italic }
+- { place: "20:20", do: delete }
+- { place: "20:25", do: delete }
+- { place: "21:2", do: delete }
+- { place: "21:5", do: italic }
+- { place: "21:6", do: italic }
+- { place: "21:7", do: delete }
+- { place: "21:8", bracket: 1, do: delete }
+- place: "21:8"
+  bracket: 2
+  do:  # FROM HEBREW
+    - replace: "всякий"
+- { place: "21:16", do: italic }
+- { place: "21:18", occurrence: 2, do: italic }
+- { place: "21:21", do: delete }
+- { place: "21:22", bracket: 1, do: delete }
+- { place: "21:22", bracket: 2, do: italic }
+- { place: "21:32", do: delete }
+- { place: "21:35", do: delete }
+- { place: "22:10", do: italic }
+- place: "22:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "22:14", do: italic }
+- { place: "22:17", do: italic }
+- { place: "22:18", do: italic }
+- { place: "22:32", do: italic }
+- { place: "23:3", do: delete }
+- { place: "23:4", do: italic }
+- { place: "23:6", do: delete }
+- { place: "23:8", do: italic }
+- { place: "23:15", do: italic }
+- { place: "23:17", do: delete }
+- { place: "24:8", do: italic }
+- { place: "24:23", do: delete }
+- { place: "25:2", do: italic }
+- { place: "26:14", do: delete }
+- place: "26:19"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "26:40", do: italic }
+- { place: "26:61", do: delete }
+- place: "27:12"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "27:13"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "27:14", do: round }  # FROM HEBREW
+- { place: "27:22", do: delete }
+- { place: "28:5", do: italic }
+- { place: "28:9", do: italic }
+- { place: "28:18", do: italic }
+- { place: "28:27", do: delete }
+- { place: "28:30", do: italic }
+- { place: "28:31", do: italic }
+- { place: "29:1", do: italic }
+- { place: "29:7", do: italic }
+- place: "29:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "30:9"
+  do:
+    - strip: {right: word}
+    - replace: {text: "то они не состоятся, и", italic: true}
+- { place: "30:16", do: delete }
+- { place: "31:4", do: delete }
+- { place: "31:6", do: delete }
+- { place: "31:8", do: delete }  # WARN RST ALSO DOT REPLACED TO ; BUT NEXT IS NEW PARAGRAPH
+- { place: "31:15", do: italic }
+- { place: "32:11", do: delete }
+- { place: "32:30", do: delete }
+- { place: "33:9", do: italic }
+- place: "33:36"
+  do:
+    - strip: {left: punct}
+    - insert: {left: ","}
+    - delete
+- place: "33:55"
+  do:  # in RBS66 moved from 33:56
+    - insert: {end: "тогда, что Я вознамерился сделать им, сделаю вам."}
+- { place: "34:13", do: delete }
+- { place: "35:4", do: italic }
+- { place: "35:6", do: italic }
+- { place: "35:12", do: delete }
+- { place: "35:32", do: italic }
+- { place: "35:33", do: italic }
+- { place: "36:1", do: delete }
+- { place: "36:3", do: delete }
+- { place: "36:4", do: delete }
+
+05-deuteronomy.dat:
+- { place: "1:3", bracket: 1, do: italic }
+- { place: "1:3", bracket: 2, do: delete }
+- place: "1:15"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "1:23", do: italic }
+- place: "1:28"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "1:34", do: delete }
+- { place: "1:41", do: delete }
+- { place: "2:7", do: delete }
+- { place: "2:14", do: delete }
+- { place: "2:31", do: delete }
+- { place: "2:32", do: delete }
+- { place: "2:33", do: italic }
+- { place: "2:36", bracket: 1, do: delete }
+- { place: "2:36", bracket: 2, do: italic }
+- place: "2:37"
+  bracket: 1
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "2:37", bracket: 2, do: delete }
+- { place: "2:37", bracket: 3, do: italic }
+- { place: "3:13", do: round }
+- place: "3:19"
+  do:  # FROM HEBREW
+    - strip: {inner: punct}
+    - round
+- { place: "3:20", do: delete }
+- { place: "3:24", do: delete }
+- { place: "3:28", do: delete }
+- place: "4:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "4:2", do: delete }
+- { place: "4:3", do: delete }
+- place: "4:10"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "4:12", bracket: 1, do: delete }
+- { place: "4:12", bracket: 2, do: italic }
+- { place: "4:15", do: delete }
+- { place: "4:18", do: italic }
+- { place: "4:19", do: italic }
+- { place: "4:20", do: delete }
+- { place: "4:21", do: delete }
+- { place: "4:25", do: italic }
+- { place: "4:27", do: italic }
+- { place: "4:28", do: delete }
+- { place: "4:29", do: italic }
+- { place: "4:31", do: delete }
+- { place: "4:33", bracket: 1, do: italic }
+- { place: "4:33", bracket: 2, do: delete }
+- { place: "4:35", bracket: 1, do: delete }
+- { place: "4:35", bracket: 2, do: italic }
+- { place: "4:37", do: italic }
+- { place: "4:39", bracket: 1, do: delete }
+- { place: "4:39", bracket: 2, do: italic }
+- { place: "4:39", bracket: 3, do: italic }
+- place: "4:45"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "5:11", do: delete }
+- { place: "5:14", bracket: 1, do: italic }
+- { place: "5:14", bracket: 2, do: delete }
+- { place: "5:15", bracket: 1, do: italic }
+- { place: "5:15", bracket: 2, do: delete }
+- { place: "5:21", do: delete }
+- { place: "5:22", do: delete }
+- { place: "5:27", do: italic }
+- { place: "5:31", do: italic }
+- { place: "6:1", do: italic }
+- { place: "6:2", do: delete }
+- { place: "6:3", bracket: 1, do: italic }
+- { place: "6:3", bracket: 2, do: delete }
+- { place: "6:6", do: delete }
+- { place: "6:12", do: delete }
+- { place: "6:13", bracket: 1, do: italic }
+- { place: "6:13", bracket: 2, do: delete }
+- { place: "6:18", do: delete }
+- { place: "6:21", do: delete }
+- { place: "6:22", do: delete }
+- place: "6:23"
+  bracket: 1
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "6:23", bracket: 2, do: delete }
+- { place: "6:23", bracket: 3, do: italic }
+- { place: "6:25", do: delete }
+- { place: "7:5", do: delete }
+- { place: "7:8", do: delete }
+- { place: "7:9", do: italic }
+- { place: "7:15", do: delete }
+- { place: "7:19", do: delete }
+- { place: "7:22", do: delete }
+- { place: "8:1", do: delete }
+- { place: "8:3", do: italic }
+- { place: "8:8", do: italic }
+- { place: "8:12", do: italic }
+- { place: "8:15", do: italic }
+- { place: "8:16", do: delete }
+- { place: "8:19", do: delete }
+- { place: "8:20", do: delete }
+- { place: "9:2", do: delete }
+- { place: "9:4", do: delete }
+- { place: "9:5", do: delete }
+- { place: "9:6", do: delete }
+- { place: "9:10", do: delete }
+- { place: "9:13", do: delete }
+- { place: "9:14", do: delete }
+- { place: "9:16", do: italic }
+- place: "9:18"
+  bracket: 1
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "9:18", bracket: 2, do: delete }
+- { place: "9:22", do: delete }
+- { place: "9:26", bracket: 1, do: delete }
+- { place: "9:26", bracket: 2, do: italic }
+- { place: "9:26", bracket: 3, do: delete }
+- place: "9:27"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "9:28", do: italic }
+- place: "9:29"
+  do:
+    - replace: {text: "из Египта", italic: true}
+- { place: "10:8", do: delete }
+- { place: "10:10", do: unwrap }
+- { place: "10:11", do: italic }
+- { place: "10:13", do: delete }
+- { place: "10:20", bracket: 1, do: unwrap }
+- { place: "10:20", bracket: 2, do: italic }
+- { place: "10:22", do: delete }
+- place: "11:2"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "11:4", do: delete }
+- { place: "11:8", bracket: 1, do: italic }
+- { place: "11:8", bracket: 2, do: delete }
+- { place: "11:8", bracket: 3, do: delete }
+- { place: "11:10", do: italic }
+- { place: "11:31", do: delete }
+- { place: "11:32", do: italic }
+- { place: "12:6", do: delete }
+- { place: "12:11", do: delete }
+- { place: "12:14", do: delete }
+- { place: "12:18", bracket: 1, do: delete }
+- place: "12:18"
+  bracket: 2
+  do:
+    - replace: "и <i>пришелец</i>,"
+- { place: "12:19", do: italic }
+- { place: "12:21", do: delete }
+- { place: "12:22", do: delete }
+- { place: "12:25", do: delete }
+- { place: "12:26", do: delete }
+- { place: "13:6", do: delete }
+- { place: "13:17", do: delete }
+- { place: "13:18", do: delete }
+- { place: "14:19", do: italic }
+- { place: "14:22", do: italic }
+- { place: "14:23", do: delete }
+- { place: "14:28", do: italic }
+- { place: "15:2", do: delete }
+- { place: "15:9", do: delete }
+- place: "15:10"
+  do:
+    - replace: {text: "взаймы", italic: true}
+- { place: "15:11", do: italic }
+- { place: "15:15", do: unwrap }
+- { place: "15:20", do: delete }
+- place: "15:21"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: ", или слепота, <i>или</i>"
+- { place: "15:22", do: italic }
+- place: "16:15"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "17:8", do: delete }
+- place: "17:10"
+  do:
+    - insert: {left: ","}
+    - delete
+- place: "17:12"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "17:15", do: italic }
+- { place: "18:5", bracket: 1, do: italic }
+- { place: "18:5", bracket: 2, do: delete }
+- { place: "18:6", do: italic }
+- { place: "18:17", do: delete }
+- { place: "18:19", do: italic }
+- { place: "19:10", do: italic }
+- { place: "19:11", do: delete }
+- { place: "19:15", do: delete }
+- { place: "19:21", bracket: 1, do: italic }
+- { place: "19:21", bracket: 2, do: delete }
+- place: "20:1"
+  do:
+    - strip: {left: punct}
+    - replace: ", <i>и</i>"
+- { place: "20:4", do: italic }
+- { place: "20:17", do: delete }
+- { place: "20:19", do: italic }
+- { place: "21:3", do: italic }
+- place: "21:5"
+  do:  # FROM HEBREW
+    - strip: {inner: punct}
+    - insert: {right: ","}
+    - round
+- { place: "21:6", do: italic }
+- { place: "21:8", do: delete }
+- { place: "21:9", bracket: 1, do: italic }
+- { place: "21:9", bracket: 2, do: delete }
+- { place: "21:17", do: italic }
+- { place: "21:23", do: italic }
+- { place: "22:9", do: italic }
+- { place: "22:16", do: italic }
+- { place: "22:17", do: italic }
+- { place: "22:29", do: italic }
+- { place: "23:10", do: italic }
+- { place: "23:11", do: italic }
+- { place: "23:13", do: italic }
+- { place: "23:14", do: italic }
+- { place: "23:16", do: delete }
+- { place: "24:4", do: delete }
+- place: "24:7"
+  do:
+    - strip: {end: word, at: 7}
+- { place: "24:8", do: italic }
+- { place: "24:12", do: delete }
+- { place: "24:17", do: delete }  # WARN WE MUST HAVE RIGHT COMMA, for RST66 REMOVE-RIGHT-PUNCTUATION
+- place: "24:18"
+  do:  # FROM HEBREW
+    - insert: {left: ","}
+    - insert: {right: ","}
+    - unwrap
+- { place: "24:19", do: delete }
+- { place: "24:20", do: delete }
+- { place: "25:9", do: delete }
+- { place: "25:11", do: delete }
+- { place: "25:12", do: italic }
+- { place: "25:15", do: delete }
+- { place: "26:8", do: delete }
+- { place: "26:10", do: delete }
+- { place: "26:12", do: italic }
+- { place: "26:13", do: italic }
+- { place: "26:15", do: italic }
+- { place: "26:16", do: delete }
+- { place: "27:1", do: italic }
+- { place: "27:3", do: italic }
+- { place: "27:7", do: delete }
+- { place: "27:8", do: delete }
+- { place: "27:10", do: delete }
+- { place: "27:23", do: delete }
+- { place: "27:26", do: delete }
+- place: "28:1"
+  do:
+    - strip: {left: word, count: 2}
+    - strip: {left: punct}
+    - strip: {right: punct}
+    - delete
+- { place: "28:9", do: delete }
+- { place: "28:10", do: delete }
+- { place: "28:11", do: delete }
+- { place: "28:12", do: delete }
+- { place: "28:13", do: delete }
+- { place: "28:16", do: italic }
+- { place: "28:17", do: italic }
+- { place: "28:18", do: italic }
+- { place: "28:19", do: italic }
+- { place: "28:24", do: delete }
+- { place: "28:35", do: italic }
+- { place: "28:37", do: delete }
+- { place: "28:39", do: italic }
+- { place: "28:48", do: delete }
+- { place: "28:56", do: italic }
+- { place: "28:60", do: delete }
+- { place: "28:61", do: delete }
+- { place: "28:64", do: delete }
+- { place: "29:2", do: italic }
+- place: "29:3"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "29:4", do: delete }
+- { place: "29:9", do: delete }
+- { place: "29:10", do: delete }
+- { place: "29:20", bracket: 1, do: italic }
+- { place: "29:20", bracket: 2, do: delete }
+- { place: "29:27", bracket: 1, do: italic }
+- { place: "29:27", bracket: 2, do: delete }
+- { place: "30:4", do: delete }
+- { place: "30:5", do: delete }
+- { place: "30:8", do: delete }
+- { place: "30:9", do: delete }
+- { place: "30:10", do: delete }
+- { place: "30:16", bracket: 1, do: keep }  # НОТТР — Hebrew Old Testament Text Project
+- { place: "30:16", bracket: 2, do: delete }
+- place: "30:16"
+  do:
+    - regex: {from: "то будешь жить", to: "и будешь <i>ты</i> жить"}
+- { place: "30:18", do: delete }
+- { place: "30:20", do: delete }
+- { place: "31:1", do: italic }
+- { place: "31:4", do: delete }
+- place: "31:6"
+  bracket: 1
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "31:6"
+  bracket: 2
+  do:
+    - insert: {left: ","}
+    - italic
+- { place: "31:9", do: italic }
+- { place: "31:11", do: italic }
+- { place: "31:14", do: delete }
+- { place: "31:15", do: delete }
+- { place: "31:17", do: delete }
+- { place: "31:18", do: italic }
+- { place: "31:19", do: italic }
+- place: "31:20"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "31:21", do: delete }
+- { place: "31:23", do: italic }
+- { place: "31:28", do: delete }
+- { place: "31:29", do: delete }
+- { place: "32:4", do: italic }
+- { place: "32:15", do: delete }
+- { place: "32:16", do: delete }
+- { place: "32:19", do: delete }
+- { place: "32:20", do: italic }
+- { place: "32:37", do: italic }
+- { place: "32:38", do: italic }
+- { place: "32:39", do: delete }
+- { place: "32:40", do: delete }
+- { place: "32:43", bracket: 1, do: delete }
+- place: "32:43"
+  bracket: 2
+  do:
+    - strip: {right: punct}
+    - insert: {left: ";"}
+    - delete
+- { place: "32:43", bracket: 3, do: delete }
+- { place: "32:43", bracket: 4, do: delete }
+- { place: "32:44", bracket: 1, do: delete }
+- { place: "32:44", bracket: 2, do: italic }
+- { place: "33:3", do: italic }
+- { place: "33:6", do: delete }
+- { place: "33:12", do: italic }
+- place: "33:27"
+  bracket: 1
+  do:
+    - replace: "<i>твое</i> &mdash;"
+- { place: "33:27", bracket: 2, do: italic }
+- { place: "34:2", do: italic }
+- { place: "34:8", do: delete }
+
+06-joshua.dat:
+- { place: "1:11", do: italic }
+- { place: "1:15", do: delete }
+- { place: "2:1", bracket: 1, do: italic }
+- { place: "2:1", bracket: 2, do: delete }
+- { place: "2:3", do: delete }
+- { place: "2:10", do: delete }
+- { place: "2:11", do: italic }
+- { place: "2:12", do: delete }
+- { place: "2:14", do: delete }
+- { place: "2:16", do: italic }
+- { place: "2:19", do: italic }
+- { place: "2:20", do: delete }
+- { place: "2:23", do: italic }
+- { place: "2:24", do: delete }
+- { place: "3:3", do: delete }
+- { place: "3:5", do: delete }
+- { place: "3:6", bracket: 1, do: delete }
+- { place: "3:6", bracket: 2, do: italic }
+- { place: "3:6", bracket: 3, do: delete }
+- { place: "3:7", do: italic }
+- { place: "3:14", do: delete }
+- { place: "3:15", do: delete }
+- { place: "3:17", do: italic }
+- { place: "4:5", do: italic }
+- { place: "4:6", do: delete }
+- { place: "4:7", do: delete }
+- { place: "4:9", bracket: 1, do: italic }
+- { place: "4:9", bracket: 2, do: delete }
+- { place: "4:10", do: delete }
+- { place: "4:11", do: italic }
+- { place: "4:23", do: delete }
+- { place: "5:1", do: delete }
+- place: "5:2"
+  do:  # FROM HEBREW
+    - strip: {left: word}
+    - unwrap
+- place: "5:3"
+  bracket: 1
+  do:  # FROM HEBREW
+    - strip: {left: word}
+    - unwrap
+- { place: "5:3", bracket: 2, do: italic }
+- place: "5:4"
+  do:
+    - replace: {text: "сынов Израилевых", italic: true}
+- place: "5:6"
+  bracket: 1
+  do:
+    - strip: {right: word}
+    - replace: "лет"
+- place: "5:6"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:7", do: delete }
+- { place: "5:14", do: italic }
+- { place: "5:16", do: italic }
+- { place: "6:1", do: italic }
+- { place: "6:2", do: italic }
+- { place: "6:4", do: italic }
+- { place: "6:5", do: italic }
+- { place: "6:6", do: delete }
+- { place: "6:7", do: delete }
+- { place: "6:8", do: delete }
+- { place: "6:10", do: italic }
+- { place: "6:11", do: italic }
+- { place: "6:12", do: italic }
+- { place: "6:16", do: delete }
+- { place: "6:17", do: italic }
+- { place: "6:19", bracket: 1, do: delete }
+- { place: "6:19", bracket: 2, do: delete }
+- { place: "6:19", bracket: 3, do: delete }
+- { place: "6:19", bracket: 4, do: italic }
+- { place: "6:19", bracket: 5, do: delete }
+- { place: "6:20", do: italic }
+- { place: "6:22", bracket: 1, do: italic }
+- { place: "6:22", bracket: 2, do: delete }
+- place: "6:23"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "6:25", do: delete }
+- { place: "7:1", bracket: 1, do: delete }
+- { place: "7:1", bracket: 2, do: italic }
+- { place: "7:3", do: italic }
+- { place: "7:14", do: italic }
+- { place: "7:17", do: italic }
+- { place: "7:21", do: delete }
+- { place: "7:22", do: delete }
+- { place: "7:24", do: delete }
+- { place: "8:5", do: italic }
+- { place: "8:11", do: delete }
+- { place: "8:14", do: delete }
+- { place: "8:18", do: delete }
+- { place: "8:21", do: italic }
+- { place: "8:27", do: italic }
+- { place: "8:29", do: italic }
+- { place: "8:32", do: italic }
+- place: "8:33"
+  bracket: 1
+  do:
+    - insert: {right: ","}
+    - italic
+- { place: "8:33", bracket: 2, do: delete }
+- { place: "8:34", do: italic }
+- { place: "8:35", bracket: 1, do: italic }
+- { place: "8:35", bracket: 2, do: delete }
+- { place: "9:1", do: delete }
+- { place: "9:5", do: delete }
+- { place: "9:6", do: italic }
+- { place: "9:10", bracket: 1, do: italic }
+- { place: "9:10", bracket: 2, do: italic }
+- { place: "9:10", bracket: 3, do: delete }
+- { place: "9:11", do: italic }
+- { place: "9:17", do: italic }
+- place: "9:18"
+  bracket: 1
+  do:
+    - capitalize
+    - delete
+- { place: "9:18", bracket: 2, do: delete }
+- { place: "9:18", bracket: 3, do: italic }
+- { place: "9:21", do: italic }
+- { place: "9:23", do: delete }
+- { place: "9:24", do: delete }
+- { place: "9:27", bracket: 1, do: delete }
+- { place: "9:27", bracket: 2, do: delete }
+- { place: "9:27", bracket: 3, do: italic }
+- { place: "10:1", do: delete }
+- { place: "10:2", do: italic }
+- { place: "10:6", do: italic }
+- { place: "10:9", do: italic }
+- { place: "10:11", do: delete }
+- { place: "10:12", do: delete }
+- { place: "10:14", do: italic }
+- { place: "10:19", do: delete }
+- { place: "10:28", bracket: 1, do: italic }
+- { place: "10:28", bracket: 2, do: delete }
+- { place: "10:30", do: delete }
+- { place: "10:32", do: delete }
+- { place: "10:33", bracket: 1, do: italic }
+- { place: "10:33", bracket: 2, do: delete }
+- { place: "10:35", do: delete }
+- { place: "10:39", do: delete }
+- { place: "11:6", do: italic }
+- { place: "11:8", do: delete }
+- { place: "11:10", do: round }
+- { place: "11:11", do: delete }
+- { place: "11:14", do: delete }  # NOTICE IN RST "всех их"	IS "<i>всех</i> их"
+- { place: "11:16", do: delete }
+- { place: "11:19", do: delete }
+- { place: "11:21", do: delete }
+- { place: "11:22", do: italic }
+- { place: "12:7", do: italic }
+- { place: "13:2", do: delete }
+- { place: "13:5", do: delete }
+- { place: "13:7", do: delete }
+- { place: "13:8", do: delete }
+- { place: "13:13", do: delete }
+- place: "13:15"
+  do:
+    - capitalize
+    - delete
+- { place: "13:21", do: italic }
+- { place: "13:31", do: italic }
+- { place: "14:2", do: italic }
+- { place: "14:3", do: italic }
+- { place: "14:4", do: italic }
+- { place: "14:12", do: italic }
+- { place: "14:13", do: delete }
+- { place: "14:14", do: italic }
+- { place: "15:3", do: delete }
+- { place: "15:5", do: delete }
+- place: "15:10"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "15:11", do: delete }
+- { place: "15:13", bracket: 1, do: italic }
+- { place: "15:13", bracket: 2, do: delete }
+- { place: "15:14", do: delete }
+- { place: "15:15", bracket: 1, do: delete }
+- { place: "15:15", bracket: 2, do: round }
+- { place: "15:17", do: delete }
+- { place: "15:28", do: delete }
+- { place: "15:35", do: delete }
+- { place: "15:44", do: delete }
+- { place: "15:59", do: keep }  # НОТТР — Hebrew Old Testament Text Project
+- { place: "15:60", do: delete }
+- { place: "16:5", do: delete }
+- { place: "16:10", bracket: 1, do: italic }
+- { place: "16:10", bracket: 2, do: delete }
+- { place: "17:3", do: italic }
+- { place: "17:6", do: delete }
+- { place: "17:7", do: delete }
+- { place: "17:11", do: delete }
+- { place: "17:15", do: italic }
+- place: "17:18"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "18:9", do: delete }
+- { place: "18:11", do: italic }
+- { place: "19:9", do: italic }
+- { place: "19:27", do: delete }
+- { place: "19:33", do: italic }
+- { place: "19:47", do: delete }
+- { place: "19:48", do: delete }
+- { place: "20:3", bracket: 1, do: italic }
+- place: "20:3"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - strip: {right: punct}
+    - delete
+- place: "20:3"
+  bracket: 3
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "20:9", do: italic }
+- place: "21:9"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "21:10", do: unwrap }
+- { place: "21:36", do: delete }
+- { place: "21:42", do: delete }
+- { place: "22:16", do: delete }
+- { place: "22:18", do: italic }
+- { place: "22:23", do: delete }
+- { place: "22:28", do: delete }
+- { place: "22:30", do: delete }
+- { place: "22:32", do: delete }
+- { place: "22:33", do: delete }
+- { place: "22:34", do: delete }
+- { place: "23:1", do: delete }
+- { place: "23:2", do: italic }
+- place: "23:5"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "23:7", do: italic }
+- { place: "23:16", do: italic }
+- { place: "24:1", do: italic }
+- { place: "24:4", do: delete }
+- { place: "24:6", do: italic }
+- { place: "24:7", do: delete }
+- place: "24:15"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "24:19", do: delete }
+- { place: "24:25", do: delete }
+- { place: "24:27", do: delete }
+- { place: "24:30", do: delete }
+- { place: "24:33", bracket: 1, do: unwrap }
+- { place: "24:33", bracket: 2, do: delete }
+
+07-judges.dat:
+- { place: "1:7", do: italic }
+- { place: "1:10", bracket: 1, do: round }
+- { place: "1:10", bracket: 2, do: delete }
+- { place: "1:15", bracket: 1, do: italic }
+- place: "1:15"
+  bracket: 2
+  do:
+    - replace: {text: "Халев", italic: true}
+- { place: "1:16", do: italic }
+- { place: "1:18", do: delete }
+- place: "1:20"
+  do:
+    - strip: {right: word, count: 2}
+    - replace: "и изгнал <i>он</i>"
+- place: "1:23"
+  bracket: 1
+  do:
+    - capitalize
+    - delete
+- place: "1:23"
+  bracket: 2
+  do:
+    - round
+    - strip: {left: punct}
+    - delete
+- { place: "1:24", do: delete }
+- { place: "1:26", do: delete }
+- place: "1:27"
+  do:
+    - strip: {left: punct}
+    - strip: {right: punct}
+    - delete
+- { place: "1:29", do: delete }
+- place: "1:31"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "1:35"
+  bracket: 1
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "1:35", bracket: 2, do: italic }
+- { place: "2:1", bracket: 1, do: delete }
+- { place: "2:1", bracket: 2, do: delete }
+- { place: "2:1", bracket: 3, do: italic }
+- { place: "2:2", do: delete }
+- { place: "2:3", do: delete }
+- { place: "2:6", do: delete }
+- { place: "2:16", do: italic }
+- { place: "2:17", do: delete }
+- { place: "2:19", do: delete }
+- place: "2:21"
+  do:
+    - insert: {end: "—"}
+    - delete
+- place: "3:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "3:10", do: delete }
+- { place: "3:13", do: delete }
+- { place: "3:17", do: delete }
+- { place: "3:20", bracket: 1, do: delete }
+- { place: "3:20", bracket: 2, do: italic }
+- { place: "3:20", bracket: 3, do: delete }
+- { place: "3:21", do: delete }
+- { place: "3:26", do: delete }
+- place: "3:27"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "3:28", do: delete }
+- { place: "3:30", do: delete }
+- { place: "4:5", do: delete }
+- { place: "4:6", do: italic }
+- { place: "4:7", do: italic }
+- place: "4:8"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "4:9", bracket: 1, do: italic }
+- { place: "4:9", bracket: 2, do: delete }
+- { place: "4:15", do: delete }
+- { place: "4:16", do: italic }
+- { place: "4:18", do: delete }
+- { place: "4:19", do: italic }
+- { place: "4:20", do: italic }
+- { place: "4:23", do: delete }
+- { place: "5:26", do: italic }
+- { place: "6:13", do: delete }
+- { place: "6:15", do: italic }
+- { place: "6:17", do: unwrap }
+- { place: "6:26", do: delete }
+- { place: "6:33", do: italic }
+- place: "7:15"
+  do:
+    - insert: {right: ","}
+    - italic
+- { place: "7:18", do: italic }
+- { place: "8:2", do: unwrap }
+- { place: "8:4", do: delete }
+- { place: "8:19", do: unwrap }
+- { place: "8:24", do: round }
+- { place: "8:26", do: italic }
+- { place: "9:19", do: delete }
+- { place: "9:35", do: delete }
+- { place: "9:54", do: italic }
+- place: "10:4"
+  bracket: 1
+  do:
+    - strip: {right: word}
+    - insert: {right: ","}
+    - replace: "сыновей"
+- { place: "10:4", bracket: 2, do: delete }
+- place: "10:4"
+  bracket: 3
+  do:
+    - strip: {right: word}
+    - replace: "городов"
+- { place: "10:16", do: delete }
+- place: "11:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "11:14", do: delete }
+- { place: "11:26", do: italic }
+- { place: "11:35", do: italic }
+- { place: "12:9", do: italic }
+- { place: "13:11", occurrence: 2, do: italic }
+- place: "14:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "14:10", do: delete }
+- { place: "15:6", do: delete }
+- place: "16:3"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "16:9", do: round }
+- { place: "16:12", do: round }
+- place: "16:13"
+  occurrence: 2
+  do:  # НОТТР — Hebrew Old Testament Text Project
+    - pull-in: 4
+- place: "16:14"
+  bracket: 1
+  do:  # НОТТР — Hebrew Old Testament Text Project
+    - strip: {inner: punct}
+    - insert: {inner: "и воткала в ткань"}
+- place: "16:14"
+  bracket: 1
+  do:
+    - strip: {right: word, count: 5}
+    - insert: {right: "и прибила гвоздем,"}
+    - keep
+- place: "16:14"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "16:15", do: italic }
+- { place: "16:19", do: italic }
+- { place: "16:25", do: delete }
+- { place: "16:26", do: delete }
+- { place: "16:30", do: italic }
+- { place: "16:31", do: delete }
+- { place: "17:3", do: delete }
+- { place: "18:8", do: delete }
+- { place: "18:20", do: delete }
+- { place: "18:22", do: delete }
+- { place: "18:23", do: italic }
+- { place: "18:24", do: italic }
+- { place: "18:27", do: italic }
+- { place: "18:28", do: italic }
+- { place: "19:8", bracket: 1, do: italic }
+- { place: "19:8", bracket: 2, do: delete }
+- { place: "19:21", do: italic }
+- { place: "19:28", do: italic }
+- { place: "19:30", do: delete }
+- { place: "20:2", do: delete }
+- { place: "20:5", do: delete }
+- { place: "20:9", do: italic }
+- { place: "20:18", occurrence: 2, do: italic }
+- { place: "20:32", occurrence: 2, do: delete }
+- { place: "20:45", do: italic }
+- { place: "20:47", do: italic }
+- { place: "20:48", do: delete }
+- place: "21:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "21:14", bracket: 1, do: delete }
+- { place: "21:14", bracket: 2, do: italic }
+
+08-ruth.dat:
+- { place: "1:5", do: italic }
+- { place: "1:14", do: delete }
+- { place: "1:15", do: italic }
+- { place: "1:18", do: italic }
+- { place: "2:16", do: delete }
+- { place: "2:18", do: italic }
+- { place: "2:19", occurrence: 2, do: italic }
+- { place: "2:21", do: delete }
+- { place: "2:23", do: italic }
+- { place: "3:3", do: italic }
+- { place: "3:5", do: italic }
+- { place: "3:9", do: italic }
+- { place: "3:10", bracket: 1, do: italic }
+- { place: "3:10", bracket: 2, do: delete }
+- { place: "3:15", do: italic }
+- { place: "3:16", do: italic }
+- { place: "3:17", do: italic }
+- { place: "4:1", do: italic }
+- { place: "4:2", do: italic }
+- { place: "4:3", do: italic }
+- { place: "4:7", do: delete }
+- { place: "4:8", do: delete }
+
+09-1samuel.dat:
+- { place: "1:3", do: italic }
+- place: "1:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "1:7", do: delete }
+- { place: "1:8", do: delete }
+- { place: "1:9", do: delete }
+- { place: "1:11", do: delete }
+- { place: "1:14", do: delete }
+- { place: "1:20", bracket: 1, do: italic }
+- { place: "1:20", bracket: 2, do: delete }
+- { place: "1:21", bracket: 1, do: delete }
+- place: "1:21"
+  bracket: 2
+  do:
+    - strip: {left: word}
+    - delete
+- { place: "1:22", do: delete }
+- { place: "1:23", do: italic }
+- place: "1:24"
+  bracket: 1
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "1:24", bracket: 2, do: delete }
+- place: "1:25"
+  bracket: 1
+  do:
+    - capitalize
+    - delete
+- { place: "1:25", bracket: 2, do: delete }
+- { place: "2:10", do: delete }
+- place: "2:11"
+  do:
+    - capitalize
+    - delete
+- { place: "2:23", do: delete }
+- { place: "2:24", do: delete }
+- { place: "2:31", do: delete }
+- place: "3:4"
+  do:
+    - strip: {left: punct}
+    - insert: {left: "."}
+    - delete
+- place: "3:6"
+  do:
+    - strip: {left: punct}
+    - insert: {left: "."}
+    - delete
+- { place: "3:9", do: italic }
+- { place: "3:10", occurrence: 2, do: italic }
+- { place: "3:15", do: delete }
+- { place: "3:18", do: italic }
+- { place: "3:21", do: delete }
+- { place: "4:1", do: delete }
+- { place: "4:21", do: italic }
+- { place: "5:4", bracket: 1, do: delete }
+- { place: "5:4", bracket: 2, do: italic }
+- place: "5:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "5:6"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:8", occurrence: 2, bracket: 1, do: delete }
+- place: "5:8"
+  occurrence: 2
+  bracket: 2
+  do:  # FROM HEBREW
+    - strip: {right: word, count: 2}
+    - insert: {right: "."}
+    - replace: {text: "в Геф", italic: true}
+- place: "5:11"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "6:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "6:2"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "6:3", do: delete }
+- place: "6:19"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "7:8", do: delete }
+- { place: "7:9", do: delete }
+- { place: "9:24", do: italic }
+- place: "9:25"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "10:1", do: delete }
+- { place: "10:5", do: delete }
+- { place: "11:1", do: delete }
+- { place: "11:10", do: italic }
+- { place: "12:6", do: italic }
+- place: "12:14"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "13:15", do: delete }
+- { place: "13:16", do: delete }
+- { place: "13:22", do: delete }
+- { place: "14:15", do: delete }
+- { place: "14:19", do: italic }
+- { place: "14:23", do: delete }
+- { place: "14:24", do: delete }
+- { place: "14:34", do: delete }
+- { place: "14:41", do: delete }
+- { place: "14:42", do: delete }
+- place: "14:47"
+  do:
+    - insert: {left: ","}
+    - delete
+- place: "15:3"
+  bracket: 1
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "15:3", bracket: 2, do: delete }
+- { place: "15:8", do: delete }
+- { place: "15:12", do: delete }
+- { place: "15:23", do: delete }
+- { place: "15:25", do: delete }
+- { place: "15:27", do: italic }
+- { place: "15:30", do: italic }
+- { place: "16:3", do: delete }
+- { place: "17:36", do: delete }
+- { place: "17:43", do: delete }
+- { place: "17:46", do: delete }
+- { place: "18:28", do: delete }
+- { place: "19:18", do: delete }
+- { place: "19:22", do: delete }
+- { place: "20:2", do: italic }
+- { place: "20:43", do: italic }
+- place: "21:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "21:9", occurrence: 2, do: delete }
+- { place: "21:13", do: delete }
+- { place: "23:3", do: delete }
+- { place: "23:6", do: delete }
+- { place: "23:9", do: delete }
+- { place: "24:9", do: italic }
+- { place: "25:4", do: delete }
+- { place: "25:6", do: delete }
+- { place: "25:10", do: delete }
+- { place: "25:11", do: delete }
+- { place: "25:31", do: delete }
+- { place: "26:1", do: delete }
+- { place: "26:4", do: delete }
+- { place: "26:5", do: delete }
+- { place: "26:7", do: italic }
+- { place: "26:24", do: delete }
+- { place: "28:13", do: delete }
+- place: "28:15"
+  occurrence: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "29:10"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "29:11", do: italic }
+- { place: "30:2", do: italic }
+- place: "30:16"
+  do:
+    - capitalize
+    - delete
+- place: "30:17"
+  do:
+    - capitalize
+    - delete
+- { place: "30:24", do: delete }
+- { place: "30:27", do: delete }
+- { place: "30:28", do: delete }
+- { place: "30:29", do: delete }
+- { place: "31:9", do: delete }
+
+10-2samuel.dat:
+- { place: "1:2", do: italic }
+- { place: "1:10", do: delete }
+- { place: "1:11", do: delete }
+- { place: "1:21", do: italic }
+- place: "2:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "2:23", do: delete }
+- place: "3:2"
+  do:
+    - strip: {right: word}
+    - replace: "сыновья"
+- { place: "3:3", do: italic }
+- place: "3:7"
+  bracket: 1
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "3:7", bracket: 2, do: italic }
+- { place: "3:9", do: delete }
+- place: "3:12"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "3:13", do: italic }
+- { place: "4:1", do: italic }
+- { place: "4:2", do: italic }
+- place: "4:6"
+  do:
+    - strip: {right: punct}
+    - capitalize
+    - delete
+- { place: "4:7", do: italic }
+- { place: "4:8", do: delete }
+- place: "4:10"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:3", do: delete }
+- { place: "5:8", do: italic }
+- place: "5:16"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:21", bracket: 1, do: italic }
+- { place: "5:21", bracket: 2, do: delete }
+- place: "5:23"
+  do:
+    - lowercase
+    - delete
+- { place: "6:4", do: delete }
+- place: "6:6"
+  do:
+    - strip: {left: punct}
+    - strip: {right: punct}
+    - delete
+- { place: "6:19", do: delete }
+- place: "6:20"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "6:21", do: delete }
+- place: "7:18"
+  do:  # FROM HEBREW
+    - strip: {right: punct}
+    - insert: {left: ","}
+    - unwrap
+- place: "7:29"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "8:3", do: italic }
+- { place: "8:4", do: italic }
+- { place: "8:7", do: delete }
+- place: "8:8"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "9:6", do: delete }
+- { place: "9:8", do: italic }
+- { place: "9:11", occurrence: 2, do: italic }
+- { place: "10:6", do: delete }
+- { place: "10:16", do: delete }
+- place: "11:11"
+  do:
+    - insert: {left: ","}
+    - delete
+- { place: "11:21", do: delete }
+- place: "11:22"
+  bracket: 1
+  do:
+    - replace: {text: "посланный", italic: true}
+- place: "11:22"
+  bracket: 2
+  do:
+    - strip: {left: word, count: 4}
+    - strip: {left: punct}
+    - insert: {left: "."}
+    - delete
+- { place: "12:1", do: delete }
+- { place: "12:4", do: italic }
+- place: "12:7"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "12:8", do: italic }
+- { place: "12:21", do: delete }
+- { place: "12:24", do: delete }
+- { place: "13:16", bracket: 1, do: italic }
+- place: "13:16"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "13:21"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "13:27"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "13:32", do: delete }
+- { place: "13:34", occurrence: 2, do: delete }
+- { place: "13:37", do: delete }
+- place: "14:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "14:5", occurrence: 2, do: delete }
+- { place: "14:20", do: delete }
+- { place: "14:21", do: italic }
+- { place: "14:27", do: delete }
+- { place: "14:30", bracket: 1, do: italic }
+- { place: "14:30", bracket: 2, do: delete }
+- place: "14:33"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "15:16", do: italic }
+- { place: "15:20", bracket: 1, do: delete }
+- { place: "15:20", bracket: 2, do: italic }
+- { place: "15:23", do: delete }
+- { place: "15:24", do: delete }
+- place: "15:25"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "15:31"
+  do:
+    - insert: {left: "!"}
+    - delete
+- { place: "15:34", do: delete }
+- { place: "16:6", do: italic }
+- { place: "16:10", do: delete }
+- { place: "16:18", do: delete }
+- { place: "17:8", do: delete }
+- { place: "17:28", do: delete }
+- { place: "18:7", do: italic }
+- { place: "18:23", do: italic }
+- { place: "18:23", occurrence: 2, do: italic }
+- { place: "18:29", occurrence: 2, do: italic }
+- { place: "18:31", do: delete }
+- { place: "19:8", do: delete }
+- { place: "19:9", do: delete }
+- { place: "19:10", do: delete }
+- { place: "19:17", do: delete }
+- { place: "19:18", do: delete }
+- { place: "19:24", bracket: 1, do: italic }
+- { place: "19:24", bracket: 2, do: delete }
+- { place: "19:37", do: delete }
+- { place: "19:42", do: delete }
+- { place: "19:43", do: delete }
+- { place: "20:12", do: delete }
+- place: "20:14"
+  do:  # NOTICE: WHY NO IT?
+    - replace: "люди"
+- { place: "20:18", do: delete }
+- { place: "20:19", do: italic }
+- { place: "20:22", bracket: 1, do: delete }
+- { place: "20:22", bracket: 2, do: italic }
+- { place: "21:6", do: delete }
+- { place: "21:9", do: delete }
+- { place: "21:11", do: delete }
+- { place: "21:13", do: delete }
+- { place: "21:14", do: delete }
+- { place: "21:17", do: delete }
+- { place: "22:7", do: delete }
+- place: "22:8"
+  do:
+    - replace: "Он"
+- { place: "22:15", do: italic }
+- { place: "23:24", do: delete }
+- { place: "24:2", do: delete }
+- { place: "24:14", do: delete }
+- place: "24:15"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "24:16", do: delete }
+- { place: "24:17", do: delete }
+- { place: "24:19", do: delete }
+- { place: "24:25", do: delete }
+
+11-1kings.dat:
+- { place: "1:48", do: delete }
+- place: "2:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "2:22"
+  do:
+    - replace: {text: "друзья", italic: true}
+- { place: "2:29", do: delete }
+- { place: "2:35", do: delete }
+- { place: "3:1", do: delete }
+- { place: "3:15", do: delete }
+- { place: "5:18", do: delete }
+- { place: "6:37", do: delete }
+- { place: "8:16", do: delete }
+- { place: "8:27", do: delete }
+- { place: "8:52", do: delete }
+- { place: "8:56", do: delete }
+- { place: "8:59", do: delete }
+- place: "8:65"
+  do:
+    - strip: {left: punct}
+    - insert: {left: ","}
+    - delete
+- place: "9:3"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "9:20", bracket: 1, do: delete }
+- place: "9:20"
+  bracket: 2
+  do:
+    - strip: {left: word, count: 2}
+    - strip: {left: punct}
+    - replace: "и Иевусеев"
+- { place: "10:24", do: italic }
+- { place: "10:26", do: delete }
+- { place: "11:10", do: delete }
+- place: "11:18"
+  do:
+    - capitalize
+    - delete
+- { place: "11:22", occurrence: 2, do: delete }
+- { place: "12:3", do: delete }
+- { place: "12:20", bracket: 1, do: delete }
+- { place: "12:20", bracket: 2, do: italic }
+- { place: "12:28", do: italic }
+- place: "12:30"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "13:6", do: delete }
+- { place: "14:3", do: delete }
+- { place: "14:16", do: italic }
+- { place: "14:26", do: delete }
+- place: "16:33"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "17:1", do: delete }
+- { place: "18:22", do: delete }
+- place: "18:24"
+  occurrence: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "18:29", do: delete }
+- { place: "18:33", do: delete }
+- { place: "18:34", do: delete }
+- { place: "18:36", do: delete }
+- { place: "18:37", do: italic }
+- { place: "18:44", occurrence: 2, do: italic }
+- place: "18:45"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "19:2", do: delete }
+- { place: "19:5", do: delete }
+- { place: "19:7", do: delete }
+- place: "19:12"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "19:18", do: italic }
+- { place: "19:19", do: italic }
+- { place: "19:20", do: italic }
+- { place: "20:14", occurrence: 3, do: italic }
+- { place: "20:15", do: italic }
+- { place: "20:23", do: delete }
+- { place: "21:4", do: delete }
+- place: "21:6"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "21:16", do: delete }
+- { place: "21:20", occurrence: 2, do: delete }
+- place: "21:21"
+  do:
+    - replace: "Так <i>говорит</i> Господь:"
+- { place: "21:27", do: delete }
+- { place: "21:28", do: delete }
+- { place: "22:19", bracket: 1, do: italic }
+- { place: "22:19", bracket: 2, do: delete }
+- { place: "22:48", do: delete }
+- { place: "22:51", do: delete }
+
+12-2kings.dat:
+- { place: "1:2", do: delete }
+- place: "1:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "1:17"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "4:41", do: italic }
+- { place: "5:5", do: italic }
+- { place: "6:32", do: italic }
+- { place: "7:13", do: round }
+- { place: "8:13", do: delete }
+- { place: "9:15", do: italic }
+- place: "9:16"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "10:6", do: round }
+- { place: "13:18", do: italic }
+- { place: "15:19", do: italic }
+- { place: "19:16", do: delete }
+- { place: "19:29", do: italic }
+- place: "20:2"
+  do:
+    - strip: {inner: punct}
+    - italic
+- place: "23:16"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "23:33"
+  do:
+    - strip: {right: word}
+    - replace: "талант"
+
+13-1chronicles.dat:
+- { place: "1:5", do: delete }
+- place: "1:17"
+  do:
+    - strip: {left: word, count: 2}
+    - replace: ", Арам,"
+- { place: "1:18", do: delete }
+- place: "1:24"
+  bracket: 1
+  do:
+    - strip: {right: word}
+    - replace: "Сим,"
+- { place: "1:24", bracket: 2, do: delete }
+- { place: "1:32", do: delete }
+- place: "1:36"
+  do:  # FROM HEBREW
+    - strip: {left: punct}
+    - strip: {right: word}
+    - replace: ", Фимна, Амалик"
+- { place: "1:41", do: delete }
+- { place: "2:19", do: delete }
+- place: "2:35"
+  do:
+    - replace: "рабу своему,"
+- { place: "4:12", do: delete }
+- place: "6:27"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "8:29", do: delete }
+- { place: "8:30", do: delete }
+- { place: "9:41", do: italic }
+- { place: "11:22", do: keep }
+- { place: "13:2", do: italic }
+- { place: "16:27", do: delete }
+- { place: "26:7", do: delete }
+
+14-2chronicles.dat:
+- { place: "2:13", do: italic }
+- { place: "3:7", do: delete }
+- { place: "3:9", do: delete }
+- { place: "4:11", do: delete }
+- place: "6:2"
+  do:
+    - strip: {left: punct}
+    - insert: {right: "—"}
+    - delete
+- { place: "6:16", do: italic }
+- { place: "7:18", do: italic }
+- { place: "9:19", do: italic }
+- { place: "9:27", do: delete }
+- { place: "10:7", do: delete }
+- { place: "10:11", do: italic }
+- { place: "10:14", do: italic }
+- { place: "11:22", do: italic }
+- { place: "13:5", do: delete }
+- { place: "14:4", do: italic }
+- { place: "15:8", do: delete }
+- { place: "19:3", do: italic }
+- place: "21:9"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "22:9", do: italic }
+- { place: "23:14", do: delete }
+- { place: "23:18", do: delete }
+- { place: "24:21", do: delete }
+- { place: "26:18", do: italic }
+- { place: "28:6", do: delete }
+- { place: "28:13", do: italic }
+- { place: "29:9", do: delete }
+- { place: "30:9", do: italic }
+- { place: "30:14", do: italic }
+- { place: "30:16", do: italic }
+- { place: "32:4", do: delete }
+- { place: "35:8", do: italic }
+- { place: "35:9", do: italic }
+- { place: "35:20", do: delete }
+- { place: "36:1", do: delete }
+- { place: "36:2", do: delete }
+- place: "36:3"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "36:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "36:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "36:8", do: delete }
+- { place: "36:17", do: delete }
+- { place: "36:23", do: italic }
+
+16-ezra.dat:
+- { place: "2:6", do: italic }
+- { place: "4:10", do: delete }
+- { place: "7:23", do: delete }
+- { place: "8:5", do: keep }  # НОТТР — Hebrew Old Testament Text Project
+- { place: "8:10", do: keep }  # НОТТР — Hebrew Old Testament Text Project
+
+17-nehemiah.dat:
+- { place: "9:6", do: delete }
+- { place: "9:8", do: delete }
+
+21-esther.dat:
+- { place: "1:1", do: delete }
+- { place: "2:3", do: delete }
+- { place: "2:21", do: delete }
+- place: "3:7"
+  bracket: 1
+  do:
+    - capitalize
+    - delete
+- place: "3:7"
+  bracket: 2
+  do:
+    - replace: {text: "и пал жребий", italic: true}
+- { place: "3:12", do: delete }
+- place: "4:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "4:2", do: delete }
+- place: "4:8"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "5:1"
+  bracket: 1
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "5:1"
+  bracket: 2
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "5:1"
+  bracket: 3
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "5:2"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:4", do: delete }
+- { place: "5:8", do: delete }
+- { place: "6:1", bracket: 1, do: unwrap }
+- { place: "6:1", bracket: 2, do: delete }
+- place: "6:4"
+  do:
+    - capitalize
+    - delete
+- { place: "6:10", do: delete }
+- place: "6:13"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "9:19"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "9:26", do: delete }
+
+22-job.dat:
+- { place: "1:5", do: delete }
+- { place: "1:21", do: delete }
+- { place: "2:8", do: delete }
+- place: "20:21"
+  do:
+    - regex: {from: "спаслось", to: "спасалось"}
+- place: "20:21"
+  do:
+    - regex: {from: "зато", to: "за то"}
+- { place: "38:1", do: delete }
+
+23-psalms.dat:
+- place: "1:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "2:11", do: delete }
+- { place: "4:8", do: delete }
+- { place: "7:3", do: delete }
+- { place: "7:12", do: delete }
+- { place: "9:2", do: italic }
+- { place: "9:33", bracket: 1, do: italic }
+- { place: "9:33", bracket: 2, do: delete }
+- { place: "10:4", do: delete }
+- { place: "11:2", do: delete }
+- { place: "12:3", do: italic }
+- place: "12:6"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "13:5", do: delete }
+- { place: "16:1", do: delete }
+- { place: "16:7", do: italic }
+- { place: "17:7", do: delete }
+- { place: "17:8", do: italic }
+- { place: "19:5", do: delete }
+- { place: "19:10", do: italic }
+- { place: "20:9", do: delete }
+- { place: "20:12", do: italic }
+- { place: "21:2", do: delete }
+- { place: "21:31", do: italic }
+- { place: "22:6", do: delete }
+- { place: "23:0", do: delete }
+- { place: "23:4", do: delete }
+- { place: "24:2", do: delete }
+- { place: "25:11", do: delete }
+- { place: "26:0", do: delete }
+- { place: "26:4", do: delete }
+- { place: "28:0", do: delete }
+- { place: "29:9", do: delete }
+- { place: "30:1", do: delete }
+- place: "32:10"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "33:10", do: delete }
+- { place: "33:18", do: italic }
+- { place: "34:25", do: delete }
+- { place: "36:28", do: delete }
+- { place: "37:1", do: delete }
+- { place: "37:17", do: italic }
+- { place: "40:2", do: delete }
+- place: "44:6"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "45:7", do: italic }
+- { place: "47:12", bracket: 1, do: delete }
+- { place: "47:12", bracket: 2, do: italic }
+- { place: "49:21", do: italic }
+- { place: "50:8", do: delete }
+- place: "50:20"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "51:7", do: italic }
+- { place: "51:8", do: italic }
+- { place: "54:24", do: italic }
+- { place: "55:14", do: delete }
+- { place: "64:2", do: italic }
+- place: "65:4"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "67:14", do: italic }
+- { place: "67:36", do: italic }
+- { place: "68:2", do: italic }
+- { place: "68:4", do: italic }
+- { place: "68:31", do: italic }
+- { place: "69:4", do: italic }
+- place: "70:8"
+  do:
+    - replace: {text: "чтобы воспевать", italic: true}
+- { place: "70:14", do: italic }
+- place: "70:21"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "71:0", do: delete }
+- { place: "71:17", bracket: 1, do: delete }
+- { place: "71:17", bracket: 2, do: italic }
+- place: "72:13"
+  do:
+    - capitalize
+    - delete
+- { place: "72:28", do: delete }
+- place: "73:14"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "74:6", bracket: 1, do: italic }
+- { place: "74:6", bracket: 2, do: delete }
+- { place: "76:14", do: italic }
+- { place: "87:8", do: italic }
+- { place: "88:2", do: italic }
+- { place: "92:1", do: italic }
+- place: "94:1"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "97:0", do: delete }
+- { place: "97:3", do: delete }
+- { place: "99:0", do: delete }
+- { place: "101:3", do: unwrap }
+- { place: "101:26", do: delete }
+- { place: "102:11", do: italic }
+- { place: "102:20", do: italic }
+- { place: "103:10", do: delete }
+- { place: "103:22", do: italic }
+- { place: "104:8", do: italic }
+- { place: "104:27", do: italic }
+- { place: "104:39", do: italic }
+- { place: "105:12", do: italic }
+- { place: "105:23", do: italic }
+- { place: "105:43", do: italic }
+- place: "107:2"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "108:25", do: delete }
+- { place: "110:1", do: italic }
+- { place: "113:5", do: italic }
+- { place: "113:11", do: delete }
+- { place: "113:17", do: italic }
+- { place: "113:20", do: unwrap }
+- { place: "113:26", do: delete }
+- place: "116:2"
+  do:
+    - insert: {right: "—"}
+    - delete
+- { place: "117:2", bracket: 1, do: italic }
+- { place: "117:2", bracket: 2, do: delete }
+- { place: "117:3", do: delete }
+- { place: "117:4", do: delete }
+- { place: "117:12", do: delete }
+- place: "117:28"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "118:24"
+  do:
+    - strip: {right: word}
+    - delete
+- { place: "118:49", do: unwrap }
+- place: "118:68"
+  do:
+    - strip: {right: punct}
+    - delete
+- { place: "118:145", do: italic }
+- { place: "120:7", do: italic }
+- { place: "124:3", do: italic }
+- { place: "131:13", do: italic }
+- { place: "133:1", do: delete }
+- place: "137:1"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "138:6", do: italic }
+- place: "142:0"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "142:8"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "143:0", do: delete }
+- { place: "144:1", do: italic }
+- { place: "144:13", do: delete }
+- place: "145:0"
+  do:  # FROM HEBREW
+    - replace: "Аллилуия."
+- { place: "145:4", do: italic }
+- { place: "146:5", do: italic }
+- { place: "146:8", do: delete }
+- { place: "148:0", do: unwrap }  # FROM HEBREW
+- { place: "148:5", do: delete }
+- { place: "149:0", do: unwrap }  # FROM HEBREW
+- { place: "150:0", do: unwrap }  # FROM HEBREW
+
+24-proverbs.dat:
+- { place: "1:7", do: delete }
+- { place: "3:15", do: delete }
+- { place: "3:16", do: delete }
+- { place: "3:28", do: delete }
+- { place: "5:2", do: delete }
+- place: "5:3"
+  do:
+    - strip: {begin: word}
+    - insert: {begin: "Ибо"}
+- { place: "5:16", do: italic }
+- { place: "6:8", do: delete }
+- { place: "6:11", do: delete }
+- { place: "6:25", do: delete }
+- { place: "7:1", do: delete }
+- { place: "7:22", do: delete }
+- { place: "8:21", do: delete }
+- place: "9:12"
+  do:
+    - capitalize
+    - delete
+- { place: "9:18", do: delete }
+- { place: "11:2", do: delete }
+- { place: "11:16", do: delete }
+- { place: "12:11", do: delete }
+- { place: "12:13", do: delete }
+- { place: "13:9", do: delete }
+- place: "14:22"
+  do:
+    - capitalize
+    - delete
+- { place: "15:1", do: delete }
+- { place: "15:5", do: delete }
+- { place: "15:28", do: delete }
+- { place: "16:5", do: delete }
+- place: "16:30"
+  do:
+    - strip: {left: punct}
+    - delete
+- place: "17:5"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "17:6", do: delete }
+- { place: "17:16", do: delete }
+- { place: "18:22", bracket: 1, do: italic }
+- { place: "18:22", bracket: 2, do: delete }
+- { place: "19:1", do: italic }
+- { place: "22:8", do: delete }
+- { place: "22:9", do: delete }
+- { place: "23:35", do: italic }
+- { place: "25:10", do: delete }
+- { place: "25:19", do: italic }
+- { place: "25:20", do: delete }
+- { place: "25:22", do: italic }
+- { place: "27:20", do: delete }
+- { place: "27:21", do: delete }
+- { place: "30:31", do: delete }
+
+25-ecclesiastes.dat:
+- { place: "5:5", do: italic }
+- { place: "9:2", do: italic }
+
+29-isaiah.dat:
+- { place: "1:3", do: italic }
+- { place: "22:15", do: italic }
+- { place: "40:5", do: keep }  # НОТТР — Hebrew Old Testament Text Project
+- { place: "44:2", do: italic }
+- { place: "44:13", do: italic }
+- place: "53:1"
+  do:
+    - capitalize
+    - delete
+- { place: "60:1", do: italic }
+- place: "66:3"
+  do:
+    - capitalize
+    - delete
+
+30-jeremiah.dat:
+- { place: "2:29", do: delete }
+- place: "2:30"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "5:13", do: italic }
+- { place: "33:2", do: italic }
+
+34-ezekiel.dat:
+- place: "1:2"
+  do:
+    - strip: {left: punct}
+    - round
+- place: "1:7"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "7:2", do: italic }
+- { place: "8:2", do: italic }
+- place: "10:1"
+  do:
+    - strip: {begin: word, count: 2}
+    - insert: {begin: "Видел"}
+- { place: "39:16", do: delete }
+
+35-daniel.dat:
+- place: "3:24"
+  do:
+    - strip: {left: punct}
+    - delete
+- { place: "3:28", do: italic }
+- { place: "3:30", do: delete }
+
+36-hosea.dat:
+- { place: "1:9", do: italic }
+- { place: "9:11", do: italic }
+- { place: "12:5", do: delete }
+
+43-habakkuk.dat:
+- { place: "3:19", do: round }
+
+46-zechariah.dat:
+- { place: "14:18", do: delete }
+
+52-matthew.dat:
+- { place: "2:9", do: unwrap }
+- { place: "8:18", do: keep }
+- { place: "16:20", do: keep }
+
+53-mark.dat:
+- place: "5:7"
+  do:
+    - insert: {begin: "и, "}
+
+55-john.dat:
+- { place: "6:64", do: round }
+
+56-acts.dat:
+- { place: "7:13", do: keep }
+- { place: "11:13", do: keep }
+- { place: "12:25", do: keep }
+- place: "15:20"
+  do:
+    - insert: {begin: "а "}
+- { place: "15:34", do: keep }
+- { place: "18:21", do: keep }
+- { place: "26:23", do: keep }
+
+58-1peter.dat:
+- { place: "1:13", do: keep }
+- { place: "2:25", do: keep }
+- { place: "3:12", do: keep }
+- { place: "4:3", do: keep }
+
+60-1john.dat:
+- { place: "4:2", do: keep }
+- { place: "5:12", do: keep }
+
+63-jude.dat:
+- { place: "1:16", do: keep }
+- { place: "1:19", do: keep }
+
+64-romans.dat:
+- { place: "15:9", do: keep }
+
+67-galatians.dat:
+- { place: "4:4", do: keep }
+- { place: "5:20", do: keep }
+
+73-1timothy.dat:
+- { place: "1:10", do: keep }
+- { place: "1:14", do: keep }
+
+76-philemon.dat:
+- { place: "1:2", do: keep }
+
+77-hebrews.dat:
+- { place: "1:3", do: keep }
+- { place: "11:7", do: keep }
+- { place: "11:11", do: keep }
+- { place: "11:31", do: keep }
+- { place: "11:32", do: keep }
+- { place: "12:20", do: keep }
+- { place: "13:20", do: keep }
+
+78-revelation.dat:
+- { place: "2:11", do: keep }
+- { place: "2:17", do: keep }
+- { place: "2:29", do: keep }
+- place: "18:23"
+  do:
+    - insert: {begin: "и "}

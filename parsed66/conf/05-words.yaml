@@ -1,0 +1,115 @@
+# Word replacements (accentuation, spelling corrections) for the 66-book edition.
+# Each entry replaces a word at the given chapter:verse position.
+#   occurrence: which verse line when the same place repeats (from place/N)
+#   num: N to replace N-th word match, *N to expect exactly N total matches
+01-genesis.dat:
+- place: 35:11
+  from: чресл
+  to: чресел    # всего 26 мест, почем не исправлено везде?
+- place: 45:22
+  from: сребреников
+  to: серебреников
+- place: 46:26
+  from: чресл
+  to: чресел
+02-exodus.dat:
+# - place: 18:6
+#   from: и
+#   to: а    # очень похоже на опечатку, т.к. не читаеся
+#   num: 1
+- place: 28:42
+  from: чресл
+  to: чресел
+05-deuteronomy.dat:
+- place: 3:24
+  from: Владыко
+  to: Владыка
+06-joshua.dat:
+- place: 10:39
+  from: нем
+  to: <i>Давире</i>
+07-judges.dat:
+- place: 3:31
+  from: него
+  to: <i>Аода</i>
+09-1samuel.dat:
+- place: 25:15
+  from: быв
+  to: будучи
+10-2samuel.dat:
+- place: 6:19
+  from: раздал
+  to: роздал
+- place: 15:20
+  from: истину
+  to: истина
+11-1kings.dat:
+- place: 19:21
+  from: раздал
+  to: роздал
+- place: 21:1
+  from: Изреели
+  to: Изрееле
+21-esther.dat:
+- place: 2:18
+  from: раздал
+  to: роздал
+22-job.dat:
+- place: 42:3
+  from: омрачающий
+  to: помрачающий
+# 23-psalms.dat:
+# - place: 144:1
+#   from: Царь
+#   to: Царю    # RBS66, очень вероятно, что опечатка
+24-proverbs.dat:
+- place: 25:21
+  from: напой
+  to: напои
+# 29-isaiah.dat:
+# - place: 10:16
+#   from: За то
+#   to: Зато    # опечатка
+# - place: 10:17
+#   from: Святой
+#   to: Святый    # похоже забыли исправить, в доругих местах остался Святой
+30-jeremiah.dat:
+- place: 2:3
+  from: поедавшие
+  to: поядавшие
+- place: 2:30
+  from: поедал
+  to: поядал
+- place: 25:15
+  from: напой
+  to: напои
+# 53-mark.dat:
+# - place: 12:33
+#   from: крепостью
+#   to: крепостию    # опечатка
+54-luke.dat:
+- place: 12:18
+  from: все
+  to: всё
+55-john.dat:
+- place: 1:45
+  from: писал
+  to: писали
+- place: 6:11
+  from: роздал
+  to: раздал
+56-acts.dat:
+- place: 14:15
+  from: все
+  to: всё    # только в РБО66, но это правильно, почему нет в РБО77 &  МП -- не понятно
+- place: 27:40
+  from: якоря
+  to: якори    # возможно ошибка
+# - place: 28:23
+#   from: о
+#   to: об    # опечатка??
+#   num: 2
+77-hebrews.dat:
+- place: 10:39
+  from: ко
+  to: к    # recheck

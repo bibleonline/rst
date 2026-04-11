@@ -7,6 +7,7 @@ use utf8;
 use v5.10;
 use FindBin qw/$Bin/;
 use open ':std', ':encoding(UTF-8)';
+use YAML::PP;
 
 run();
 
@@ -15,8 +16,29 @@ run();
 sub run {
     my $data = load_rules();
 
+    validate_rule_files($data);
+
     for my $file ( sort keys %{$data} ) {
         process_file( $file, $data->{$file} );
+    }
+
+    return;
+}
+
+sub validate_rule_files {
+    my ($data) = @_;
+
+    my @missing;
+    for my $file ( sort keys %{$data} ) {
+        my $path = "$Bin/../$file";
+        if ( !-f $path ) {
+            push @missing, $file;
+        }
+    }
+
+    if (@missing) {
+        die "Unknown files in rules:\n"
+            . join( "\n", map {"  $_"} @missing ) . "\n";
     }
 
     return;
@@ -25,33 +47,20 @@ sub run {
 # --- Config loading ---
 
 sub load_rules {
-    my $data      = {};
-    my @conffiles = glob "$Bin/../conf/05-*.conf";
+    my $yp   = YAML::PP->new;
+    my $raw  = $yp->load_file("$Bin/../conf/05-words.yaml");
+    my $data = {};
 
-    for my $conffile (@conffiles) {
-        my @lines = read_lines($conffile);
-        for (@lines) {
-            next if /^\#/;
-            my ( $file, $place, $text ) = /(\S+[.]dat)\s+(\S+)\s+(.+)/;
-            next if !defined $file;
+    for my $file ( keys %{$raw} ) {
+        for my $entry ( @{ $raw->{$file} } ) {
+            my $place = $entry->{place};
 
-            my $place_n = 0;
-            if ( $place =~ m{(.*)/(\d+)} ) {
-                ( $place, $place_n ) = ( $1, $2 );
+            my $rule = { from => $entry->{from}, to => $entry->{to} };
+            if ( exists $entry->{num} ) {
+                $rule->{num} = $entry->{num};
             }
-
-            $text =~ s/\s+\#.*//;
-            $text =~ s/\s+$//;
-
-            my ( $from, $to ) = split /\s+=>\s+/, $text;
-
-            my $rule = { from => $from, to => $to };
-            if ( $from =~ /(.+)\[(\S+)\]/ ) {
-                $rule->{from} = $1;
-                $rule->{num}  = $2;
-            }
-            if ($place_n) {
-                $rule->{place} = $place_n;
+            if ( exists $entry->{occurrence} ) {
+                $rule->{place} = $entry->{occurrence};
             }
 
             $data->{$file}->{$place} ||= [];

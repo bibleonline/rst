@@ -4,12 +4,12 @@ use strict;
 use warnings FATAL => 'all';
 use autodie qw(:io);
 use Config::General;
+use YAML::PP;
 use v5.10;
 use Readonly;
 use FindBin qw/$Bin/;
 
-Readonly::Scalar my $SPLIT_LIMIT => 3;
-Readonly::Scalar my $NO_MATCH    => -1;
+Readonly::Scalar my $NO_MATCH => -1;
 
 Readonly::Scalar my $ACTION_REMOVE       => 'remove';
 Readonly::Scalar my $ACTION_KEEP         => 'keep';
@@ -19,7 +19,7 @@ Readonly::Scalar my $ACTION_ROUND_SQUARE => 'round';
 Readonly::Scalar my $SRC_DIR         => "$Bin/../../parsed";
 Readonly::Scalar my $DST_DIR         => "$Bin/..";
 Readonly::Scalar my $BOOK_CONF_PATH  => "$Bin/../../parsed/description.conf";
-Readonly::Scalar my $RULES_CONF_PATH => "$Bin/../conf/01-rules.conf";
+Readonly::Scalar my $RULES_CONF_PATH => "$Bin/../conf/01-rules.yaml";
 Readonly::Scalar my $DST_CONF_PATH   => "$Bin/../description.conf";
 
 Readonly::Scalar my $BOOK_DESCRIPTION_TPL => <<'TPL';
@@ -41,6 +41,8 @@ sub run {
     my $book_conf = load_config($BOOK_CONF_PATH);
     my $rules     = load_rules($RULES_CONF_PATH);
     my @books     = get_canonical_books($book_conf);
+
+    validate_rule_files( $rules, @books );
 
     my $description = q{};
     my $book_id     = 0;
@@ -68,13 +70,36 @@ sub load_config {
 sub load_rules {
     my ($path) = @_;
 
-    my $de = load_config($path)->{DE};
+    my $yp   = YAML::PP->new;
+    my $data = $yp->load_file($path);
 
     return {
-        chaps   => parse_chapter_rules( $de->{chaps} ),
-        replace => parse_replace_rules( $de->{replace} ),
-        verse   => parse_verse_rules( $de->{verse} ),
+        chaps   => parse_chapter_rules( $data->{chaps} ),
+        replace => parse_replace_rules( $data->{replace} ),
+        verse   => parse_verse_rules( $data->{verse} ),
     };
+}
+
+sub validate_rule_files {
+    my ( $rules, @books ) = @_;
+
+    my %known = map { $_->{File} => 1 } @books;
+    my @errors;
+
+    for my $section ( sort keys %{$rules} ) {
+        for my $file ( sort keys %{ $rules->{$section} } ) {
+            if ( !$known{$file} ) {
+                push @errors, "$section: $file";
+            }
+        }
+    }
+
+    if (@errors) {
+        die "Unknown files in rules:\n"
+            . join( "\n", map {"  $_"} @errors ) . "\n";
+    }
+
+    return;
 }
 
 # --- Rule parsing ---
@@ -84,8 +109,7 @@ sub parse_chapter_rules {
 
     my $result = {};
     for my $file ( keys %{$raw} ) {
-        my $chapters = ensure_arrayref( $raw->{$file} );
-        $result->{$file} = { map { $_ => $ACTION_REMOVE } @{$chapters} };
+        $result->{$file} = { map { $_ => $ACTION_REMOVE } @{ $raw->{$file} } };
     }
 
     return $result;
@@ -96,14 +120,13 @@ sub parse_replace_rules {
 
     my $result = {};
     for my $file ( keys %{$raw} ) {
-        my $entries    = ensure_arrayref( $raw->{$file} );
         my $file_rules = {};
 
-        for my $entry ( @{$entries} ) {
-            for my $line ( @{ ensure_arrayref($entry) } ) {
-                my ( $place, $from, $to ) = split /\s+/, $line, $SPLIT_LIMIT;
-                $file_rules->{$place} = { from => qr/$from/, to => $to };
-            }
+        for my $entry ( @{ $raw->{$file} } ) {
+            $file_rules->{ $entry->{place} } = {
+                from => qr/$entry->{from}/,
+                to   => $entry->{to},
+            };
         }
 
         $result->{$file} = $file_rules;
@@ -117,17 +140,21 @@ sub parse_verse_rules {
 
     my $result = {};
     for my $file ( keys %{$raw} ) {
-        my $entries   = ensure_arrayref( $raw->{$file} );
         my $verse_map = {};
 
-        for my $entry ( @{$entries} ) {
-            my ( $chapter, $verse_spec ) = split /:/, $entry, 2;
-            my $type = $ACTION_REMOVE;
+        for my $entry ( @{ $raw->{$file} } ) {
+            my ( $spec, $type );
 
-            if ( $verse_spec =~ /(\S+)\s+(\S+)/ ) {
-                ( $verse_spec, $type ) = ( $1, $2 );
+            if ( ref $entry eq 'HASH' ) {
+                $spec = $entry->{spec};
+                $type = $entry->{action};
+            }
+            else {
+                $spec = $entry;
+                $type = $ACTION_REMOVE;
             }
 
+            my ( $chapter, $verse_spec ) = split /:/, $spec, 2;
             expand_verse_spec( $verse_map, $chapter, $verse_spec, $type );
         }
 
@@ -383,12 +410,6 @@ sub write_file {
 }
 
 # --- Utilities ---
-
-sub ensure_arrayref {
-    my ($val) = @_;
-
-    return ref $val eq 'ARRAY' ? $val : [$val];
-}
 
 sub rule_lookup {
     my ( $hash, @keys ) = @_;

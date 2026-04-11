@@ -7,5 +7,8 @@ severity = 1
 [-ErrorHandling::RequireCarping]
 [-ValuesAndExpressions::ProhibitVersionStrings]
 
+[ValuesAndExpressions::ProhibitMagicNumbers]
+allowed_values = 0 1 2 3
+
 [InputOutput::RequireCheckedSyscalls]
 exclude_functions = say print

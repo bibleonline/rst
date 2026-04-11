@@ -8,6 +8,7 @@ use v5.10;
 use English qw(-no_match_vars);
 use FindBin qw/$Bin/;
 use open ':std', ':encoding(UTF-8)';
+use YAML::PP;
 local $OUTPUT_AUTOFLUSH = 1;
 
 run();
@@ -15,10 +16,31 @@ run();
 # --- Entry point ---
 
 sub run {
-    my $data = load_rules("$Bin/../conf/03-fix-text.conf");
+    my $data = load_rules("$Bin/../conf/03-fix-text.yaml");
+
+    validate_rule_files($data);
 
     for my $file ( sort keys %{$data} ) {
         process_file( $file, $data->{$file} );
+    }
+
+    return;
+}
+
+sub validate_rule_files {
+    my ($data) = @_;
+
+    my @missing;
+    for my $file ( sort keys %{$data} ) {
+        my $path = "$Bin/../$file";
+        if ( !-f $path ) {
+            push @missing, $file;
+        }
+    }
+
+    if (@missing) {
+        die "Unknown files in rules:\n"
+            . join( "\n", map {"  $_"} @missing ) . "\n";
     }
 
     return;
@@ -29,11 +51,13 @@ sub run {
 sub load_rules {
     my ($path) = @_;
 
-    my $data  = {};
-    my @lines = read_lines($path);
-    for (@lines) {
-        if (/(\S+[.]dat)#(\S+)#(.+)/) {
-            $data->{$1}->{$2} = $3;
+    my $yp   = YAML::PP->new;
+    my $raw  = $yp->load_file($path);
+    my $data = {};
+
+    for my $file ( keys %{$raw} ) {
+        for my $entry ( @{ $raw->{$file} } ) {
+            $data->{$file}->{ $entry->{place} } = $entry->{text};
         }
     }
 
