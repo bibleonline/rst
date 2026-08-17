@@ -1,0 +1,240 @@
+genesis:
+  3:
+    20: "RBS66"
+  16:
+    14: "RBS66"
+  22:
+    14: "RBS66"
+  28:
+    19: "RBS66"
+  42:
+    9: "RBS66"
+  47:
+    31: "RBS66"
+  49:
+    21: "RBS66"
+exodus:
+  6:
+    3: "RBS66"
+  13:
+    4: "RBS66"
+  15:
+    23: "RBS66"
+  17:
+    7: "RBS77"
+    15: "RBS66"
+  21:
+    6: "RBS66"
+  25:
+    7: "RBS66"
+  28:
+    4:
+      - "RBS66/ефод"
+      - "RBS66/хитон"
+      - "RBS66/кидар"
+numbers:
+  11:
+    3: "RBS66"
+    34: "RBS66"
+  13:
+    25: "RBS66"
+  21:
+    3: "RBS66"
+    16: "RBS66"
+deuteronomy:
+  32:
+    8: "RBS66"
+joshua:
+  22:
+    34: "RBS66"
+judges:
+  2:
+    5: "RBS66"
+  6:
+    24: "RBS66"
+  14:
+    12: "RBS66"
+  15:
+    17: "RBS66"
+ruth:
+  1:
+    20:
+      - "RBS66/Ноеминью"
+      - "RBS66/Марою"
+1samuel:
+  Desc:
+    Header: "RBS66"
+  4:
+    21: "RBS66"
+  7:
+    12: "RBS66"
+  14:
+    18: "RBS66"
+  22:
+    18: "RBS66"
+  23:
+    28: "RBS66"
+  25:
+    25: "RBS66"
+2samuel:
+  Desc:
+    Header: "RBS66"
+  6:
+    1: "RBS66"
+  8:
+    4: "RBS66"
+  12:
+    25: "RBS66"
+1kings:
+  Desc:
+    Header: "RBS66"
+  6:
+    5: "RBS66"
+  10:
+    26: "RBS66"
+  11:
+    32: "RBS66"
+2kings:
+  Desc:
+    Header: "RBS66"
+1chronicles:
+  Desc:
+    Header: "RBS66"
+2chronicles:
+  Desc:
+    Header: "RBS66"
+ezra:
+  4:
+    10: "PR"
+job:
+  2:
+    9: "RBS66"
+  9:
+    9: "RBS66"
+psalms:
+  Desc:
+    Header: "RBS66"
+  1:
+    5: "RBS66"
+  2:
+    6: "RBS66"
+  39:
+    7: "RBS66"
+  67:
+    2: "RBS66"
+  71:
+    8: "RBS66"
+    17: "RBS66"
+  81:
+    8: "RBS66"
+  86:
+    2: "RBS66/его"
+    4: "RBS66/Рааве"
+  96:
+    7: "RBS66"
+  109:
+    3: "RBS66"
+  137:
+    1: "RBS66"
+isaiah:
+  8:
+    1: "RBS66"
+  9:
+    6: "RBS66"
+  30:
+    4: "RBS66"
+  34:
+    4: "RBS66"
+  42:
+    4: "RBS66"
+  61:
+    1: "RBS66"
+  65:
+    11: "RBS66"
+jeremiah:
+  8:
+    2: "RBS66"
+  11:
+    15: "RBS66"
+  20:
+    3:
+      - "RBS66/«Пасхор»"
+      - "RBS66/Миссавив»"
+  27:
+    1: "RBS66"
+  52:
+    31: "RBS66"
+letterofjeremiah:
+  Desc:
+    Header: "RBS66"
+ezekiel:
+  10:
+    13: "RBS66"
+  11:
+    3: "RBS66"
+hosea:
+  1:
+    6: "RBS66"
+    9: "RBS66"
+  2:
+    16: "RBS66"
+matthew:
+  2:
+    1: "RBS66"
+  3:
+    12: "RBS66"
+  5:
+    22:
+      - "RBS66/«рака»"
+      - "RBS66/синедриону"
+    46: "RBS66"
+  6:
+    24: "RBS66"
+  8:
+    28: "RBS66"
+  10:
+    29: "RBS66"
+  16:
+    18: "RBS66"
+    25: "RBS66"
+  17:
+    24: "RBS66"
+    27: "RBS66"
+  18:
+    24: "RBS66"
+  21:
+    9: "RBS66"
+  23:
+    5: "RBS66"
+  26:
+    59: "RBS66"
+  27:
+    27: "RBS66"
+    59: "RBS66"
+luke:
+  19:
+    13: "RBS66"
+john:
+  5:
+    2: "RBS66"
+  19:
+    13: "RBS66"
+acts:
+  2:
+    10: "RBS66"
+  6:
+    1: "RBS66"
+1corinthians:
+  16:
+    22: "RBS66"
+revelation:
+  Desc:
+    Header: "RBS66"
+  1:
+    13: "RBS66"
+  6:
+    6:
+      - "RBS66/хиникс"
+      - "RBS66/динарий"
+  9:
+    11: "RBS66"
