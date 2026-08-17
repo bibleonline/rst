@@ -6,7 +6,8 @@ use warnings FATAL => 'all';
 use Carp;
 use FindBin qw($Bin);
 use JSON;
-use Config::General;
+use YAML::PP;
+use Encode qw(encode_utf8);
 use Readonly;
 use autodie qw(:io);
 use File::Slurp;
@@ -33,7 +34,10 @@ Readonly my $RE_CHAP => qr{
         </span>}smx;
 my $data = decode_json( read_file "$Bin/../source/syn.json" );
 
-my $deut = { Config::General->new("$Bin/deuterocanonical.conf")->getall };
+my $deut  = YAML::PP->new->load_file("$Bin/deuterocanonical.yaml");
+my $codes = YAML::PP->new->load_file("$Bin/usfm-codes.yaml")->{codes};
+my $name_fix = YAML::PP->new->load_file("$Bin/book-names-fix.yaml")->{names};
+$name_fix = { map { $_ => encode_utf8( $name_fix->{$_} ) } keys %{$name_fix} };
 
 my $id = 0;
 my @description;
@@ -102,22 +106,53 @@ foreach my $book ( @{ $data->{books} } ) {
     # store description
     my $outfile = sprintf '%02d-%s.dat', ++$id, lc $eng;
     $outfile =~ s/\s//gxsm;
-    my $additional = $EMPTY;
-    if ( exists $chaps{0} ) {
-        $additional = sprintf "% 10s    %s\n", qw/Prologue Yes/;
-    }
-    my @elems     = qw/id File Eng Rus Testament Chapters/;
-    my $desc_mask = sprintf "<book-%%d>\n%s\n%%s</book-%%d>\n", join "\n", map { sprintf '% 10s    %%s', $_ } @elems;
-    push @description, sprintf $desc_mask, $id, $id, $outfile, $eng, $rus,
-        exists $deut->{Books}->{$id} ? 'DE' : $id > $LAST_OT_ID ? 'NT' : 'OT',
-        scalar @{ $book->{chapters} } - ( exists $chaps{0} ? 1 : 0 ),
-        $additional, $id;
+    ( my $slug = $outfile ) =~ s/\A\d+-//sm;
+    $slug =~ s/[.]dat\z//sm;
+    my $usfm = $codes->{$slug}
+        or croak "no USFM code for book slug '$slug' in usfm-codes.yaml";
+    push @description, {
+        id        => $id,
+        file      => $outfile,
+        usfm      => $usfm,
+        eng       => $eng,
+        rus       => $name_fix->{$slug} // $rus,
+        testament => exists $deut->{books}->{$id} ? 'DE' : $id > $LAST_OT_ID ? 'NT' : 'OT',
+        chapters  => scalar @{ $book->{chapters} } - ( exists $chaps{0} ? 1 : 0 ),
+        exists $chaps{0} ? ( prologue => 1 ) : (),
+    };
     open my $fh, q{>}, "$PRSD_DIR/$outfile";
     printf {$fh} "%s\n", join "\n#p#\n", map { join "\n", @{$_} } @list;
     close $fh;
 }
-open my $desc_fh, q{>}, "$PRSD_DIR/description.conf";
-print {$desc_fh} join $EMPTY, @description;
-close $desc_fh;
+write_description( "$PRSD_DIR/description.yaml", \@description );
+
+# Записать описание книг в YAML. Порядок полей фиксирован (не алфавитный):
+# так диффы описаний разных составов сравнимы глазами.
+sub write_description {
+    my ( $path, $books ) = @_;
+
+    my @out = (
+        '# Сгенерировано scripts/10-parse-sources.pl — не редактировать руками.',
+        'books:',
+    );
+    foreach my $b ( @{$books} ) {
+        push @out, sprintf '  - id: %d',      $b->{id};
+        push @out, sprintf '    file: %s',    $b->{file};
+        push @out, sprintf '    usfm: %s',    $b->{usfm};
+        push @out, sprintf '    eng: %s',     $b->{eng};
+        push @out, sprintf '    rus: %s',     $b->{rus};
+        push @out, sprintf '    testament: %s', $b->{testament};
+        push @out, sprintf '    chapters: %d', $b->{chapters};
+        if ( $b->{prologue} ) {
+            push @out, '    prologue: true';
+        }
+    }
+
+    open my $fh, q{>}, $path;
+    printf {$fh} "%s\n", join "\n", @out;
+    close $fh;
+
+    return;
+}
 
 1;

@@ -46,7 +46,8 @@ perl ../scripts/20-fix-parsed/033-replace.pl 033-replace-yo.conf
 # 034-wrong-text-act9-19.sh
 perl -p -i -e 's/# /#/' *dat
 # /034
-patch  < ../scripts/20-fix-parsed/035-name-of-book-ecc.patch
+# 035-name-of-book-ecc: больше не нужен — имя книги правится при генерации
+# описания через scripts/book-names-fix.yaml
 patch  < ../scripts/20-fix-parsed/036-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/037-upper-case.patch
 # skup 038

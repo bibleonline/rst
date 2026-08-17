@@ -1,0 +1,465 @@
+# Сгенерировано parsed66/scripts/update-01.pl — не редактировать руками.
+books:
+  - id: 1
+    file: 01-genesis.dat
+    usfm: gen
+    eng: Genesis
+    rus: Бытие
+    testament: OT
+    chapters: 50
+  - id: 2
+    file: 02-exodus.dat
+    usfm: exo
+    eng: Exodus
+    rus: Исход
+    testament: OT
+    chapters: 40
+  - id: 3
+    file: 03-leviticus.dat
+    usfm: lev
+    eng: Leviticus
+    rus: Левит
+    testament: OT
+    chapters: 27
+  - id: 4
+    file: 04-numbers.dat
+    usfm: num
+    eng: Numbers
+    rus: Числа
+    testament: OT
+    chapters: 36
+  - id: 5
+    file: 05-deuteronomy.dat
+    usfm: deu
+    eng: Deuteronomy
+    rus: Второзаконие
+    testament: OT
+    chapters: 34
+  - id: 6
+    file: 06-joshua.dat
+    usfm: jos
+    eng: Joshua
+    rus: Книга Иисуса Навина
+    testament: OT
+    chapters: 24
+  - id: 7
+    file: 07-judges.dat
+    usfm: jdg
+    eng: Judges
+    rus: Книга Судей Израилевых
+    testament: OT
+    chapters: 21
+  - id: 8
+    file: 08-ruth.dat
+    usfm: rut
+    eng: Ruth
+    rus: Книга Руфи
+    testament: OT
+    chapters: 4
+  - id: 9
+    file: 09-1samuel.dat
+    usfm: 1sa
+    eng: 1 Samuel
+    rus: Первая книга Царств
+    testament: OT
+    chapters: 31
+  - id: 10
+    file: 10-2samuel.dat
+    usfm: 2sa
+    eng: 2 Samuel
+    rus: Вторая книга Царств
+    testament: OT
+    chapters: 24
+  - id: 11
+    file: 11-1kings.dat
+    usfm: 1ki
+    eng: 1 Kings
+    rus: Третья книга Царств
+    testament: OT
+    chapters: 22
+  - id: 12
+    file: 12-2kings.dat
+    usfm: 2ki
+    eng: 2 Kings
+    rus: Четвертая книга Царств
+    testament: OT
+    chapters: 25
+  - id: 13
+    file: 13-1chronicles.dat
+    usfm: 1ch
+    eng: 1 Chronicles
+    rus: Первая книга Паралипоменон
+    testament: OT
+    chapters: 29
+  - id: 14
+    file: 14-2chronicles.dat
+    usfm: 2ch
+    eng: 2 Chronicles
+    rus: Вторая книга Паралипоменон
+    testament: OT
+    chapters: 36
+  - id: 15
+    file: 16-ezra.dat
+    usfm: ezr
+    eng: Ezra
+    rus: Первая книга Ездры
+    testament: OT
+    chapters: 10
+  - id: 16
+    file: 17-nehemiah.dat
+    usfm: neh
+    eng: Nehemiah
+    rus: Книга Неемии
+    testament: OT
+    chapters: 13
+  - id: 17
+    file: 21-esther.dat
+    usfm: est
+    eng: Esther
+    rus: Книга Есфири
+    testament: OT
+    chapters: 10
+    prologue: true
+  - id: 18
+    file: 22-job.dat
+    usfm: job
+    eng: Job
+    rus: Книга Иова
+    testament: OT
+    chapters: 42
+  - id: 19
+    file: 23-psalms.dat
+    usfm: psa
+    eng: Psalms
+    rus: Псалтирь
+    testament: OT
+    chapters: 151
+  - id: 20
+    file: 24-proverbs.dat
+    usfm: pro
+    eng: Proverbs
+    rus: Притчи Соломона
+    testament: OT
+    chapters: 31
+  - id: 21
+    file: 25-ecclesiastes.dat
+    usfm: ecc
+    eng: Ecclesiastes
+    rus: Книга Екклесиаста, или Проповедника
+    testament: OT
+    chapters: 12
+  - id: 22
+    file: 26-songofsolomon.dat
+    usfm: sng
+    eng: Song of Solomon
+    rus: Песнь песней Соломона
+    testament: OT
+    chapters: 8
+  - id: 23
+    file: 29-isaiah.dat
+    usfm: isa
+    eng: Isaiah
+    rus: Книга пророка Исаии
+    testament: OT
+    chapters: 66
+  - id: 24
+    file: 30-jeremiah.dat
+    usfm: jer
+    eng: Jeremiah
+    rus: Книга пророка Иеремии
+    testament: OT
+    chapters: 52
+  - id: 25
+    file: 31-lamentations.dat
+    usfm: lam
+    eng: Lamentations
+    rus: Плач Иеремии
+    testament: OT
+    chapters: 5
+  - id: 26
+    file: 34-ezekiel.dat
+    usfm: ezk
+    eng: Ezekiel
+    rus: Книга пророка Иезекииля
+    testament: OT
+    chapters: 48
+  - id: 27
+    file: 35-daniel.dat
+    usfm: dan
+    eng: Daniel
+    rus: Книга пророка Даниила
+    testament: OT
+    chapters: 14
+  - id: 28
+    file: 36-hosea.dat
+    usfm: hos
+    eng: Hosea
+    rus: Книга пророка Осии
+    testament: OT
+    chapters: 14
+  - id: 29
+    file: 37-joel.dat
+    usfm: jol
+    eng: Joel
+    rus: Книга пророка Иоиля
+    testament: OT
+    chapters: 3
+  - id: 30
+    file: 38-amos.dat
+    usfm: amo
+    eng: Amos
+    rus: Книга пророка Амоса
+    testament: OT
+    chapters: 9
+  - id: 31
+    file: 39-obadiah.dat
+    usfm: oba
+    eng: Obadiah
+    rus: Книга пророка Авдия
+    testament: OT
+    chapters: 1
+  - id: 32
+    file: 40-jonah.dat
+    usfm: jon
+    eng: Jonah
+    rus: Книга пророка Ионы
+    testament: OT
+    chapters: 4
+  - id: 33
+    file: 41-micah.dat
+    usfm: mic
+    eng: Micah
+    rus: Книга пророка Михея
+    testament: OT
+    chapters: 7
+  - id: 34
+    file: 42-nahum.dat
+    usfm: nam
+    eng: Nahum
+    rus: Книга пророка Наума
+    testament: OT
+    chapters: 3
+  - id: 35
+    file: 43-habakkuk.dat
+    usfm: hab
+    eng: Habakkuk
+    rus: Книга пророка Аввакума
+    testament: OT
+    chapters: 3
+  - id: 36
+    file: 44-zephaniah.dat
+    usfm: zep
+    eng: Zephaniah
+    rus: Книга пророка Софонии
+    testament: OT
+    chapters: 3
+  - id: 37
+    file: 45-haggai.dat
+    usfm: hag
+    eng: Haggai
+    rus: Книга пророка Аггея
+    testament: OT
+    chapters: 2
+  - id: 38
+    file: 46-zechariah.dat
+    usfm: zec
+    eng: Zechariah
+    rus: Книга пророка Захарии
+    testament: OT
+    chapters: 14
+  - id: 39
+    file: 47-malachi.dat
+    usfm: mal
+    eng: Malachi
+    rus: Книга пророка Малахии
+    testament: OT
+    chapters: 4
+  - id: 40
+    file: 52-matthew.dat
+    usfm: mat
+    eng: Matthew
+    rus: От Матфея святое благовествование
+    testament: NT
+    chapters: 28
+  - id: 41
+    file: 53-mark.dat
+    usfm: mrk
+    eng: Mark
+    rus: От Марка святое благовествование
+    testament: NT
+    chapters: 16
+  - id: 42
+    file: 54-luke.dat
+    usfm: luk
+    eng: Luke
+    rus: От Луки святое благовествование
+    testament: NT
+    chapters: 24
+  - id: 43
+    file: 55-john.dat
+    usfm: jhn
+    eng: John
+    rus: От Иоанна святое благовествование
+    testament: NT
+    chapters: 21
+  - id: 44
+    file: 56-acts.dat
+    usfm: act
+    eng: Acts
+    rus: Деяния святых апостолов
+    testament: NT
+    chapters: 28
+  - id: 45
+    file: 57-james.dat
+    usfm: jas
+    eng: James
+    rus: Послание Иакова
+    testament: NT
+    chapters: 5
+  - id: 46
+    file: 58-1peter.dat
+    usfm: 1pe
+    eng: 1 Peter
+    rus: Первое послание Петра
+    testament: NT
+    chapters: 5
+  - id: 47
+    file: 59-2peter.dat
+    usfm: 2pe
+    eng: 2 Peter
+    rus: Второе послание Петра
+    testament: NT
+    chapters: 3
+  - id: 48
+    file: 60-1john.dat
+    usfm: 1jn
+    eng: 1 John
+    rus: Первое послание Иоанна
+    testament: NT
+    chapters: 5
+  - id: 49
+    file: 61-2john.dat
+    usfm: 2jn
+    eng: 2 John
+    rus: Второе послание Иоанна
+    testament: NT
+    chapters: 1
+  - id: 50
+    file: 62-3john.dat
+    usfm: 3jn
+    eng: 3 John
+    rus: Третье послание Иоанна
+    testament: NT
+    chapters: 1
+  - id: 51
+    file: 63-jude.dat
+    usfm: jud
+    eng: Jude
+    rus: Послание Иуды
+    testament: NT
+    chapters: 1
+  - id: 52
+    file: 64-romans.dat
+    usfm: rom
+    eng: Romans
+    rus: Послание к Римлянам
+    testament: NT
+    chapters: 16
+  - id: 53
+    file: 65-1corinthians.dat
+    usfm: 1co
+    eng: 1 Corinthians
+    rus: Первое послание к Коринфянам
+    testament: NT
+    chapters: 16
+  - id: 54
+    file: 66-2corinthians.dat
+    usfm: 2co
+    eng: 2 Corinthians
+    rus: Второе послание к Коринфянам
+    testament: NT
+    chapters: 13
+  - id: 55
+    file: 67-galatians.dat
+    usfm: gal
+    eng: Galatians
+    rus: Послание к Галатам
+    testament: NT
+    chapters: 6
+  - id: 56
+    file: 68-ephesians.dat
+    usfm: eph
+    eng: Ephesians
+    rus: Послание к Ефесянам
+    testament: NT
+    chapters: 6
+  - id: 57
+    file: 69-philippians.dat
+    usfm: php
+    eng: Philippians
+    rus: Послание к Филиппийцам
+    testament: NT
+    chapters: 4
+  - id: 58
+    file: 70-colossians.dat
+    usfm: col
+    eng: Colossians
+    rus: Послание к Колоссянам
+    testament: NT
+    chapters: 4
+  - id: 59
+    file: 71-1thessalonians.dat
+    usfm: 1th
+    eng: 1 Thessalonians
+    rus: Первое послание к Фессалоникийцам
+    testament: NT
+    chapters: 5
+  - id: 60
+    file: 72-2thessalonians.dat
+    usfm: 2th
+    eng: 2 Thessalonians
+    rus: Второе послание к Фессалоникийцам
+    testament: NT
+    chapters: 3
+  - id: 61
+    file: 73-1timothy.dat
+    usfm: 1ti
+    eng: 1 Timothy
+    rus: Первое послание к Тимофею
+    testament: NT
+    chapters: 6
+  - id: 62
+    file: 74-2timothy.dat
+    usfm: 2ti
+    eng: 2 Timothy
+    rus: Второе послание к Тимофею
+    testament: NT
+    chapters: 4
+  - id: 63
+    file: 75-titus.dat
+    usfm: tit
+    eng: Titus
+    rus: Послание к Титу
+    testament: NT
+    chapters: 3
+  - id: 64
+    file: 76-philemon.dat
+    usfm: phm
+    eng: Philemon
+    rus: Послание к Филимону
+    testament: NT
+    chapters: 1
+  - id: 65
+    file: 77-hebrews.dat
+    usfm: heb
+    eng: Hebrews
+    rus: Послание к Евреям
+    testament: NT
+    chapters: 13
+  - id: 66
+    file: 78-revelation.dat
+    usfm: rev
+    eng: Revelation
+    rus: Откровение ап. Иоанна (Апокалипсис)
+    testament: NT
+    chapters: 22

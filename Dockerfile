@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN cpanm --notest \
     JSON \
     File::Slurp \
-    Config::General \
     Readonly \
     Perl::Tidy \
     Perl::Critic \

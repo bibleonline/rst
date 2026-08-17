@@ -3,8 +3,8 @@
 use strict;
 use warnings FATAL => 'all';
 use autodie qw(:io);
-use Config::General;
 use YAML::PP;
+use Encode qw(encode_utf8);
 use v5.10;
 use Readonly;
 use FindBin qw/$Bin/;
@@ -18,15 +18,9 @@ Readonly::Scalar my $ACTION_ROUND_SQUARE => 'round';
 
 Readonly::Scalar my $SRC_DIR         => "$Bin/../../parsed78";
 Readonly::Scalar my $DST_DIR         => "$Bin/..";
-Readonly::Scalar my $BOOK_CONF_PATH  => "$Bin/../../parsed78/description.conf";
+Readonly::Scalar my $BOOK_CONF_PATH  => "$Bin/../../parsed78/description.yaml";
 Readonly::Scalar my $RULES_CONF_PATH => "$Bin/../conf/01-rules.yaml";
-Readonly::Scalar my $DST_CONF_PATH   => "$Bin/../description.conf";
-
-Readonly::Scalar my $BOOK_DESCRIPTION_TPL => <<'TPL';
-<book-%d>
-%s
-</book-%d>
-TPL
+Readonly::Scalar my $DST_CONF_PATH   => "$Bin/../description.yaml";
 
 my %TEXT_ACTIONS = (
     $ACTION_STRIP_SQUARE => \&strip_brackets,
@@ -44,14 +38,14 @@ sub run {
 
     validate_rule_files( $rules, @books );
 
-    my $description = q{};
+    my $description = "# Сгенерировано parsed66/scripts/update-01.pl — не редактировать руками.\nbooks:\n";
     my $book_id     = 0;
 
     for my $book (@books) {
         $book_id++;
 
         $description .= format_book_description( $book, $book_id );
-        filter_and_write_book( $book->{File}, $rules );
+        filter_and_write_book( $book->{file}, $rules );
     }
 
     write_file( $DST_CONF_PATH, $description );
@@ -64,7 +58,17 @@ sub run {
 sub load_config {
     my ($path) = @_;
 
-    return { Config::General->new($path)->getall };
+    my $books = YAML::PP->new->load_file($path)->{books};
+
+    foreach my $book ( @{$books} ) {
+        foreach my $key ( keys %{$book} ) {
+            if ( defined $book->{$key} && !ref $book->{$key} ) {
+                $book->{$key} = encode_utf8( $book->{$key} );
+            }
+        }
+    }
+
+    return $books;
 }
 
 sub load_rules {
@@ -83,7 +87,7 @@ sub load_rules {
 sub validate_rule_files {
     my ( $rules, @books ) = @_;
 
-    my %known = map { $_->{File} => 1 } @books;
+    my %known = map { $_->{file} => 1 } @books;
     my @errors;
 
     for my $section ( sort keys %{$rules} ) {
@@ -95,8 +99,9 @@ sub validate_rule_files {
     }
 
     if (@errors) {
-        die "Unknown files in rules:\n"
-            . join( "\n", map {"  $_"} @errors ) . "\n";
+        die "Unknown files in rules:\n",           #
+            join( "\n", map {"  $_"} @errors ),    #
+            "\n";
     }
 
     return;
@@ -193,21 +198,32 @@ sub expand_verse_spec {
 # --- Book processing ---
 
 sub get_canonical_books {
-    my ($conf) = @_;
+    my ($books) = @_;
 
-    return map { $conf->{$_} }
-        sort { extract_num($a) <=> extract_num($b) }
-        grep { $conf->{$_}->{Testament} =~ /^[ON]T/ }
-        keys %{$conf};
+    # description.yaml — список в порядке книг источника, поэтому сортировка
+    # по номеру больше не нужна: достаточно отфильтровать второканонические.
+    return grep { $_->{testament} =~ /^[ON]T/sm } @{$books};
 }
 
+# Порядок полей фиксирован и совпадает с parsed78/description.yaml, чтобы
+# описания разных составов сравнивались глазами и диффом.
 sub format_book_description {
     my ( $book, $book_id ) = @_;
 
-    my %desc   = ( %{$book}, id => $book_id );
-    my $fields = join "\n", map { join "\t", $_, $desc{$_} } sort keys %desc;
+    my @out = (
+        sprintf( '  - id: %d',        $book_id ),
+        sprintf( '    file: %s',      $book->{file} ),
+        sprintf( '    usfm: %s',      $book->{usfm} ),
+        sprintf( '    eng: %s',       $book->{eng} ),
+        sprintf( '    rus: %s',       $book->{rus} ),
+        sprintf( '    testament: %s', $book->{testament} ),
+        sprintf( '    chapters: %d',  $book->{chapters} ),
+    );
+    if ( $book->{prologue} ) {
+        push @out, '    prologue: true';
+    }
 
-    return sprintf $BOOK_DESCRIPTION_TPL, $book_id, $fields, $book_id;
+    return join( "\n", @out ) . "\n";
 }
 
 sub filter_and_write_book {
@@ -423,10 +439,3 @@ sub rule_lookup {
     return $hash;
 }
 
-sub extract_num {
-    my ($str) = @_;
-
-    $str =~ s/\D//g;
-
-    return $str;
-}
