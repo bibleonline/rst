@@ -1,0 +1,20 @@
+source_file: 35-daniel.dat
+
+extracted:
+  36-songofthethree.dat:
+    chapter: 3
+    verse_from: 24
+    verse_to: 90
+    to_chapter: 1
+  37-susanna.dat:
+    chapter: 13
+    to_chapter: 1
+  38-belandthedragon.dat:
+    chapter: 14
+    to_chapter: 1
+
+rest_renumber:
+  - chapter: 3
+    verse_from: 91
+    verse_to: 100
+    to_first_verse: 24

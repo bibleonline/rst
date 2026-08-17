@@ -1,6 +1,6 @@
 # Разделение Даниила: parsed78 -> parsed81
 # Все диапазоны стихов — в ПЕЧАТНОЙ 
-# Читает scripts/30-split-books.pl (цель `make dat81`).
+# Читает parsed81/scripts/split-books.pl (цель `make dat81`).
 
 source_dir: parsed78
 target_dir: parsed81

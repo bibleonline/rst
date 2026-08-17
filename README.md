@@ -25,7 +25,7 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 * [parsed78/](parsed78/) — подготовленные файлы полного издания, **78 книг**
   (77 печатных + Молитва Манассии отдельной книгой, как в источнике Logos)
   * `NN-bookname.dat` — подготовленный файл каждой книги
-  * [description.conf](parsed78/description.conf) — описание книг (id, названия, число глав)
+  * [description.yaml](parsed78/description.yaml) — описание книг (id, файл, USFM-код, названия, число глав)
   * [patch.sh](parsed78/patch.sh) — сборочный сценарий: парсинг источников + наложение фиксов
 * [parsed66/](parsed66/) — подготовленные файлы протестантского издания, **66 книг**
   (строится из parsed78: `make dat66`)
@@ -50,12 +50,16 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 ```
 source/ ──make dat78──▶ parsed78/  (78 книг, полное)
                             │
-                            └──make dat66──▶ parsed66/  (66 книг, протестантское)
+                            ├──make dat66──▶ parsed66/  (66 книг, протестантское)
+                            │
+                            └──make dat81──▶ parsed81/  (81 книга: Молитва Азарии,
+                                                         Сусанна, Вил — отдельными)
 ```
 
 * `make build` — собрать Docker-образ (один раз)
 * `make dat78` — пересобрать `parsed78/` из `source/`
 * `make dat66` — пересобрать `parsed66/` из `parsed78/`
+* `make dat81` — пересобрать `parsed81/` из `parsed78/` (разделение Даниила; правила — `parsed81/conf/split-books.yaml`)
 
 При пересборке с нуля порядок обязателен: `dat78` → `dat66` (второй читает
 `parsed78/description.yaml`, который пишет первый). Оба шага идемпотентны:

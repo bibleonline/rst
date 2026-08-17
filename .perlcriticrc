@@ -11,4 +11,6 @@ severity = 1
 allowed_values = 0 1 2 3
 
 [InputOutput::RequireCheckedSyscalls]
-exclude_functions = say print
+exclude_functions = say print close
+
+[-InputOutput::RequireCheckedClose]
