@@ -37,8 +37,7 @@ sub validate_rule_files {
     }
 
     if (@missing) {
-        die "Unknown files in rules:\n"
-            . join( "\n", map {"  $_"} @missing ) . "\n";
+        die "Unknown files in rules:\n" . join( "\n", map {"  $_"} @missing ) . "\n";
     }
 
     return;

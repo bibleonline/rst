@@ -183,7 +183,7 @@ sub fmt_log {
         }
         else {
             my ($key) = keys %{$a};
-            my $val   = $a->{$key};
+            my $val = $a->{$key};
             push @parts, $key . q{: } . fmt_val($val);
         }
     }
@@ -242,7 +242,7 @@ sub process_file {
 sub apply_file_rule {
     my ( $file, $place, $line, $dat, $log_fh ) = @_;
 
-    my ($tx)     = $line =~ m{#\S+#(.+)};
+    my ($tx) = $line =~ m{#\S+#(.+)};
     my $old_tx = $tx;
 
     if ( $dat->{totsq} ) {

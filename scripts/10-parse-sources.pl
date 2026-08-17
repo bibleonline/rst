@@ -34,9 +34,9 @@ Readonly my $RE_CHAP => qr{
         </span>}smx;
 my $data = decode_json( read_file "$Bin/../source/syn.json" );
 
-my $deut  = YAML::PP->new->load_file("$Bin/deuterocanonical.yaml");
-my $codes = YAML::PP->new->load_file("$Bin/usfm-codes.yaml")->{codes};
-my $name_fix = YAML::PP->new->load_file("$Bin/book-names-fix.yaml")->{names};
+my $deut     = YAML::PP->new->load_file("$Bin/../conf/deuterocanonical.yaml");
+my $codes    = YAML::PP->new->load_file("$Bin/../conf/usfm-codes.yaml")->{codes};
+my $name_fix = YAML::PP->new->load_file("$Bin/../conf/book-names-fix.yaml")->{names};
 $name_fix = { map { $_ => encode_utf8( $name_fix->{$_} ) } keys %{$name_fix} };
 
 my $id = 0;
@@ -105,12 +105,13 @@ foreach my $book ( @{ $data->{books} } ) {
 
     # store description
     my $outfile = sprintf '%02d-%s.dat', ++$id, lc $eng;
-    $outfile =~ s/\s//gxsm;
+    $outfile                =~ s/\s//gxsm;
     ( my $slug = $outfile ) =~ s/\A\d+-//sm;
-    $slug =~ s/[.]dat\z//sm;
+    $slug                   =~ s/[.]dat\z//sm;
     my $usfm = $codes->{$slug}
         or croak "no USFM code for book slug '$slug' in usfm-codes.yaml";
-    push @description, {
+    push @description,
+        {
         id        => $id,
         file      => $outfile,
         usfm      => $usfm,
@@ -119,7 +120,7 @@ foreach my $book ( @{ $data->{books} } ) {
         testament => exists $deut->{books}->{$id} ? 'DE' : $id > $LAST_OT_ID ? 'NT' : 'OT',
         chapters  => scalar @{ $book->{chapters} } - ( exists $chaps{0} ? 1 : 0 ),
         exists $chaps{0} ? ( prologue => 1 ) : (),
-    };
+        };
     open my $fh, q{>}, "$PRSD_DIR/$outfile";
     printf {$fh} "%s\n", join "\n#p#\n", map { join "\n", @{$_} } @list;
     close $fh;
@@ -131,18 +132,15 @@ write_description( "$PRSD_DIR/description.yaml", \@description );
 sub write_description {
     my ( $path, $books ) = @_;
 
-    my @out = (
-        '# Сгенерировано scripts/10-parse-sources.pl — не редактировать руками.',
-        'books:',
-    );
+    my @out = ( '# Сгенерировано scripts/10-parse-sources.pl — не редактировать руками.', 'books:', );
     foreach my $b ( @{$books} ) {
-        push @out, sprintf '  - id: %d',      $b->{id};
-        push @out, sprintf '    file: %s',    $b->{file};
-        push @out, sprintf '    usfm: %s',    $b->{usfm};
-        push @out, sprintf '    eng: %s',     $b->{eng};
-        push @out, sprintf '    rus: %s',     $b->{rus};
+        push @out, sprintf '  - id: %d',        $b->{id};
+        push @out, sprintf '    file: %s',      $b->{file};
+        push @out, sprintf '    usfm: %s',      $b->{usfm};
+        push @out, sprintf '    eng: %s',       $b->{eng};
+        push @out, sprintf '    rus: %s',       $b->{rus};
         push @out, sprintf '    testament: %s', $b->{testament};
-        push @out, sprintf '    chapters: %d', $b->{chapters};
+        push @out, sprintf '    chapters: %d',  $b->{chapters};
         if ( $b->{prologue} ) {
             push @out, '    prologue: true';
         }

@@ -1,7 +1,7 @@
 # Исправления русских названий книг относительно источника (syn.json).
 # Ключ — слаг книги (имя файла без номера), значение — верное название.
-# Читает scripts/10-parse-sources.pl при генерации description.yaml.
-# Заменяет прежний патч 20-fix-parsed/035-name-of-book-ecc.patch, который
-# правил уже сгенерированный description.conf постфактум.
+# Читает scripts/10-parse-sources.pl при генерации parsed78/description.yaml.
+# История: заменил патч 20-fix-parsed/035-name-of-book-ecc.patch, который
+# правил сгенерированное описание постфактум (удалён, история в git).
 names:
   ecclesiastes: Книга Екклесиаста, или Проповедника
