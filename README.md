@@ -21,16 +21,33 @@ Original sources files downloaded from [Logos Bible Software](https://www.logos.
 
 ## Файлы и каталоги
 
-* source -- Оригинальные файлы (как есть)
-* issues -- вопросы по тексту
-* parsed -- Подготовленные файлы для дальнейшей работы
-* parsed66 -- Подготовленные файлы для дальнейшей работы протестантского издания
-* usfm -- Библия в формате USFM
-* redletter -- красные буквы (слова Христа)
- * NN-bookname.dat -- подготовленный файл по каждой из книг библии
- * [description.conf](https://github.com/sopov/rst/blob/master/parsed/description.conf) -- Описание, построенное на данных из оригинальных файлов
-* scripts -- Скрипты для обновления файлов
- * [syn.json](https://github.com/sopov/rst/blob/master/source/syn.json) -- Список книг и глав
- * [00-update-sources.pl](https://github.com/sopov/rst/blob/master/scripts/00-update-sources.pl) -- Инициализационный скрипт для исправления оригинальных файлов
- * [10-parse-sources.pl](https://github.com/sopov/rst/blob/master/scripts/10-parse-sources.pl) -- конвертор оригинальных файлов в удобный формат для дальнейшей работы с файлами
- * [20-fix-parsed](https://github.com/sopov/rst/tree/master/scripts/20-fix-parsed) -- обновление распарсенных файлов для устранения ошибок в исходных файлах
+* [source/](source/) — оригинальные файлы (как есть)
+* [parsed78/](parsed78/) — подготовленные файлы полного издания, **78 книг**
+  (77 печатных + Молитва Манассии отдельной книгой, как в источнике Logos)
+  * `NN-bookname.dat` — подготовленный файл каждой книги
+  * [description.conf](parsed78/description.conf) — описание книг (id, названия, число глав)
+  * [patch.sh](parsed78/patch.sh) — сборочный сценарий: парсинг источников + наложение фиксов
+* [parsed66/](parsed66/) — подготовленные файлы протестантского издания, **66 книг**
+  (строится из parsed78: `make dat66`)
+* [usfm/](usfm/) — Библия в формате USFM (`rst78/`, `rst66/`)
+* [redletter/](redletter/) — красные буквы (слова Христа)
+* [bible.ru/](bible.ru/) — расширенные названия книг (полные/краткие русские,
+  аббревиатуры); источник данных для BookNames
+* [issues/](issues/) — вопросы по тексту (исторические записи; пути в старых
+  записях могут ссылаться на прежние имена каталогов)
+* [todo/](todo/) — заметки по нерешённым вопросам формата
+* [paper/](paper/) — материалы сверки с печатными изданиями
+* [scripts/](scripts/) — скрипты сборки
+  * [syn.json](source/syn.json) — список книг и глав
+  * [00-update-sources.pl](scripts/00-update-sources.pl) — инициализация и починка оригинальных файлов
+  * [10-parse-sources.pl](scripts/10-parse-sources.pl) — конвертор оригинальных файлов в `.dat`
+  * [20-fix-parsed/](scripts/20-fix-parsed/) — фиксы поверх распарсенных файлов (патчи и скрипты)
+  * [helps/](scripts/helps/) — вспомогательные проверки (парные символы, словник)
+
+## Сборка
+
+* `make build` — собрать Docker-образ
+* `make dat66` — пересобрать `parsed66/` из `parsed78/` (идемпотентно)
+* `make dat` — пересобрать `parsed78/` из `source/`; идемпотентен: регенерация
+  воспроизводит закоммиченное состояние байт в байт (проверено прогоном на
+  чистом дереве). Запускайте на чистом дереве, чтобы случайный дифф был виден.

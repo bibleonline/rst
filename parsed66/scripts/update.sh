@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
-echo "[1/5] Filter books and verses from parsed/ to parsed66/"
+echo "[1/5] Filter books and verses from parsed78/ to parsed66/"
 perl update-01.pl
 
 echo "[2/5] Process square brackets (77-book to 66-book rules)"

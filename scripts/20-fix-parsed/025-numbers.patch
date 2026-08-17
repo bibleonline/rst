@@ -1,7 +1,7 @@
-diff --git a/parsed/01-genesis.dat b/parsed/01-genesis.dat
+diff --git a/parsed78/01-genesis.dat b/parsed78/01-genesis.dat
 index 0a5903b..9e37e45 100644
---- a/parsed/01-genesis.dat
-+++ b/parsed/01-genesis.dat
+--- a/parsed78/01-genesis.dat
++++ b/parsed78/01-genesis.dat
 @@ -150,32 +150,32 @@
  #p#
  #5:1#Вот родословие Адама: когда Бог сотворил человека, по подобию Божию создал его,

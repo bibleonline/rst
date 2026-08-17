@@ -3,7 +3,7 @@
 [github.com/sopov/rst/issues/1](https://github.com/sopov/rst/issues/1)
 
 Просьба удалить лишний пробел перед "]".
-Файл ``parsed/21-esther.dat``, строка 1, конец строки: ``царских. ]``,.
+Файл ``parsed78/21-esther.dat``, строка 1, конец строки: ``царских. ]``,.
 
 ## Аналогичные ошибки
 

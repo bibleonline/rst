@@ -70,7 +70,7 @@ sub _process_file {
     my @keys = keys %{$places};
     my $re   = sprintf q{(?:%s)}, join q{|}, @keys;
     $re = qr/$re/;
-    my $path = "$Bin/../../parsed/$file";
+    my $path = "$Bin/../../parsed78/$file";
 
     my $out      = q{};
     my $last_n   = 0;

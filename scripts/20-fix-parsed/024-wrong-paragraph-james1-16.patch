@@ -1,7 +1,7 @@
-diff --git a/parsed/57-james.dat b/parsed/57-james.dat
+diff --git a/parsed78/57-james.dat b/parsed78/57-james.dat
 index 3180c07..4556300 100644
---- a/parsed/57-james.dat
-+++ b/parsed/57-james.dat
+--- a/parsed78/57-james.dat
++++ b/parsed78/57-james.dat
 @@ -17,8 +17,8 @@
  #1:13#В искушении никто не говори: «Бог меня искушает»; потому что Бог не искушается злом и Сам не искушает никого,
  #1:14#но каждый искушается, увлекаясь и обольщаясь собственною похотью;

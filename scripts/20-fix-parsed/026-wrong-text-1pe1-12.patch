@@ -1,7 +1,7 @@
-diff --git a/parsed/58-1peter.dat b/parsed/58-1peter.dat
+diff --git a/parsed78/58-1peter.dat b/parsed78/58-1peter.dat
 index c23b4b8..1e20cf9 100644
---- a/parsed/58-1peter.dat
-+++ b/parsed/58-1peter.dat
+--- a/parsed78/58-1peter.dat
++++ b/parsed78/58-1peter.dat
 @@ -12,7 +12,7 @@
  #p#
  #1:10#К сему‐то спасению относились изыскания и исследования пророков, которые предсказывали о назначенной вам благодати,

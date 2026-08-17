@@ -16,9 +16,9 @@ Readonly::Scalar my $ACTION_KEEP         => 'keep';
 Readonly::Scalar my $ACTION_STRIP_SQUARE => 'strip_square';
 Readonly::Scalar my $ACTION_ROUND_SQUARE => 'round';
 
-Readonly::Scalar my $SRC_DIR         => "$Bin/../../parsed";
+Readonly::Scalar my $SRC_DIR         => "$Bin/../../parsed78";
 Readonly::Scalar my $DST_DIR         => "$Bin/..";
-Readonly::Scalar my $BOOK_CONF_PATH  => "$Bin/../../parsed/description.conf";
+Readonly::Scalar my $BOOK_CONF_PATH  => "$Bin/../../parsed78/description.conf";
 Readonly::Scalar my $RULES_CONF_PATH => "$Bin/../conf/01-rules.yaml";
 Readonly::Scalar my $DST_CONF_PATH   => "$Bin/../description.conf";
 

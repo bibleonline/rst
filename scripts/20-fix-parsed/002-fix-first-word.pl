@@ -9,7 +9,7 @@ use English     qw(-no_match_vars);
 use FindBin     qw($Bin);
 use File::Slurp qw(read_file write_file);
 
-my $dir  = "$Bin/../../parsed";
+my $dir  = "$Bin/../../parsed78";
 my $file = "$Bin/../../issues/002-uppercase-first-word.md";
 
 my %replace;

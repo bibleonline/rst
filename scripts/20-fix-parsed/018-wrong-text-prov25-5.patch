@@ -1,5 +1,5 @@
---- ../../parsed/24-proverbs.dat
-+++ ../../parsed/24-proverbs.dat
+--- ../../parsed78/24-proverbs.dat
++++ ../../parsed78/24-proverbs.dat
 @@ -1171,7 +1171,7 @@
  #25:3#Как небо в высоте и земля в глубине, так сердце царей &ndash; неисследимо.
  #p#

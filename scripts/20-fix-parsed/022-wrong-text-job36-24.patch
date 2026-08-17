@@ -1,7 +1,7 @@
-diff --git a/parsed/22-job.dat b/parsed/22-job.dat
+diff --git a/parsed78/22-job.dat b/parsed78/22-job.dat
 index 8903c83..b812943 100644
---- a/parsed/22-job.dat
-+++ b/parsed/22-job.dat
+--- a/parsed78/22-job.dat
++++ b/parsed78/22-job.dat
 @@ -1061,7 +1061,7 @@
  #p#
  #36:22#Бог высок могуществом Своим, и кто такой, как Он, наставник?

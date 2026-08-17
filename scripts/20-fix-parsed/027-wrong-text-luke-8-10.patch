@@ -1,7 +1,7 @@
-diff --git a/parsed/54-luke.dat b/parsed/54-luke.dat
+diff --git a/parsed78/54-luke.dat b/parsed78/54-luke.dat
 index d59080f..da212d6 100644
---- a/parsed/54-luke.dat
-+++ b/parsed/54-luke.dat
+--- a/parsed78/54-luke.dat
++++ b/parsed78/54-luke.dat
 @@ -490,7 +490,7 @@
  #8:8#а иное упало на добрую землю и, взойдя, принесло плод сторичный. Сказав сие, возгласил: кто имеет уши слышать, да слышит!
  #p#

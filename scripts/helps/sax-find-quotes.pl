@@ -32,7 +32,7 @@ my $opener = $modes->{$mode}->{o};
 my $closer = $modes->{$mode}->{c};
 my $qr     = $modes->{$mode}->{qr};
 
-my $dir = "$Bin/../../parsed";
+my $dir = "$Bin/../../parsed78";
 
 my $dh;
 opendir $dh, $dir;

@@ -11,7 +11,7 @@ use File::Slurp qw(read_file);
 
 binmode STDOUT, ':encoding(UTF-8)';
 
-my $dir = "$Bin/../../parsed";
+my $dir = "$Bin/../../parsed78";
 
 my $dh;
 opendir $dh, $dir;

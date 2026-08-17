@@ -1,7 +1,7 @@
-diff --git a/parsed/05-deuteronomy.dat b/parsed/05-deuteronomy.dat
+diff --git a/parsed78/05-deuteronomy.dat b/parsed78/05-deuteronomy.dat
 index b6e5565..390fab3 100644
---- a/parsed/05-deuteronomy.dat
-+++ b/parsed/05-deuteronomy.dat
+--- a/parsed78/05-deuteronomy.dat
++++ b/parsed78/05-deuteronomy.dat
 @@ -476,7 +476,7 @@
  #12:32#Все, что я заповедую вам, старайтесь исполнять; не прибавляй к тому и не убавляй от того.
  #p#

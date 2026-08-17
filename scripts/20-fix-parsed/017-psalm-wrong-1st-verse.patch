@@ -1,5 +1,5 @@
---- ../../parsed/23-psalms.dat
-+++ ../../parsed/23-psalms.dat
+--- ../../parsed78/23-psalms.dat
++++ ../../parsed78/23-psalms.dat
 @@ -1,4 +1,4 @@
 -#1:1#Псалом Давида.
 +#1:0#Псалом Давида.

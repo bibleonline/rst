@@ -9,7 +9,7 @@ use English     qw(-no_match_vars);
 use FindBin     qw($Bin);
 use File::Slurp qw(read_file write_file);
 
-my $dir = "$Bin/../../parsed";
+my $dir = "$Bin/../../parsed78";
 
 my %rules = (
     '01-genesis.dat-24-7'      => q{«},

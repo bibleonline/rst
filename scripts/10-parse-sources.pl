@@ -11,7 +11,7 @@ use Readonly;
 use autodie qw(:io);
 use File::Slurp;
 
-Readonly my $PRSD_DIR   => "$Bin/../parsed/";
+Readonly my $PRSD_DIR   => "$Bin/../parsed78/";
 Readonly my $EMPTY      => q{};
 Readonly my $LAST_OT_ID => 51;
 Readonly my $SPAN => {

@@ -1,7 +1,7 @@
-diff --git a/parsed/48-1maccabees.dat b/parsed/48-1maccabees.dat
+diff --git a/parsed78/48-1maccabees.dat b/parsed78/48-1maccabees.dat
 index 97726a1..aa88a1c 100644
---- a/parsed/48-1maccabees.dat
-+++ b/parsed/48-1maccabees.dat
+--- a/parsed78/48-1maccabees.dat
++++ b/parsed78/48-1maccabees.dat
 @@ -343,7 +343,7 @@
  #5:31#Увидел Иуда, что началась битва и вопль города восходил на небо трубами и громким криком,
  #5:32#и сказал воинам: сражайтесь теперь за братьев ваших.

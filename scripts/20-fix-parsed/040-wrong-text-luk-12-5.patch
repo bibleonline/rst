@@ -4,10 +4,10 @@ Date:   Wed Feb 16 18:22:41 2022 +0300
 
     fix luke 12:5
 
-diff --git a/parsed/54-luke.dat b/parsed/54-luke.dat
+diff --git a/parsed78/54-luke.dat b/parsed78/54-luke.dat
 index 8370486..b100bc6 100644
---- a/parsed/54-luke.dat
-+++ b/parsed/54-luke.dat
+--- a/parsed78/54-luke.dat
++++ b/parsed78/54-luke.dat
 @@ -809,7 +809,7 @@
  #12:3#Посему, что&#769; вы сказали в темноте, то&#769; услышится во свете; и что&#769; говорили на ухо внутри дома, то&#769; будет провозглашено на кровлях.
  #p#
