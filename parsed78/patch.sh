@@ -54,3 +54,4 @@ patch  < ../scripts/20-fix-parsed/037-upper-case.patch
 patch  < ../scripts/20-fix-parsed/039-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/040-wrong-text-luk-12-5.patch
 patch  < ../scripts/20-fix-parsed/041-wrong-text-ps17-2.patch
+patch  < ../scripts/20-fix-parsed/042-trailing-space.patch
