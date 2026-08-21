@@ -3,7 +3,7 @@ PERL_FILES := scripts/*.pl scripts/20-fix-parsed/*.pl scripts/helps/*.pl parsed6
 
 .DEFAULT_GOAL := help
 
-.PHONY: help build dat dat66 usfm tidy critic
+.PHONY: help build dat78 dat66 dat81 usfm tidy critic
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | \
@@ -12,11 +12,14 @@ help: ## Show this help
 build: ## Build Docker image
 	docker compose build
 
-dat: ## Build .dat files from sources
-	$(RUN) -w /app/parsed perl bash patch.sh
+dat78: ## Build parsed78 .dat files from sources
+	$(RUN) -w /app/parsed78 perl bash patch.sh
 
 dat66: ## Build parsed66 .dat files
 	$(RUN) -w /app/parsed66/scripts perl bash update.sh
+
+dat81: ## Build parsed81 .dat files
+	$(RUN) perl perl parsed81/scripts/split-books.pl
 
 usfm: ## Build usfm/rst{66,78,81} from parsed
 	$(RUN) perl perl scripts/90-make-usfm/make-usfm.pl
