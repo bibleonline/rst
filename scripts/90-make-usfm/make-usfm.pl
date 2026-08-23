@@ -83,6 +83,7 @@ sub build_edition {
 
     my @books      = grep {/[.]dat\z/} read_dir($parsed);
     my %in_edition = map  { book_code( $codes, $_ ) => 1 } @books;
+    my $titles     = book_titles( $conf, $codes );
     check_extra_targets(
         extra    => $extra,
         known    => \%in_edition,
@@ -101,17 +102,18 @@ sub build_edition {
             $code, $cfg->{abbr}, $cfg->{name}, $cfg->{long};
 
         render_book(
-            file  => "$parsed$book",
-            path  => "$out2$id-$sid.usfm",
-            id    => $id,
-            sid   => $sid,
-            code  => $code,
-            type  => $type,
-            ucfg  => $uconf->{$sid},
-            note  => $rnote->{$sid} || {},
-            extra => $extra->{$sid} || {},
-            alt   => $alt->{$sid}   || {},
-            esv   => $esv->{$sid},
+            file   => "$parsed$book",
+            path   => "$out2$id-$sid.usfm",
+            id     => $id,
+            sid    => $sid,
+            code   => $code,
+            type   => $type,
+            ucfg   => $uconf->{$sid},
+            note   => $rnote->{$sid} || {},
+            extra  => $extra->{$sid} || {},
+            titles => $titles,
+            alt    => $alt->{$sid} || {},
+            esv    => $esv->{$sid},
         );
     }
 
@@ -133,6 +135,20 @@ sub book_code {
     return $code;
 }
 
+# Карта «USFM-код -> русские титулы» для видимого текста ссылок \ref: в
+# конфиге ссылок записан код, а титулы в booknames.yaml лежат по слагу,
+# поэтому usfm-codes.yaml здесь инвертируется.
+sub book_titles {
+    my ( $conf, $codes ) = @_;
+
+    my %titles;
+    foreach my $sid ( keys %{$codes} ) {
+        my $cfg = $conf->{$sid} or next;
+        $titles{ uc $codes->{$sid} } = $cfg;
+    }
+    return \%titles;
+}
+
 # Число глав по книгам состава — из описания, которое пишет сборка .dat.
 sub chapter_counts {
     my ($path) = @_;
@@ -146,7 +162,7 @@ sub chapter_counts {
     return \%count;
 }
 
-# Цель ссылки \x обязана быть книгой этого же состава и её существующей главой.
+# Цель ссылки \xt обязана быть книгой этого же состава и её существующей главой.
 # Иначе в выгрузку молча уезжает ссылка в никуда: сам USFM её не проверяет, а
 # глазами такое ловится только сплошным просмотром сносок.
 sub check_extra_targets {
@@ -175,16 +191,22 @@ sub check_targets_at {
     my ( $entry, $known, $chapters, $where ) = @arg{qw(entry known chapters where)};
 
     foreach my $target ( @{ $entry->{xt} || [] } ) {
-        my ( $code, $chapter ) = split /\s+/, $target;
+        my $loc = target_loc($target);
+        my ( $code, $chapter ) = split /\s+/, $loc;
         $code = uc( $code // q{} );
         if ( !$known->{$code} ) {
-            die "$where -> '$target': книги $code нет в этом составе\n";
+            die "$where -> '$loc': книги $code нет в этом составе\n";
         }
 
         my $total = $chapters->{$code};
+
+        # Цель без номера главы — законная ссылка на книгу целиком, проверять
+        # в ней нечего: и у односоставных книг, где номер был бы шумом, и у
+        # многоглавых, когда печатной главы в составе нет и вести можно только
+        # к книге. Проверка главы ниже — только для целей, где глава указана.
         next if !$total || !defined $chapter;
         if ( $chapter !~ /\A\d+\z/ || $chapter < 1 || $chapter > $total ) {
-            die "$where -> '$target': в книге $code глав $total\n";
+            die "$where -> '$loc': в книге $code глав $total\n";
         }
     }
     return;
@@ -477,7 +499,7 @@ sub add_verse {
     if ( my $ex = $book->{extra}->{$pc}->{$pv} ) {
         my ( $pre, $post ) = ( q{}, q{} );
         foreach my $note ( @{ extra_list($ex) } ) {
-            my $text = structural_note( $pc, $pv, $note );
+            my $text = structural_note( $pc, $pv, $note, $book->{titles} );
             if   ( ( $note->{pos} // q{} ) eq 'start' ) { $pre  .= "$text " }
             else                                        { $post .= $text }
         }
@@ -640,16 +662,44 @@ sub extra_list {
     return ref $ex eq ref [] ? $ex : [$ex];
 }
 
-# Сноска о переезде текста между составами; \x — ссылки на книги-получатели.
+# Сноска о переезде текста между составами. Ссылки живут внутри самой сноски,
+# а не отдельным \x рядом: два элемента у стиха потребитель рисует как две
+# сноски, хотя это одно высказывание — текст, заканчивающийся ссылкой.
 sub structural_note {
-    my ( $pc, $pv, $ex ) = @_;
+    my ( $pc, $pv, $ex, $titles ) = @_;
 
-    my $note = sprintf '\\f + \\fr %d.%d \\ft %s \\f*', $pc, $pv, $ex->{text};
+    my $body = $ex->{text};
     if ( $ex->{xt} && @{ $ex->{xt} } ) {
-        $note .= sprintf '\\x - \\xo %d.%d %s\\x*', $pc, $pv,
-            join q{ }, map { sprintf '\\xt %s\\xt*', normalize_target($_) } @{ $ex->{xt} };
+
+        # Цели живут внутри одного \xt: каждая — \ref «видимый текст|адрес»,
+        # разделитель стоит между \ref, а не между \xt. Разделитель снаружи
+        # разметки при разборе в USJ теряется, и цели слипаются в одно слово.
+        $body .= sprintf ' \\xt %s\\xt*', join '; ', map { target_ref( $_, $titles ) } @{ $ex->{xt} };
     }
-    return $note;
+    return sprintf '\\f + \\fr %d.%d \\ft %s \\f*', $pc, $pv, $body;
+}
+
+# Адрес цели: цель — либо строка «КОД[ глава]», либо запись со своим видимым
+# текстом.
+sub target_loc {
+    my ($target) = @_;
+
+    return ref $target eq ref {} ? $target->{loc} : $target;
+}
+
+sub target_ref {
+    my ( $target, $titles ) = @_;
+
+    my $loc = normalize_target( target_loc($target) );
+    my ( $code, $chapter ) = split /\s+/, $loc;
+    my $cfg = $titles->{$code}
+        or die "нет титула для книги $code в conf/booknames.yaml\n";
+    my $name
+        = ref $target eq ref {} && defined $target->{text} ? $target->{text}
+        : defined $chapter                                 ? "$cfg->{abbr} $chapter"
+        :                                                    $cfg->{name};
+
+    return sprintf '\\ref %s|%s\\ref*', $name, $loc;
 }
 
 # Код книги в ссылке пишем в верхнем регистре, как его пишет сам USFM: проверка
