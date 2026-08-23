@@ -92,12 +92,14 @@ sub build_edition {
     );
 
     my @booknames;
+    my %seen_abbr;
     foreach my $book (@books) {
         debug("= $book =");
         my ( $id, $sid ) = $book =~ /\A(\d+)-(.+)[.]dat\z/;
         my $cfg  = $conf->{$sid};
         my $code = book_code( $codes, $book );
 
+        check_abbr( seen => \%seen_abbr, abbr => $cfg->{abbr}, sid => $sid, type => $type );
         push @booknames, sprintf '<book code="%s" abbr="%s" short="%s" long="%s" />',
             $code, $cfg->{abbr}, $cfg->{name}, $cfg->{long};
 
@@ -133,6 +135,22 @@ sub book_code {
     my $code = uc( $codes->{$sid} // q{} );
     $code or die "no usfm code for $sid\n";
     return $code;
+}
+
+# Сокращение книги внутри состава обязано быть уникальным: по нему потребитель
+# разбирает ссылку, и две книги с одним abbr неразличимы. Так и жила коллизия
+# Иудифи с Посланием Иуды — оба «Иуд», пока это никто не проверял. Уникальность
+# нужна в пределах состава: коды книг разных составов не встречаются вместе.
+sub check_abbr {
+    my (%arg) = @_;
+    my ( $seen, $abbr, $sid, $type ) = @arg{qw(seen abbr sid type)};
+
+    $abbr or die "rst$type: у книги $sid нет abbr в conf/booknames.yaml\n";
+    if ( my $other = $seen->{$abbr} ) {
+        die "rst$type: сокращение '$abbr' занято книгами $other и $sid\n";
+    }
+    $seen->{$abbr} = $sid;
+    return;
 }
 
 # Карта «USFM-код -> русские титулы» для видимого текста ссылок \ref: в
