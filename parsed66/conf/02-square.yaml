@@ -1215,7 +1215,10 @@
 - { place: "31:6", do: delete }
 - { place: "31:8", do: delete }  # WARN RST ALSO DOT REPLACED TO ; BUT NEXT IS NEW PARAGRAPH
 - { place: "31:15", do: italic }
-- { place: "32:11", do: delete }
+- place: "32:11"
+  do:
+    - insert: {left: ","}
+    - delete
 - { place: "32:30", do: delete }
 - { place: "33:9", do: italic }
 - place: "33:36"
