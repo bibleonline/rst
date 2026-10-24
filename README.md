@@ -57,6 +57,7 @@ source/ ──make dat78──▶ parsed78/  (78 книг, полное)
 ```
 
 * `make build` — собрать Docker-образ (один раз)
+* `make all` — последовательно выполнить `dat78` → `dat81` → `dat66` → `usfm` (все три состава и USFM)
 * `make dat78` — пересобрать `parsed78/` из `source/`
 * `make dat66` — пересобрать `parsed66/` из `parsed78/`
 * `make dat81` — пересобрать `parsed81/` из `parsed78/` (разделение Даниила; правила — `parsed81/conf/split-books.yaml`)

@@ -1,4 +1,7 @@
 #!/bin/bash
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")" || exit 1
+
 # update from sources
 perl ../scripts/00-update-sources.pl
 perl ../scripts/10-parse-sources.pl
@@ -14,7 +17,7 @@ patch  < ../scripts/20-fix-parsed/007-short-vers.patch
 # 008-pipe.sh
 perl -p -i -e 's/\s+\|+\s+/ /g;s/\s+\|+/ /g;s/\|+\s+/ /g' *dat
 # /008
-patch  < ../scripts/20-fix-parsed/009-wrong-text-ps73-2.patch
+patch -p2 < ../scripts/20-fix-parsed/009-wrong-text-ps73-2.patch
 patch  < ../scripts/20-fix-parsed/010-wrong-space.patch
 patch  < ../scripts/20-fix-parsed/011-wrong-text-ge-jacob.patch
 patch  < ../scripts/20-fix-parsed/011.2-wrong-text-ge-jacob.patch
@@ -50,8 +53,9 @@ perl -p -i -e 's/# /#/' *dat
 # описания через scripts/book-names-fix.yaml
 patch  < ../scripts/20-fix-parsed/036-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/037-upper-case.patch
-# skup 038
+# skip 038
 patch  < ../scripts/20-fix-parsed/039-wrong-text.patch
 patch  < ../scripts/20-fix-parsed/040-wrong-text-luk-12-5.patch
 patch  < ../scripts/20-fix-parsed/041-wrong-text-ps17-2.patch
 patch  < ../scripts/20-fix-parsed/042-trailing-space.patch
+patch  < ../scripts/20-fix-parsed/043-divine-pronouns.patch
