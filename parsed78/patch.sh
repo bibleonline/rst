@@ -63,3 +63,4 @@ patch  < ../scripts/20-fix-parsed/043-divine-pronouns.patch
 patch  < ../scripts/20-fix-parsed/044-punctuation.patch
 patch  < ../scripts/20-fix-parsed/045-typos.patch
 patch  < ../scripts/20-fix-parsed/046-markup.patch
+patch  < ../scripts/20-fix-parsed/047-names.patch
